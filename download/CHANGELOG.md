@@ -8,6 +8,8 @@
 ## [Unreleased]
 
 ### Added / Ditambahkan
+- **🇮🇩** Kesiapan deploy **Vercel**: URL SQLite tertanam di `prisma/schema.prisma` (`file:../db/custom.db` — tidak butuh `DATABASE_URL`), skrip `postinstall: prisma generate`, `engines.node >= 20.9`, serta panduan "Deploy ke Vercel" di ketiga README.
+- **🇬🇧** **Vercel** deployment readiness: the SQLite URL is embedded in `prisma/schema.prisma` (`file:../db/custom.db` — no `DATABASE_URL` needed), a `postinstall: prisma generate` script, `engines.node >= 20.9`, and "Deploy to Vercel" guides in all three READMEs.
 - **🇮🇩** `README.EN.md` — edisi dokumentasi lengkap berbahasa Inggris (15 bagian).
 - **🇮🇩** `WORKLOG.md` — log kerja paling detail: fase, iterasi desain v1–v7, tabel commit, statistik, log keputusan.
 - **🇮🇩** `CHANGELOG.md` — berkas ini.

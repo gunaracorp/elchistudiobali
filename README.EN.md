@@ -247,7 +247,7 @@ npm run build && npm start  # 5. production (Next.js standalone output)
 
 | Variable | Required | Value |
 |----------|----------|-------|
-| `DATABASE_URL` | ✅ | `file:./db/custom.db` (SQLite) |
+| `DATABASE_URL` | optional | **not needed** — the SQLite URL (`file:../db/custom.db`) is embedded in `prisma/schema.prisma`; set it only for a hosted DB |
 | `NEXT_PUBLIC_SITE_URL` | optional | default `https://elchistudiobali.com` |
 | `ADMIN_EMAIL` | optional | override seed email (default: official NIB email) |
 | `ADMIN_PASSWORD` | optional | override seed password (default: random, printed once) |
@@ -255,6 +255,10 @@ npm run build && npm start  # 5. production (Next.js standalone output)
 **npm scripts:** `dev` (port 3000 + log), `build` (standalone + copy static & public), `start` (run standalone), `lint`, `db:push`, `db:studio` (visual DB inspector).
 
 **Operational notes:** change the admin password on first login (Settings → Change Admin Password); address/WhatsApp/email/hours can be changed anytime from the dashboard without redeploying; back up `db/custom.db` regularly (all booking data lives in this single file).
+
+**Deploy to Vercel (ready out of the box):** keep the repo pushed to GitHub → in Vercel: **Add New Project → Import** `gunaracorp/elchistudiobali` → the Next.js framework is auto-detected; keep the default build command (`npm run build`) — `postinstall` already runs `prisma generate`; **no env vars required to start** (the SQLite URL is embedded in the schema and `db/custom.db` ships with the repo, containing the admin account, settings, and gallery). Optionally set `NEXT_PUBLIC_SITE_URL=https://elchistudiobali.com` in *Settings → Environment Variables*.
+
+> ⚠️ **Serverless note:** Vercel's filesystem is ephemeral/read-only — public pages, SEO, admin login, and data reads work normally, but **writes** (incoming bookings, Publish settings, gallery uploads) will not persist. For a full cloud CMS, migrate to a hosted database (Turso/Neon/Vercel Postgres) — the Prisma schema/API split keeps that migration small.
 
 ---
 

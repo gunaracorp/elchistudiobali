@@ -4,7 +4,10 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  // Path relatif terhadap folder schema (prisma/), bukan process.cwd():
+  // "../db/custom.db" → <root-proyek>/db/custom.db — sama di lokal & Vercel.
+  // Tidak butuh env DATABASE_URL; URL tertanam saat `prisma generate`.
+  url      = "file:../db/custom.db"
 }
 
 model Booking {

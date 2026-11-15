@@ -389,7 +389,7 @@ npm run build && npm start  # 5. produksi (output standalone Next.js)
 
 | Variabel | Wajib? | Isi |
 |----------|--------|-----|
-| `DATABASE_URL` | ✅ | `file:./db/custom.db` (SQLite) |
+| `DATABASE_URL` | opsional | **tidak wajib** — URL SQLite (`file:../db/custom.db`) sudah tertanam di `prisma/schema.prisma`; diisi hanya jika memakai database hosted |
 | `NEXT_PUBLIC_SITE_URL` | opsional | default `https://elchistudiobali.com` |
 | `ADMIN_EMAIL` | opsional | override email saat seed (default email resmi NIB) |
 | `ADMIN_PASSWORD` | opsional | override password saat seed (default: acak, dicetak sekali) |
@@ -414,7 +414,7 @@ npm run build && npm start  # 5. production (Next.js standalone output)
 
 | Variable | Required | Value |
 |----------|----------|-------|
-| `DATABASE_URL` | ✅ | `file:./db/custom.db` (SQLite) |
+| `DATABASE_URL` | optional | **not needed** — the SQLite URL (`file:../db/custom.db`) is embedded in `prisma/schema.prisma`; set it only for a hosted DB |
 | `NEXT_PUBLIC_SITE_URL` | optional | default `https://elchistudiobali.com` |
 | `ADMIN_EMAIL` | optional | override seed email (default: official NIB email) |
 | `ADMIN_PASSWORD` | optional | override seed password (default: random, printed once) |
@@ -422,6 +422,14 @@ npm run build && npm start  # 5. production (Next.js standalone output)
 **npm scripts:** `dev` (port 3000 + log), `build` (standalone + copy static & public), `start` (run standalone), `lint`, `db:push`, `db:studio` (visual DB inspector).
 
 **Operational notes:** change the admin password on first login (Settings → Change Admin Password); address/WhatsApp/email/hours can be changed anytime from the dashboard without redeploying; back up `db/custom.db` regularly (all booking data lives in this single file).
+
+**🚀 Deploy ke Vercel (siap pakai):** pastikan repo ter-push ke GitHub → di Vercel: **Add New Project → Import** `gunaracorp/elchistudiobali` → framework Next.js terdeteksi otomatis; biarkan Build Command default (`npm run build`) — `postinstall` sudah menjalankan `prisma generate`; **tanpa env var untuk mulai** (URL SQLite tertanam di schema, `db/custom.db` ikut ter-commit berisi akun admin, pengaturan, dan galeri). Opsional: `NEXT_PUBLIC_SITE_URL=https://elchistudiobali.com`.
+
+> ⚠️ **Catatan serverless:** filesystem Vercel *ephemeral/read-only* — halaman publik, SEO, login admin, dan pembacaan data normal, tetapi **penulisan** (booking, Publish, upload galeri) tidak tersimpan permanen. Untuk CMS penuh di cloud, migrasikan ke database hosted (Turso/Neon/Vercel Postgres) — pemisahan skema/API lewat Prisma membuat migrasinya kecil.
+
+**Deploy to Vercel (ready out of the box):** keep the repo pushed to GitHub → in Vercel: **Add New Project → Import** `gunaracorp/elchistudiobali` → Next.js is auto-detected; keep the default build command — `postinstall` runs `prisma generate`; **no env vars required to start** (the SQLite URL is embedded in the schema; `db/custom.db` ships committed with the admin account, settings, and gallery). Optional: `NEXT_PUBLIC_SITE_URL=https://elchistudiobali.com`.
+
+> ⚠️ **Serverless note:** Vercel's filesystem is ephemeral/read-only — public pages, SEO, admin login and data reads work normally, but **writes** (bookings, Publish, gallery uploads) will not persist. For a full cloud CMS, migrate to a hosted database (Turso/Neon/Vercel Postgres) — the Prisma schema/API split keeps the migration small.
 
 ---
 
