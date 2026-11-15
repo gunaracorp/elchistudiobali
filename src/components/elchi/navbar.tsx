@@ -4,14 +4,14 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, CalendarHeart } from "lucide-react";
 import { useSite } from "./locale-provider";
-import { LanguageSwitcher } from "./language-switcher";
+import { LanguageMenu } from "./language-switcher";
 import { Magnetic } from "./motion";
 import { cn } from "@/lib/utils";
 
 /**
  * Navbar — floating brand bar. Transparent over the hero, blush glass
  * after scroll, full-screen editorial overlay on mobile.
- * Carries the trilingual switcher (ID · EN · 한국어).
+ * Carries the trilingual globe menu (ID · EN · 한국어).
  */
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -89,7 +89,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-3">
             <div className="hidden md:inline-block">
-              <LanguageSwitcher variant="light" />
+              <LanguageMenu variant="light" />
             </div>
             <Magnetic className="hidden sm:inline-block">
               <a
@@ -187,7 +187,7 @@ export function Navbar() {
             </ul>
             <div className="flex flex-col gap-4 px-8 pb-8 sm:flex-row sm:items-center sm:justify-between">
               <div className="shrink-0">
-                <LanguageSwitcher variant="dark" />
+                <LanguageMenu variant="dark" />
               </div>
               <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-cream/50 sm:text-right">
                 {d.meta.menuTag}

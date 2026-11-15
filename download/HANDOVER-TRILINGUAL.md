@@ -64,7 +64,8 @@ Situs Elchí Studio Bali kini sepenuhnya **trilingual**: Bahasa Indonesia, Bahas
 | Kamus KO | `src/lib/i18n/ko.ts` | Seluruh teks Bahasa Korea |
 | Tipe | `src/lib/i18n/types.ts` | Kontrak struktur kamus (aman TypeScript) |
 | Helper | `src/lib/i18n/index.ts` | Penggabungan konten terstruktur + terjemahan |
-| Switcher | `src/components/elchi/language-switcher.tsx` | Pil `ID · EN · 한국어` (3 lokasi: navbar, menu mobile, footer) |
+| Menu Bahasa | `src/components/elchi/language-switcher.tsx` | Tombol globe + dropdown elegan `ID · EN · 한국어` (2 lokasi: navbar desktop, menu overlay mobile; tidak ada lagi di footer) |
+| Kredit Partner | `src/components/elchi/footer.tsx` | Bar kredit di footer: Design by Digiman.id (PT Digital Bisnis Manajemen) · Hosting by JuraganWebsite (juraganwebsite.web.id) · Support system & legal by PT Top Konsultan Internasional (pusatperizinan.com) |
 
 **Perilaku penting:**
 
@@ -99,7 +100,7 @@ Situs Elchí Studio Bali kini sepenuhnya **trilingual**: Bahasa Indonesia, Bahas
 - `bun run lint` — bersih.
 - `bunx tsc --noEmit` — 0 error pada kode proyek (error tersisa hanya fixture template `examples/` & `skills/` yang sudah ada sebelum perubahan ini).
 - `bun run build` — build produksi sukses.
-- Browser (1440×900 & 390×844): hero EN/ID/KO, classes ID, booking ID end-to-end (data tersimpan di DB + layar "Terima kasih!"), menu mobile ID, switcher di 3 lokasi, `document.documentElement.lang` benar untuk ketiga locale.
+- Browser (1440×900 & 390×844): hero EN/ID/KO, classes ID, booking ID end-to-end (data tersimpan di DB + layar "Terima kasih!"), menu mobile ID, menu bahasa (globe) di navbar & menu mobile, `document.documentElement.lang` benar untuk ketiga locale.
 - Screenshot bukti: folder `screenshots/` di samping dokumen ini.
 
 ### Menambah bahasa baru (mis. Prancis)

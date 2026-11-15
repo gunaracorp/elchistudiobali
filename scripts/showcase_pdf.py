@@ -44,15 +44,16 @@ DESKTOP = [
     ("07-booking",      "07 · Formulir Booking", "Booking form — direct to studio"),
     ("08-faq",          "08 · FAQ", "Frequently asked questions"),
     ("09-footer",       "09 · Kontak, WhatsApp & Alamat", "Footer — WhatsApp, email & NIB address"),
+    ("09b-credits",     "10 · Kredit Partner di Footer", "Footer partner credits — design, hosting, legal"),
 ]
 MOBILE = [
-    ("10-mobile-hero",    "10 · Tampilan Ponsel — Pembuka", "Mobile view — hero"),
-    ("11-mobile-classes", "11 · Tampilan Ponsel — Kelas", "Mobile view — classes"),
-    ("12-mobile-footer",  "12 · Tampilan Ponsel — Kontak", "Mobile view — contact"),
+    ("10-mobile-hero",    "11 · Tampilan Ponsel — Pembuka", "Mobile view — hero"),
+    ("11-mobile-classes", "12 · Tampilan Ponsel — Kelas", "Mobile view — classes"),
+    ("12-mobile-footer",  "13 · Tampilan Ponsel — Kontak", "Mobile view — contact"),
 ]
 ADMIN = [
-    ("admin-dashboard-bookings", "13 · Dasbor Admin — Booking Masuk", "Admin dashboard — booking inbox"),
-    ("admin-gallery",            "14 · Dasbor Admin — Kelola Galeri", "Admin dashboard — gallery manager"),
+    ("admin-dashboard-bookings", "14 · Dasbor Admin — Booking Masuk", "Admin dashboard — booking inbox"),
+    ("admin-gallery",            "15 · Dasbor Admin — Kelola Galeri", "Admin dashboard — gallery manager"),
 ]
 
 os.makedirs(TMP_JPG, exist_ok=True)

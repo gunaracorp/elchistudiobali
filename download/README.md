@@ -6,9 +6,10 @@
 
 **Kirim ke klien (1 file, langsung siap):**
 
-- **`Elchi-Website-Showcase.pdf`** — presentasi website 16 halaman (A4 landscape, 2,4 MB):
-  cover brand, 9 tampilan section desktop, 3 tampilan ponsel, 2 halaman dasbor admin,
-  dan halaman ringkasan fitur + kontak. **Cukup kirim file ini ke klien** (WhatsApp/email).
+- **`Elchi-Website-Showcase.pdf`** — presentasi website 17 halaman (A4 landscape, 2,6 MB):
+  cover brand, 10 tampilan section desktop (termasuk kredit partner di footer), 3 tampilan
+  ponsel, 2 halaman dasbor admin, dan halaman ringkasan fitur + kontak.
+  **Cukup kirim file ini ke klien** (WhatsApp/email).
 
 **Paket lengkap 1 klik:**
 
@@ -24,9 +25,9 @@ dan `/admin` untuk dasbor studio (email + password dikirim terpisah; segera gant
 
 ## English
 
-**Send to client (single file, ready):** `Elchi-Website-Showcase.pdf` — 16-page A4-landscape
-presentation: branded cover, 9 desktop sections, 3 mobile views, 2 admin-dashboard pages,
-feature summary & contact page.
+**Send to client (single file, ready):** `Elchi-Website-Showcase.pdf` — 17-page A4-landscape
+presentation: branded cover, 10 desktop sections (incl. footer partner credits), 3 mobile
+views, 2 admin-dashboard pages, feature summary & contact page.
 
 **One-click full package:** `Elchi-Website-Paket.zip` — showcase PDF + bilingual handover doc
 + visual proof screenshots. No credentials inside (delivered separately for security).

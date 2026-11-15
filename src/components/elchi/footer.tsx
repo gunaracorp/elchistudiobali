@@ -1,8 +1,7 @@
 "use client";
 
-import { MapPin, Mail, ShieldCheck, Clock } from "lucide-react";
+import { MapPin, Mail, ShieldCheck, Clock, PenTool, Server, Scale } from "lucide-react";
 import { Reveal, Magnetic } from "./motion";
-import { LanguageSwitcher } from "./language-switcher";
 import { WhatsAppIcon } from "./whatsapp";
 import { useSite, useContent } from "./locale-provider";
 import { useSettings, waHref } from "@/lib/site-settings";
@@ -12,8 +11,34 @@ import { useSettings, waHref } from "@/lib/site-settings";
  * Address / WhatsApp / Email come from studio settings (editable in
  * /admin → Pengaturan, seeded from the official NIB documents).
  * Company name (PT. Elchi Studio Bali) is public record; no private
- * identifiers are exposed. The trilingual switcher lives here too.
+ * identifiers are exposed. The trilingual globe menu lives in the
+ * navbar, so the footer closes with the partner credits instead.
  */
+
+/** Partner credits — the trio behind the Elchí website. */
+const CREDITS = [
+  {
+    icon: PenTool,
+    label: "Design by",
+    name: "Digiman.id",
+    legal: "PT Digital Bisnis Manajemen",
+    href: "https://digiman.id",
+  },
+  {
+    icon: Server,
+    label: "Hosting by",
+    name: "JuraganWebsite",
+    legal: "juraganwebsite.web.id",
+    href: "https://juraganwebsite.web.id",
+  },
+  {
+    icon: Scale,
+    label: "Support system & legal by",
+    name: "PT Top Konsultan Internasional",
+    legal: "pusatperizinan.com",
+    href: "https://pusatperizinan.com",
+  },
+];
 export function Footer() {
   const { d } = useSite();
   const { classes } = useContent();
@@ -213,7 +238,6 @@ export function Footer() {
           <p className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/45">
             © {new Date().getFullYear()} PT. Elchi Studio Bali · {t.rights}
           </p>
-          <LanguageSwitcher variant="dark" />
           <div className="flex items-center gap-5">
             <p className="font-script text-sm text-cream/45">{t.made}</p>
             <a
@@ -223,6 +247,31 @@ export function Footer() {
               {t.admin}
             </a>
           </div>
+        </div>
+
+        {/* Partner credits — crafted, hosted, protected. */}
+        <div
+          aria-label="Website partners"
+          className="mt-6 flex flex-col items-center justify-center gap-x-10 gap-y-3 border-t border-cream/10 py-6 sm:flex-row sm:flex-wrap"
+        >
+          {CREDITS.map((c) => (
+            <span
+              key={c.name}
+              className="inline-flex max-w-full flex-wrap items-center justify-center gap-1.5 font-monobrand text-[9.5px] uppercase tracking-[0.16em] text-cream/45"
+            >
+              <c.icon className="h-3.5 w-3.5 shrink-0 text-rose" aria-hidden />
+              <span>{c.label}</span>
+              <a
+                href={c.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-blush transition-colors hover:text-rose"
+              >
+                {c.name}
+              </a>
+              <span className="text-cream/30">({c.legal})</span>
+            </span>
+          ))}
         </div>
       </div>
     </footer>
