@@ -319,7 +319,7 @@ A fully **Bahasa Indonesia** interface — designed so the studio owner understa
 
 ### 🇮🇩 Bahasa Indonesia
 
-**Mekanisme bahasa.** Tiga locale penuh — `id`, `en`, `ko` — didefinisikan di `src/lib/i18n/` (`id.ts`, `en.ts`, `ko.ts` + `labels.ts`, `types.ts`). Bahasa aktif dipilih lewat parameter URL `?lang=` (default `id`), dikelola `locale-provider.tsx`, diganti lewat pemilih bahasa di navbar. **Tidak ada halaman duplikat** — satu komponen merender tiga bahasa.
+**Mekanisme bahasa.** Tiga locale penuh — `en`, `id`, `ko` — didefinisikan di `src/lib/i18n/` (`en.ts`, `id.ts`, `ko.ts` + `labels.ts`, `types.ts`). `DEFAULT_LOCALE = "en"` — **kunjungan pertama default berbahasa Inggris** (standar internasional); bahasa aktif dipilih lewat parameter URL `?lang=` dan dapat ditimpa preferensi tersimpan di peramban, dikelola `locale-provider.tsx`, diganti lewat pemilih bahasa di navbar. **Tidak ada halaman duplikat** — satu komponen merender tiga bahasa.
 
 **SEO per halaman per bahasa.** `src/lib/seo.ts` menyimpan `PAGE_SEO` (judul + deskripsi + breadcrumb untuk 10 rute × 3 bahasa), `buildMetadata()` menghasilkan title/description + canonical + `alternates.languages` (**hreflang ×3** untuk setiap halaman) + OpenGraph dengan locale yang sesuai (`id_ID`, `en_US`, `ko_KR`).
 
@@ -334,7 +334,7 @@ A fully **Bahasa Indonesia** interface — designed so the studio owner understa
 
 ### 🇬🇧 English
 
-**Language mechanism.** Three full locales — `id`, `en`, `ko` — defined in `src/lib/i18n/` (`id.ts`, `en.ts`, `ko.ts` + `labels.ts`, `types.ts`). The active language comes from the `?lang=` URL parameter (default `id`), managed by `locale-provider.tsx`, switched via the navbar language picker. **No duplicate pages** — one component renders all three languages.
+**Language mechanism.** Three full locales — `en`, `id`, `ko` — defined in `src/lib/i18n/` (`en.ts`, `id.ts`, `ko.ts` + `labels.ts`, `types.ts`). `DEFAULT_LOCALE = "en"` — **first visits default to English** (international standard); the active language comes from the `?lang=` URL parameter and can be overridden by the browser-saved preference, managed by `locale-provider.tsx`, switched via the navbar language picker. **No duplicate pages** — one component renders all three languages.
 
 **Per-page per-language SEO.** `src/lib/seo.ts` stores `PAGE_SEO` (title + description + breadcrumb for 10 routes × 3 languages); `buildMetadata()` produces title/description + canonical + `alternates.languages` (**hreflang ×3** per page) + OpenGraph with matching locales (`id_ID`, `en_US`, `ko_KR`).
 

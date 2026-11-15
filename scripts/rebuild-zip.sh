@@ -9,9 +9,12 @@ rm -rf "$BUILD" && mkdir -p "$BUILD/screenshots"
 cp "$DL/Elchi-Website-Showcase.pdf" "$BUILD/"
 cp "$DL/HANDOVER-TRILINGUAL.md" "$BUILD/"
 cp "$DL/README.md" "$BUILD/"
-# README situs (utama ID) + dokumentasi lengkap dwibahasa
+# README situs (utama ID) + dokumentasi lengkap dwibahasa + edisi EN + worklog + changelog
 cp "$DL/README-Website.md" "$BUILD/"
 cp "$DL/README-FULL.md" "$BUILD/"
+cp "$DL/README.EN.md" "$BUILD/"
+cp "$DL/WORKLOG.md" "$BUILD/"
+cp "$DL/CHANGELOG.md" "$BUILD/"
 
 # Screenshot set (site-footer-cms diperbarui = kartu kontak terbaru: alamat baru + 3 email)
 for f in admin-dashboard-bookings booking-indonesian mobile-menu-indonesian \
@@ -23,7 +26,7 @@ mv "$BUILD/screenshots/09-footer.png" "$BUILD/screenshots/site-footer-cms.png"
 
 cd "$BUILD"
 rm -f "$DL/Elchi-Website-Paket.zip"
-zip -r "$DL/Elchi-Website-Paket.zip" Elchi-Website-Showcase.pdf HANDOVER-TRILINGUAL.md README.md README-Website.md README-FULL.md screenshots/ > /dev/null
+zip -r "$DL/Elchi-Website-Paket.zip" Elchi-Website-Showcase.pdf HANDOVER-TRILINGUAL.md README.md README-Website.md README-FULL.md README.EN.md WORKLOG.md CHANGELOG.md screenshots/ > /dev/null
 echo "=== ISI ZIP BARU ==="
 unzip -l "$DL/Elchi-Website-Paket.zip" | awk '{print $4}' | grep -v "^$" | tail -n +4
 echo "=== UKURAN ==="

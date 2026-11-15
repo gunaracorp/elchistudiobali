@@ -51,7 +51,7 @@ Sistem ini bukan sekadar landing page: ini adalah **website + CMS + asisten AI**
 
 | Rute | Isi | Bahasa |
 |------|-----|--------|
-| `/` | Hero watercolour, marquee, CTA | ID (default) · EN · KO |
+| `/` | Hero watercolour, marquee, CTA | EN (default) · ID · KO |
 | `/about` | Nilai & cerita studio | ×3 |
 | `/classes` + `/classes/[slug]` | 6 kelas unggulan + halaman detail dinamis | ×3 |
 | `/experiences` | Kelas grup privat (hingga 50 peserta) & privat 1:1 | ×3 |
