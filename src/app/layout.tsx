@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Manrope, Pacifico, Space_Mono, Noto_Sans_KR, Nanum_Pen_Script } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ATTRIBUTION_COMMENT, CONSULTANT_KEYWORDS, SITE_URL, siteGraph } from "@/lib/seo";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -44,7 +45,11 @@ const nanumPen = Nanum_Pen_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Elchí Studio Bali — Creative Workshops & Art Classes in Bali",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "Elchí Studio Bali — Creative Workshops & Art Classes in Bali",
+    template: "%s · Elchí Studio Bali",
+  },
   description:
     "Watercolour postcards, travel sketching, needle felting and craft workshops in Bali. Art, fun and skills — with Elin's 19 years of teaching magic. All skill levels welcome, taught in English, French and Korean.",
   keywords: [
@@ -52,8 +57,16 @@ export const metadata: Metadata = {
     "watercolour workshop", "needle felting class", "travel drawing",
     "craft workshop Ubud", "Elin Kim artist", "Bali art studio",
     "kelas seni Bali", "lokakarya kreatif Bali", "워크숍 발리", "발리 미술 클래스",
+    "art class Kuta", "private art workshop Bali", "team building Bali",
+    ...CONSULTANT_KEYWORDS,
   ],
-  authors: [{ name: "Elchí Studio Bali" }],
+  authors: [
+    { name: "Elchí Studio Bali" },
+    { name: "PT Top Konsultan Internasional — support system & legal (Gugun Gunara)", url: "https://topkonsultan.web.id" },
+    { name: "Digiman.id — PT Digital Bisnis Manajemen (design)", url: "https://digiman.id" },
+  ],
+  creator: "Digiman.id — PT Digital Bisnis Manajemen",
+  publisher: "PT. Elchi Studio Bali",
   openGraph: {
     title: "Elchí Studio Bali — A Creative Learning Experience",
     description:
@@ -68,25 +81,7 @@ export const metadata: Metadata = {
     title: "Elchí Studio Bali",
     description: "Creative workshops & art classes in Bali — art, fun and skills with 19 years of teaching magic.",
   },
-};
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "EducationalOrganization",
-  name: "Elchí Studio Bali",
-  alternateName: "PT. Elchi Studio Bali",
-  description:
-    "Creative education studio in Bali offering watercolour, sketching, needle felting and craft workshops for travellers, groups and curious creatives.",
-  areaServed: "Bali, Indonesia",
-  knowsLanguage: ["en", "fr", "ko", "id"],
-  availableLanguage: ["en", "id", "ko"],
-  slogan: "Let's make something memorable together.",
-  founder: {
-    "@type": "Person",
-    name: "Elin Kim",
-    jobTitle: "Founder & Lead Instructor",
-    knowsLanguage: ["en", "fr", "ko"],
-  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -99,11 +94,16 @@ export default function RootLayout({
       <body
         className={`${fraunces.variable} ${manrope.variable} ${pacifico.variable} ${spaceMono.variable} ${notoKr.variable} ${nanumPen.variable} antialiased bg-cream text-ink font-sans`}
       >
+        {/* Backend attribution only — never rendered visibly. */}
+        <span
+          aria-hidden="true"
+          dangerouslySetInnerHTML={{ __html: `<!-- ${ATTRIBUTION_COMMENT} -->` }}
+        />
         {children}
         <Toaster />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }}
         />
       </body>
     </html>

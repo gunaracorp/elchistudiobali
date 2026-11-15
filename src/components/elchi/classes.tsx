@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Clock, Backpack, Info } from "lucide-react";
 import { Reveal, Magnetic, Tilt } from "./motion";
 import { TornPaper, FlowerSticker } from "./torn";
 import { useContent, useSite } from "./locale-provider";
+import { useGo } from "./use-go";
 import { fill } from "@/lib/i18n";
 
 const ACCENT: Record<string, { chip: string; bar: string; glow: string }> = {
@@ -22,7 +24,8 @@ const ACCENT: Record<string, { chip: string; bar: string; glow: string }> = {
  */
 export function Classes() {
   const { classes } = useContent();
-  const { d } = useSite();
+  const { d, locale } = useSite();
+  const { go, hrefFor, onHome } = useGo();
   const t = d.classesSec;
 
   return (
@@ -57,10 +60,10 @@ export function Classes() {
           <Reveal delay={0.2}>
             <Magnetic>
               <a
-                href="#booking"
+                href={hrefFor("#booking")}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" });
+                  go("#booking");
                 }}
                 className="inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:bg-ink hover:text-cream"
               >
@@ -98,7 +101,15 @@ export function Classes() {
                   </div>
 
                   <div className="flex flex-1 flex-col p-6">
-                    <h3 className="font-display text-2xl font-bold text-ink">{c.name}</h3>
+                    <h3 className="font-display text-2xl font-bold text-ink">
+                      <Link
+                        href={`/classes/${c.slug}?lang=${locale}`}
+                        className="transition-colors hover:text-rosedeep"
+                        aria-label={fill(t.ariaBookCta, { name: c.name })}
+                      >
+                        {c.name}
+                      </Link>
+                    </h3>
                     <p className="mt-1 font-script text-lg text-rosedeep">{c.tagline}</p>
                     <p className="mt-3 text-sm leading-relaxed text-inksoft">{c.description}</p>
 
@@ -117,14 +128,16 @@ export function Classes() {
                       </p>
                     )}
 
-                    <div className="mt-auto pt-5">
+                    <div className="mt-auto flex items-center justify-between gap-3 pt-5">
                       <a
-                        href="#booking"
+                        href={hrefFor("#booking")}
                         onClick={(e) => {
                           e.preventDefault();
-                          const sel = document.querySelector<HTMLSelectElement>("#booking-class-select");
-                          if (sel) sel.value = c.slug;
-                          document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" });
+                          if (onHome) {
+                            const sel = document.querySelector<HTMLSelectElement>("#booking-class-select");
+                            if (sel) sel.value = c.slug;
+                          }
+                          go("#booking");
                         }}
                         className="link-sweep inline-flex items-center gap-1.5 pb-0.5 text-sm font-semibold text-rosedeep"
                         aria-label={fill(t.ariaBookCta, { name: c.name })}
@@ -132,6 +145,12 @@ export function Classes() {
                         {fill(t.bookCta, { name: c.name })}
                         <span aria-hidden>→</span>
                       </a>
+                      <Link
+                        href={`/classes/${c.slug}?lang=${locale}`}
+                        className="font-monobrand text-[10px] uppercase tracking-[0.18em] text-inksoft transition-colors hover:text-rosedeep"
+                      >
+                        {t.details}
+                      </Link>
                     </div>
                   </div>
                 </article>
@@ -158,10 +177,10 @@ export function Classes() {
             </p>
             <Magnetic className="mt-7">
               <a
-                href="#experiences"
+                href={hrefFor("#experiences")}
                 onClick={(e) => {
                   e.preventDefault();
-                  document.querySelector("#experiences")?.scrollIntoView({ behavior: "smooth" });
+                  go("#experiences");
                 }}
                 className="inline-flex items-center gap-2 rounded-full bg-rose px-7 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:scale-105"
               >

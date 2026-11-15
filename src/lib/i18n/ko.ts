@@ -90,6 +90,7 @@ export const ko: LocaleData = {
         script: "프라이빗 체험",
         b: "이 될 수 있습니다 — 오직 당신을 위해.",
       },
+      details: "자세히",
       bannerCta: "프라이빗 체험 살펴보기 ↓",
     },
     experiences: {

@@ -66,6 +66,7 @@ export type Dict = {
     classAlt: string;
     bookCta: string;
     ariaBookCta: string;
+    details: string;
     bannerKicker: string;
     bannerTitle: Text3;
     bannerCta: string;

@@ -1,18 +1,21 @@
 "use client";
 
-import { MapPin, Mail, ShieldCheck, Clock, PenTool, Server, Scale } from "lucide-react";
+import Link from "next/link";
+import { MapPin, Mail, ShieldCheck, Clock, PenTool, Server, Scale, Instagram } from "lucide-react";
 import { Reveal, Magnetic } from "./motion";
 import { WhatsAppIcon } from "./whatsapp";
 import { useSite, useContent } from "./locale-provider";
 import { useSettings, waHref } from "@/lib/site-settings";
+import { routeFor } from "@/lib/seo";
 
 /**
  * Footer + Contact — dark editorial close, now CMS-driven.
  * Address / WhatsApp / Email come from studio settings (editable in
  * /admin → Pengaturan, seeded from the official NIB documents).
  * Company name (PT. Elchi Studio Bali) is public record; no private
- * identifiers are exposed. The trilingual globe menu lives in the
- * navbar, so the footer closes with the partner credits instead.
+ * identifiers are exposed. Footer links point at the dedicated SEO
+ * routes (always crawlable, pinned with ?lang=), and the studio's own
+ * social profiles show up here when configured in the dashboard.
  */
 
 /** Partner credits — the trio behind the Elchí website. */
@@ -35,25 +38,35 @@ const CREDITS = [
     icon: Scale,
     label: "Support system & legal by",
     name: "PT Top Konsultan Internasional",
-    legal: "pusatperizinan.com",
-    href: "https://pusatperizinan.com",
+    legal: "topkonsultan.web.id · pusatperizinan.com",
+    href: "https://topkonsultan.web.id",
   },
 ];
+
 export function Footer() {
-  const { d } = useSite();
+  const { d, locale } = useSite();
   const { classes } = useContent();
   const settings = useSettings();
   const t = d.footer;
 
   const go = (href: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    // Homepage: smooth-scroll to the section (signature single-scroll
+    // feel). Subpages: let the crawlable route href navigate.
+    if (typeof window !== "undefined" && window.location.pathname === "/" && href.startsWith("#")) {
+      e.preventDefault();
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    }
   };
+
+  const ctaBooking = `${routeFor("#booking")}?lang=${locale}`;
+  const ctaClasses = `${routeFor("#classes")}?lang=${locale}`;
 
   const address = settings?.studio_address?.trim() || "";
   const wa = settings?.studio_whatsapp?.trim() || "";
   const email = settings?.studio_email?.trim() || "";
   const hours = settings?.studio_hours?.trim() || "";
+  const instagram = settings?.instagram_url?.trim() || "";
+  const hasSocials = Boolean(instagram || wa || email);
 
   return (
     <footer id="contact" aria-label={t.aria} className="relative bg-ink text-cream">
@@ -77,7 +90,7 @@ export function Footer() {
             <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Magnetic>
                 <a
-                  href="#booking"
+                  href={ctaBooking}
                   onClick={go("#booking")}
                   className="inline-flex items-center gap-2 rounded-full bg-rose px-8 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(231,90,135,0.4)] transition-transform duration-300 hover:scale-105"
                 >
@@ -86,7 +99,7 @@ export function Footer() {
               </Magnetic>
               <Magnetic>
                 <a
-                  href="#classes"
+                  href={ctaClasses}
                   onClick={go("#classes")}
                   className="inline-flex items-center gap-2 rounded-full border-2 border-cream/30 px-8 py-4 text-base font-semibold text-cream transition-colors duration-300 hover:border-blush hover:text-blush"
                 >
@@ -187,13 +200,55 @@ export function Footer() {
 
         <div className="grid gap-10 border-t border-cream/10 pt-12 md:grid-cols-[minmax(0,4fr)_minmax(0,4fr)_minmax(0,4fr)]">
           <div>
-            <p className="font-script text-4xl text-blush">Elchí</p>
+            <Link
+              href={`/?lang=${locale}`}
+              className="font-script text-4xl text-blush transition-colors hover:text-rose"
+              aria-label="Elchí Studio Bali — home"
+            >
+              Elchí
+            </Link>
             <p className="mt-1 font-monobrand text-[10px] uppercase tracking-[0.4em] text-cream/60">
               Studio Bali
             </p>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-cream/60">
               {t.blurb}
             </p>
+            {/* Studio's own social profiles — from /admin → Pengaturan */}
+            {hasSocials && (
+              <div className="mt-5 flex items-center gap-3">
+                {instagram && (
+                  <a
+                    href={instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Elchí Studio Bali on Instagram"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/25 text-cream/80 transition-colors hover:border-blush hover:text-blush"
+                  >
+                    <Instagram className="h-4 w-4" aria-hidden />
+                  </a>
+                )}
+                {wa && (
+                  <a
+                    href={waHref(wa)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Elchí Studio Bali on WhatsApp"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/25 text-cream/80 transition-colors hover:border-blush hover:text-blush"
+                  >
+                    <WhatsAppIcon className="h-4 w-4" />
+                  </a>
+                )}
+                {email && (
+                  <a
+                    href={`mailto:${email}`}
+                    aria-label="Email Elchí Studio Bali"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/25 text-cream/80 transition-colors hover:border-blush hover:text-blush"
+                  >
+                    <Mail className="h-4 w-4" aria-hidden />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
           <nav aria-label={t.explore}>
             <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-blush">
@@ -203,7 +258,7 @@ export function Footer() {
               {d.navLinks.map((l) => (
                 <li key={l.href}>
                   <a
-                    href={l.href}
+                    href={`${routeFor(l.href)}?lang=${locale}`}
                     onClick={go(l.href)}
                     className="text-sm text-cream/70 transition-colors hover:text-blush"
                   >
@@ -221,7 +276,7 @@ export function Footer() {
               {classes.map((c) => (
                 <li key={c.slug}>
                   <a
-                    href="#classes"
+                    href={`/classes/${c.slug}?lang=${locale}`}
                     onClick={go("#classes")}
                     className="text-sm text-cream/70 transition-colors hover:text-blush"
                   >

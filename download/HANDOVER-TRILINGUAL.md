@@ -52,7 +52,7 @@ Data klien (14 organisasi, termasuk City of Parramatta, fetch tv, lyka, Universi
 
 ### Ringkasan
 
-Situs Elchí Studio Bali kini sepenuhnya **trilingual**: Bahasa Indonesia, Bahasa Korea, dan Bahasa Inggris. Seluruh antarmuka — navigasi, hero, 6 kelas, pengalaman privat, profil instruktur, galeri, formulir booking, FAQ, footer, dan AI Concierge — tersedia dalam ketiga bahasa, tanpa halaman terpisah: satu halaman, satu klik ganti bahasa.
+Situs Elchí Studio Bali kini sepenuhnya **trilingual** (English · Bahasa Indonesia · 한국어) dengan **English sebagai bahasa default** — pengunjung baru selalu masuk ke English, dan Google mengindeks HTML English. Seluruh antarmuka — navigasi, hero, 6 kelas, pengalaman privat, profil instruktur, galeri, formulir booking, FAQ, footer, dan AI Concierge — tersedia dalam ketiga bahasa. Sejak pembaruan terakhir, setiap section juga punya **halaman dedikasinya sendiri** (full-SEO, lihat bagian "SEO & Halaman Terpisah") dan `?lang=` menjadikan tiap bahasa URL yang sebenarnya.
 
 ### Cara kerja sistem bahasa
 
@@ -69,12 +69,43 @@ Situs Elchí Studio Bali kini sepenuhnya **trilingual**: Bahasa Indonesia, Bahas
 
 **Perilaku penting:**
 
-1. **Deteksi otomatis** — kunjungan pertama mengikuti bahasa browser (`id` → Bahasa Indonesia, `ko` → 한국어, lainnya → English). Deteksi terjadi di belakang loader pembuka sehingga tidak ada kedipan teks.
-2. **Persistensi** — pilihan disimpan di `localStorage` (kunci `elchi-locale`) dan dipakai lagi pada kunjungan berikutnya.
+1. **English default** — kunjungan pertama selalu English (tidak ada lagi deteksi bahasa browser). Server HTML pun English — itulah yang dibaca Google.
+2. **Prioritas bahasa**: URL `?lang=` > `localStorage` (kunci `elchi-locale`) > default English. Mengganti bahasa lewat globe otomatis menempelkan `?lang=` ke URL, jadi setiap bahasa bisa di-share dan di-crawl.
 3. **`<html lang>` selalu sinkron** — penting untuk pembaca layar, penerjemah otomatis, dan SEO.
 4. **Transisi sinematik** — pergantian bahasa memainkan tirai gradien watercolour ±0,4 detik dengan wordmark "Elchí"; otomatis dilewati untuk pengguna `prefers-reduced-motion`.
 5. **Animasi hero diputar ulang** — headline dianimasikan ulang (stagger word-by-word) setiap ganti bahasa; kode HTML `key={locale}` menangani ini.
-6. **Aman hidrasi** — server selalu merender English; swap bahasa terjadi setelah mount (pola `requestAnimationFrame`, tanpa hydration mismatch).
+6. **Aman hidrasi** — server merender locale yang di-pin URL (atau English); swap localStorage terjadi setelah mount (pola `requestAnimationFrame`, tanpa hydration mismatch).
+
+## SEO & Halaman Terpisah (pembaruan terbaru)
+
+Homepage tetap menjadi pengalaman one-page; di atasnya kini berdiri **15 URL yang bisa diindeks Google** (masing-masing tersedia dalam 3 bahasa via `?lang=`):
+
+| Route | Isi | Schema JSON-LD |
+| --- | --- | --- |
+| `/` | Landing one-page lengkap | Organization graph (global) |
+| `/about` | Tentang studio | BreadcrumbList |
+| `/classes` | 6 kelas unggulan | BreadcrumbList + ItemList/Course |
+| `/classes/[slug]` ×6 | Travel Drawing, Postcards, Dog Keychain, Custom Flip-Flop, Custom T-shirt, Creative Flow | Course + BreadcrumbList |
+| `/experiences` | Pengalaman privat grup & 1:1 | BreadcrumbList |
+| `/elin` | Profil Elin Kim | BreadcrumbList |
+| `/gallery` | Galeri + lightbox | BreadcrumbList |
+| `/booking` | Formulir reservasi | BreadcrumbList |
+| `/faq` | FAQ | **FAQPage** (rich results) + BreadcrumbList |
+| `/contact` | Kontak & alamat NIB | BreadcrumbList |
+
+- **Metadata trilingual per halaman** — title/description/canonical/hreflang dibangun oleh `src/lib/seo.ts` (sumber tunggal; ganti domain di konstanta `SITE_URL` atau set env `NEXT_PUBLIC_SITE_URL` saat go-live).
+- **`/sitemap.xml`** — semua route + alternates hreflang en/id/ko; **`/robots.txt`** — allow all + sitemap.
+- **Navigasi cerdas**: di homepage anchor smooth-scroll; di halaman sub, navbar/footer/CTA menjadi link nyata ke route (`?lang=` mengikuti bahasa aktif). Footer selalu berisi link crawlable ke semua route + 6 halaman kelas.
+- **Halaman sub tanpa loader** — `Navbar instant` merender langsung (loader 2 detik hanya di homepage).
+
+### Branding konsultan (backend — tidak tampil di permukaan)
+
+Identitas konsultan ditanam **hanya di metadata/structured data** (terbaca Google, tak terlihat pengunjung):
+
+- `src/lib/seo.ts` → `CONSULTANT` + `CONSULTANT_KEYWORDS` + `ATTRIBUTION_COMMENT`: **Gugun Gunara** (Muhammad Lutfi Azmi · prabudanling · Santri Angon), "Master Polymath · Sage Universal · The Ultimate Problem Solver", PT Top Konsultan Internasional (topkonsultan.web.id · pusatperizinan.com), Digiman.id (PT Digital Bisnis Manajemen), + 6 profil sosial (Facebook/X/Instagram/TikTok/Threads/Reddit) sebagai `sameAs` node JSON-LD.
+- layout.tsx: meta keywords + authors + komentar HTML atribusi + JSON-LD `@graph` (studio + website + organisasi konsultan + agensi desain, tersambung via `contributor`).
+- Permukaan situs tetap murni Elchí: sosial yang tampil di footer hanya milik studio (Instagram/WhatsApp/Email dari `/admin → Pengaturan`).
+- Kredit partner tampil elegan di footer (sesuai permintaan): Digiman.id · JuraganWebsite · PT Top Konsultan Internasional (topkonsultan.web.id · pusatperizinan.com).
 
 ### Tipografi Korea
 

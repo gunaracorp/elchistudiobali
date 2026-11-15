@@ -90,6 +90,7 @@ export const id: LocaleData = {
         script: "privat",
         b: "— dirancang khusus untuk Anda.",
       },
+      details: "Detail",
       bannerCta: "Jelajahi pengalaman privat ↓",
     },
     experiences: {

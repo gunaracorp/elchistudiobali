@@ -2,22 +2,33 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Menu, X, CalendarHeart } from "lucide-react";
 import { useSite } from "./locale-provider";
 import { LanguageMenu } from "./language-switcher";
 import { Magnetic } from "./motion";
+import { routeFor } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 /**
  * Navbar — floating brand bar. Transparent over the hero, blush glass
  * after scroll, full-screen editorial overlay on mobile.
  * Carries the trilingual globe menu (ID · EN · 한국어).
+ *
+ * Navigation: on the one-page homepage, anchors smooth-scroll (the
+ * signature single-scroll feel). On SEO subpages the same items become
+ * real crawlable links to their dedicated route, pinned with ?lang=.
+ * `instant` skips the 2.2s loader-wait entrance on subpages.
  */
-export function Navbar() {
+export function Navbar({ instant = false }: { instant?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollY } = useScroll();
-  const { d } = useSite();
+  const { d, locale } = useSite();
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const entranceDelay = instant ? 0 : 2.2;
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
 
@@ -28,14 +39,27 @@ export function Navbar() {
     };
   }, [open]);
 
-  const go = (href: string) => {
+  /** Full href for a nav item: hash on home, dedicated route elsewhere. */
+  const hrefFor = (hash: string) => (onHome ? hash : `${routeFor(hash)}?lang=${locale}`);
+
+  const scrollTo = (hash: string) => {
+    const el = document.querySelector(hash);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const handleNav = (hash: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
     setOpen(false);
-    const el = document.querySelector(href);
-    if (el) {
-      setTimeout(() => {
-        el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, open ? 350 : 0);
-    }
+    if (onHome) scrollTo(hash);
+    // On a subpage the href already points at the dedicated route —
+    // let the browser/Link navigate (crawlable, shareable).
+  };
+
+  const brandHref = onHome ? "#home" : `/?lang=${locale}`;
+  const handleBrand = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpen(false);
+    if (onHome) scrollTo("#home");
   };
 
   return (
@@ -43,7 +67,7 @@ export function Navbar() {
       <motion.header
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 2.2, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ delay: entranceDelay, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className={cn(
           "fixed inset-x-0 top-0 z-[70] transition-all duration-500",
           scrolled ? "bg-cream/85 shadow-[0_8px_30px_rgba(52,35,28,0.08)] backdrop-blur-md" : "bg-transparent"
@@ -54,11 +78,8 @@ export function Navbar() {
           className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-[72px] sm:px-8"
         >
           <a
-            href="#home"
-            onClick={(e) => {
-              e.preventDefault();
-              go("#home");
-            }}
+            href={brandHref}
+            onClick={handleBrand}
             className="group flex items-baseline gap-2"
             aria-label="Elchí Studio Bali — back to top"
           >
@@ -74,11 +95,8 @@ export function Navbar() {
             {d.navLinks.map((l) => (
               <li key={l.href}>
                 <a
-                  href={l.href}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    go(l.href);
-                  }}
+                  href={hrefFor(l.href)}
+                  onClick={handleNav(l.href)}
                   className="link-sweep pb-1 font-monobrand text-[11px] uppercase tracking-[0.18em] text-ink transition-colors hover:text-rosedeep"
                 >
                   {l.label}
@@ -93,11 +111,8 @@ export function Navbar() {
             </div>
             <Magnetic className="hidden sm:inline-block">
               <a
-                href="#booking"
-                onClick={(e) => {
-                  e.preventDefault();
-                  go("#booking");
-                }}
+                href={hrefFor("#booking")}
+                onClick={handleNav("#booking")}
                 className="inline-flex items-center gap-2 rounded-full bg-rosedeep px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_20px_rgba(201,58,108,0.35)] transition-transform duration-300 hover:scale-[1.04]"
               >
                 <CalendarHeart className="h-4 w-4" aria-hidden />
@@ -131,7 +146,9 @@ export function Navbar() {
             aria-label={d.meta.menuDialog}
           >
             <div className="flex h-16 items-center justify-between px-5 sm:h-[72px] sm:px-8">
-              <span className="font-script text-2xl text-blush">Elchí</span>
+              <a href={brandHref} onClick={handleBrand} className="font-script text-2xl text-blush">
+                Elchí
+              </a>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
@@ -150,11 +167,8 @@ export function Navbar() {
                   transition={{ delay: 0.15 + i * 0.07, duration: 0.5 }}
                 >
                   <a
-                    href={l.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      go(l.href);
-                    }}
+                    href={hrefFor(l.href)}
+                    onClick={handleNav(l.href)}
                     className="group flex items-baseline gap-4 py-2"
                   >
                     <span className="font-monobrand text-xs text-rose">
@@ -173,11 +187,8 @@ export function Navbar() {
                 className="mt-6"
               >
                 <a
-                  href="#booking"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    go("#booking");
-                  }}
+                  href={hrefFor("#booking")}
+                  onClick={handleNav("#booking")}
                   className="inline-flex items-center gap-2 rounded-full bg-rose px-7 py-3.5 text-base font-semibold text-white"
                 >
                   <CalendarHeart className="h-5 w-5" aria-hidden />

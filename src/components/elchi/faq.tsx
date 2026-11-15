@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { Reveal } from "./motion";
 import { TornPaper, SparkleSticker } from "./torn";
 import { useSite } from "./locale-provider";
+import { useGo } from "./use-go";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,6 +16,7 @@ import { cn } from "@/lib/utils";
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   const { d, data } = useSite();
+  const { go, hrefFor } = useGo();
   const t = d.faq;
 
   return (
@@ -97,10 +99,10 @@ export function Faq() {
           <p className="text-center text-inksoft">
             {t.still}{" "}
             <a
-              href="#booking"
+              href={hrefFor("#booking")}
               onClick={(e) => {
                 e.preventDefault();
-                document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" });
+                go("#booking");
               }}
               className="link-sweep font-semibold text-rosedeep"
             >

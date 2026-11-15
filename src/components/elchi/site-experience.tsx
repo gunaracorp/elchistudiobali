@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { LocaleProvider, useSite } from "./locale-provider";
+import { pickLocale } from "@/lib/seo";
 import { Loader } from "./loader";
 import { Cursor } from "./cursor";
 import { Navbar } from "./navbar";
@@ -23,11 +24,14 @@ import { ScrollProgress } from "./motion";
  * SiteExperience — the living one-page journey of Elchí Studio Bali.
  * Single scroll narrative: Hero → Marquee → About → Classes →
  * Experiences → Instructor → Gallery → Booking → FAQ → Contact.
- * Wrapped in LocaleProvider (Bahasa Indonesia · English · 한국어).
+ * Wrapped in LocaleProvider (Bahasa Indonesia · English · 한국어);
+ * `initialLocale` pins the language from the ?lang= URL parameter so
+ * each language variant server-renders correctly for crawlers.
  */
-export function SiteExperience() {
+export function SiteExperience({ initialLocale }: { initialLocale?: string | null }) {
+  const pinned = initialLocale ? pickLocale(initialLocale) : null;
   return (
-    <LocaleProvider>
+    <LocaleProvider initialLocale={pinned}>
       <SiteShell />
     </LocaleProvider>
   );
