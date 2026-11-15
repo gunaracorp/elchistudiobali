@@ -1,30 +1,53 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarHeart, CheckCircle2, Loader2, Send } from "lucide-react";
-import { BOOKING_CLASS_OPTIONS } from "@/lib/classes-data";
 import { Reveal, Magnetic } from "./motion";
 import { TornPaper, SunSticker } from "./torn";
+import { useContent, useSite } from "./locale-provider";
+import { fill } from "@/lib/i18n";
 
 type Status = "idle" | "sending" | "success" | "error";
+type ErrorKey = "name" | "email" | "cls" | "generic";
 
 const inputCls =
   "w-full rounded-xl border border-ink/15 bg-white/90 px-4 py-3 text-sm text-ink placeholder:text-inksoft/50 focus:border-rosedeep focus:outline-none transition-colors";
 
+/** Map server error codes to localized copy. */
+function errorCode(status: number, code: string | undefined): ErrorKey {
+  if (code === "invalid_name") return "name";
+  if (code === "invalid_email") return "email";
+  if (code === "invalid_class") return "cls";
+  if (status === 400) return "generic";
+  return "generic";
+}
+
 /**
  * Booking — the enquiry & reservation engine.
- * Posts to /api/bookings (Prisma + SQLite). Confirmation is animated
- * with a torn-paper confetti burst.
+ * Posts to /api/bookings (Prisma + SQLite) with localized validation
+ * messages. Confirmation is animated with a torn-paper confetti burst.
  */
 export function Booking() {
+  const { classes, privates } = useContent();
+  const { d } = useSite();
+  const t = d.booking;
+
+  const options = useMemo(
+    () => [
+      ...classes.map((c) => ({ value: c.slug, name: c.name, label: `${c.name} · ${c.duration}` })),
+      ...privates.map((p) => ({ value: p.slug, name: p.name, label: p.optionLabel })),
+    ],
+    [classes, privates]
+  );
+
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
-    classType: BOOKING_CLASS_OPTIONS[0].value,
+    classType: "travel-drawing",
     preferredDate: "",
     participants: "2",
     message: "",
@@ -44,16 +67,30 @@ export function Booking() {
         body: JSON.stringify({ ...form, participants: Number(form.participants) }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Something went wrong");
+      if (!res.ok) {
+        throw new Error(JSON.stringify({ s: res.status, c: data.code }));
+      }
       setStatus("success");
     } catch (err) {
       setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong");
+      let key: ErrorKey = "generic";
+      try {
+        if (err instanceof Error) {
+          const parsed = JSON.parse(err.message) as { s: number; c?: string };
+          key = errorCode(parsed.s, parsed.c);
+        }
+      } catch {
+        key = "generic";
+      }
+      setErrorMsg(t.errors[key]);
     }
   }
 
+  const selectedName =
+    options.find((o) => o.value === form.classType)?.name.split(" · ")[0] ?? "";
+
   return (
-    <section id="booking" aria-label="Book a class" className="relative bg-rose">
+    <section id="booking" aria-label={t.aria} className="relative bg-rose">
       <div aria-hidden>
         <TornPaper fill="#f9edde" height={44} className="rotate-180" />
       </div>
@@ -63,36 +100,31 @@ export function Booking() {
           <div className="text-cream">
             <Reveal>
               <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-cream/80">
-                Booking &amp; enquiry
+                {t.kicker}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
               <h2 className="mt-4 font-display text-4xl font-black leading-[1.05] sm:text-5xl lg:text-6xl">
-                Reserve your{" "}
+                {t.h2.a}{" "}
                 <span className="font-script text-[1.1em] font-normal text-ink">
-                  creative day
-                </span>
+                  {t.h2.script}
+                </span>{" "}
+                {t.h2.b}
               </h2>
             </Reveal>
             <Reveal delay={0.14}>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-cream/90">
-                Tell us which workshop calls to you and when you&apos;d love to
-                join. We&apos;ll reply with availability, studio details and
-                everything you need to know.
+                {t.sub}
               </p>
             </Reveal>
             <Reveal delay={0.2}>
               <ul className="mt-8 space-y-4 text-cream/90">
-                {[
-                  "Choose your class and preferred date",
-                  "Send the form — it lands directly with the studio",
-                  "We confirm availability and studio location personally",
-                ].map((t, i) => (
+                {t.steps.map((step, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cream/20 font-monobrand text-xs font-bold">
                       {i + 1}
                     </span>
-                    <span className="leading-relaxed">{t}</span>
+                    <span className="leading-relaxed">{step}</span>
                   </li>
                 ))}
               </ul>
@@ -135,22 +167,17 @@ export function Booking() {
                     </div>
                     <CheckCircle2 className="h-16 w-16 text-palm" aria-hidden />
                     <h3 className="mt-5 font-display text-3xl font-bold text-ink">
-                      Terima kasih! Thank you!
+                      {t.successTitle}
                     </h3>
                     <p className="mt-3 max-w-sm leading-relaxed text-inksoft">
-                      Your request for{" "}
-                      <strong className="text-ink">
-                        {BOOKING_CLASS_OPTIONS.find((o) => o.value === form.classType)?.label.split(" · ")[0]}
-                      </strong>{" "}
-                      has been received. We&apos;ll get back to you soon with
-                      availability and studio details.
+                      {fill(t.successBody, { name: selectedName })}
                     </p>
                     <button
                       type="button"
                       onClick={() => setStatus("idle")}
                       className="mt-8 rounded-full border-2 border-ink px-6 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-ink hover:text-cream"
                     >
-                      Send another enquiry
+                      {t.sendAnother}
                     </button>
                   </motion.div>
                 ) : (
@@ -161,35 +188,35 @@ export function Booking() {
                     exit={{ opacity: 0 }}
                     onSubmit={submit}
                     className="space-y-4"
-                    aria-label="Class booking form"
+                    aria-label={t.formAria}
                   >
                     <div className="flex items-center gap-2">
                       <CalendarHeart className="h-5 w-5 text-rosedeep" aria-hidden />
                       <h3 className="font-display text-xl font-bold text-ink">
-                        Class booking form
+                        {t.formTitle}
                       </h3>
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <label htmlFor="bk-name" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                          Your name *
+                          {t.labels.name}
                         </label>
                         <input
                           id="bk-name" required minLength={2} maxLength={80}
                           value={form.name} onChange={set("name")}
-                          className={inputCls} placeholder="Putu / Sarah / Minji…"
+                          className={inputCls} placeholder={t.ph.name}
                           autoComplete="name"
                         />
                       </div>
                       <div>
                         <label htmlFor="bk-email" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                          Email *
+                          {t.labels.email}
                         </label>
                         <input
                           id="bk-email" required type="email"
                           value={form.email} onChange={set("email")}
-                          className={inputCls} placeholder="you@example.com"
+                          className={inputCls} placeholder={t.ph.email}
                           autoComplete="email"
                         />
                       </div>
@@ -198,7 +225,7 @@ export function Booking() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <label htmlFor="bk-phone" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                          Phone / WhatsApp <span className="normal-case tracking-normal">(optional)</span>
+                          {t.labels.phone} <span className="normal-case tracking-normal">{t.labels.phoneOpt}</span>
                         </label>
                         <input
                           id="bk-phone" type="tel"
@@ -209,7 +236,7 @@ export function Booking() {
                       </div>
                       <div>
                         <label htmlFor="bk-date" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                          Preferred date
+                          {t.labels.date}
                         </label>
                         <input
                           id="bk-date" type="date"
@@ -221,14 +248,14 @@ export function Booking() {
 
                     <div>
                       <label htmlFor="booking-class-select" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                        Class *
+                        {t.labels.cls}
                       </label>
                       <select
                         id="booking-class-select" required
                         value={form.classType} onChange={set("classType")}
                         className={inputCls}
                       >
-                        {BOOKING_CLASS_OPTIONS.map((o) => (
+                        {options.map((o) => (
                           <option key={o.value} value={o.value}>{o.label}</option>
                         ))}
                       </select>
@@ -236,7 +263,7 @@ export function Booking() {
 
                     <div>
                       <label htmlFor="bk-participants" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                        Participants
+                        {t.labels.participants}
                       </label>
                       <input
                         id="bk-participants" type="number" min={1} max={50}
@@ -247,13 +274,13 @@ export function Booking() {
 
                     <div>
                       <label htmlFor="bk-message" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                        Your idea or occasion <span className="normal-case tracking-normal">(optional)</span>
+                        {t.labels.message} <span className="normal-case tracking-normal">{t.labels.messageOpt}</span>
                       </label>
                       <textarea
                         id="bk-message" rows={3} maxLength={1000}
                         value={form.message} onChange={set("message")}
                         className={inputCls}
-                        placeholder="A hen's party for 8 friends? A rainy-day watercolour session? Tell us everything…"
+                        placeholder={t.ph.message}
                       />
                     </div>
 
@@ -271,18 +298,18 @@ export function Booking() {
                         {status === "sending" ? (
                           <>
                             <Loader2 className="h-5 w-5 animate-spin" aria-hidden />
-                            Sending…
+                            {t.sending}
                           </>
                         ) : (
                           <>
                             <Send className="h-5 w-5" aria-hidden />
-                            Send booking request
+                            {t.submit}
                           </>
                         )}
                       </button>
                     </Magnetic>
                     <p className="text-center text-xs text-inksoft/70">
-                      No payment needed now — we confirm details with you personally first.
+                      {t.noPay}
                     </p>
                   </motion.form>
                 )}

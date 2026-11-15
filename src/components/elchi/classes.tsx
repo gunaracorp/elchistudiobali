@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import { Clock, Backpack, Info } from "lucide-react";
-import { CLASSES } from "@/lib/classes-data";
 import { Reveal, Magnetic } from "./motion";
 import { TornPaper, FlowerSticker } from "./torn";
+import { useContent, useSite } from "./locale-provider";
+import { fill } from "@/lib/i18n";
 
 const ACCENT: Record<string, { chip: string; bar: string; glow: string }> = {
   sky:   { chip: "bg-sky/30 text-[#2e7d9e]",   bar: "bg-sky",   glow: "group-hover:shadow-[0_22px_50px_rgba(143,207,228,0.45)]" },
@@ -17,11 +18,15 @@ const ACCENT: Record<string, { chip: string; bar: string; glow: string }> = {
 
 /**
  * Classes — the six official workshops as interactive editorial cards.
- * All copy is verbatim-derived from the Elchí class brochure.
+ * Copy is verbatim-derived from the Elchí class brochure, localized.
  */
 export function Classes() {
+  const { classes } = useContent();
+  const { d } = useSite();
+  const t = d.classesSec;
+
   return (
-    <section id="classes" aria-label="Classes and programs" className="relative bg-paper">
+    <section id="classes" aria-label={t.aria} className="relative bg-paper">
       <div aria-hidden>
         <TornPaper fill="#fff8f0" height={44} className="rotate-180" />
       </div>
@@ -31,21 +36,21 @@ export function Classes() {
           <div>
             <Reveal>
               <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-rose">
-                Classes &amp; programs
+                {t.kicker}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
               <h2 className="mt-4 max-w-xl font-display text-4xl font-black leading-[1.05] text-ink sm:text-5xl lg:text-6xl">
-                Pick your{" "}
+                {t.h2.a}{" "}
                 <span className="font-script text-[1.1em] font-normal text-rosedeep">
-                  kind of magic
-                </span>
+                  {t.h2.script}
+                </span>{" "}
+                {t.h2.b}
               </h2>
             </Reveal>
             <Reveal delay={0.14}>
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-inksoft">
-                Six signature workshops, every one of them beginner-friendly and
-                guided step by step. All skill levels welcome.
+                {t.sub}
               </p>
             </Reveal>
           </div>
@@ -59,15 +64,15 @@ export function Classes() {
                 }}
                 className="inline-flex items-center gap-2 rounded-full border-2 border-ink px-6 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:bg-ink hover:text-cream"
               >
-                Reserve your spot
+                {t.reserve}
               </a>
             </Magnetic>
           </Reveal>
         </div>
 
         <ul className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {CLASSES.map((c, i) => {
-            const a = ACCENT[c.accent];
+          {classes.map((c, i) => {
+            const a = ACCENT[c.accent] ?? ACCENT.blush;
             return (
               <Reveal as="li" key={c.slug} delay={(i % 3) * 0.1} className="h-full">
                 <article
@@ -77,7 +82,7 @@ export function Classes() {
                   <div className="relative aspect-[16/11] overflow-hidden">
                     <Image
                       src={c.image}
-                      alt={`${c.name} workshop at Elchí Studio Bali`}
+                      alt={fill(t.classAlt, { name: c.name })}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.08] group-hover:rotate-[1.2deg]"
@@ -100,7 +105,7 @@ export function Classes() {
                       <p className="mt-4 flex items-start gap-2 rounded-xl bg-paper px-3.5 py-2.5 text-xs leading-relaxed text-inksoft">
                         <Backpack className="mt-0.5 h-4 w-4 shrink-0 text-terra" aria-hidden />
                         <span>
-                          <strong className="font-semibold text-ink">What to bring:</strong> {c.bring}
+                          <strong className="font-semibold text-ink">{t.bring}</strong> {c.bring}
                         </span>
                       </p>
                     )}
@@ -121,9 +126,9 @@ export function Classes() {
                           document.querySelector("#booking")?.scrollIntoView({ behavior: "smooth" });
                         }}
                         className="link-sweep inline-flex items-center gap-1.5 pb-0.5 text-sm font-semibold text-rosedeep"
-                        aria-label={`Book the ${c.name} workshop`}
+                        aria-label={fill(t.ariaBookCta, { name: c.name })}
                       >
-                        Book {c.name}
+                        {fill(t.bookCta, { name: c.name })}
                         <span aria-hidden>→</span>
                       </a>
                     </div>
@@ -140,12 +145,14 @@ export function Classes() {
               <FlowerSticker className="w-full" />
             </div>
             <p className="font-monobrand text-[10px] uppercase tracking-[0.35em] text-blush">
-              Can&apos;t find a date or a class you like?
+              {t.bannerKicker}
             </p>
             <p className="mx-auto mt-3 max-w-2xl font-display text-2xl font-bold leading-snug sm:text-3xl">
-              Every workshop can become a{" "}
-              <span className="font-script text-[1.15em] font-normal text-blush">private</span>{" "}
-              experience — tailored just for you.
+              {t.bannerTitle.a}{" "}
+              <span className="font-script text-[1.15em] font-normal text-blush">
+                {t.bannerTitle.script}
+              </span>{" "}
+              {t.bannerTitle.b}
             </p>
             <Magnetic className="mt-7">
               <a
@@ -156,7 +163,7 @@ export function Classes() {
                 }}
                 className="inline-flex items-center gap-2 rounded-full bg-rose px-7 py-3.5 text-sm font-semibold text-white transition-transform duration-300 hover:scale-105"
               >
-                Discover private experiences ↓
+                {t.bannerCta}
               </a>
             </Magnetic>
           </div>

@@ -2,17 +2,21 @@
 
 import Image from "next/image";
 import { PartyPopper, UserRound, ArrowRight } from "lucide-react";
-import { PRIVATE_EXPERIENCES } from "@/lib/classes-data";
 import { Reveal, Magnetic } from "./motion";
 import { TornPaper, SparkleSticker, PalmSticker } from "./torn";
+import { useContent, useSite } from "./locale-provider";
 
 const ICONS = [PartyPopper, UserRound];
 
 /**
  * Experiences — cinematic ink section for Private Group & Private 1:1.
- * Verbatim-derived from the official brochure copy.
+ * Verbatim-derived from the official brochure copy, fully localized.
  */
 export function Experiences() {
+  const { privates } = useContent();
+  const { d } = useSite();
+  const t = d.experiences;
+
   const goBooking = (slug: string) => {
     const sel = document.querySelector<HTMLSelectElement>("#booking-class-select");
     if (sel) sel.value = slug;
@@ -20,7 +24,7 @@ export function Experiences() {
   };
 
   return (
-    <section id="experiences" aria-label="Private workshops and experiences" className="relative bg-ink text-cream">
+    <section id="experiences" aria-label={t.aria} className="relative bg-ink text-cream">
       <div aria-hidden>
         <TornPaper fill="#f9edde" height={44} className="rotate-180" />
       </div>
@@ -29,29 +33,28 @@ export function Experiences() {
         <div className="mb-16 text-center">
           <Reveal>
             <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-blush">
-              Workshops &amp; experiences
+              {t.kicker}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mx-auto mt-4 max-w-3xl font-display text-4xl font-black leading-[1.05] sm:text-5xl lg:text-6xl">
-              Make it a{" "}
+              {t.h2.a}{" "}
               <span className="font-script text-[1.1em] font-normal text-blush">
-                special occasion
+                {t.h2.script}
               </span>{" "}
-              to remember
+              {t.h2.b}
             </h2>
           </Reveal>
           <Reveal delay={0.14}>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-cream/70">
-              Looking for a unique way to celebrate, connect or get creative
-              together? Two private formats, one studio full of aloha.
+              {t.sub}
             </p>
           </Reveal>
         </div>
 
         <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
-          {PRIVATE_EXPERIENCES.map((p, i) => {
-            const Icon = ICONS[i];
+          {privates.map((p, i) => {
+            const Icon = ICONS[i % ICONS.length];
             return (
               <Reveal key={p.slug} delay={i * 0.12}>
                 <article
@@ -78,7 +81,7 @@ export function Experiences() {
                       {p.lead}
                     </h3>
                     <p className="mt-4 leading-relaxed text-cream/75">{p.body}</p>
-                    {"extra" in p && p.extra && (
+                    {p.extra && (
                       <p className="mt-3 font-monobrand text-xs uppercase tracking-[0.2em] text-blush">
                         {p.extra}
                       </p>
@@ -93,7 +96,7 @@ export function Experiences() {
                           onClick={() => goBooking(p.slug)}
                           className="inline-flex items-center gap-2 rounded-full bg-blush px-6 py-3 text-sm font-semibold text-ink transition-all duration-300 hover:bg-rose hover:text-white"
                         >
-                          Enquire for {p.name.toLowerCase()}
+                          {p.cta}
                           <ArrowRight className="h-4 w-4" aria-hidden />
                         </button>
                       </Magnetic>
@@ -107,7 +110,7 @@ export function Experiences() {
 
         <Reveal delay={0.15} className="mt-16">
           <p className="text-center font-script text-2xl text-blush sm:text-3xl">
-            &ldquo;Let&apos;s make something memorable together.&rdquo;
+            &ldquo;{t.quote}&rdquo;
           </p>
         </Reveal>
       </div>

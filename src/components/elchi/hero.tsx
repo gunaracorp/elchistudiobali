@@ -6,16 +6,20 @@ import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion
 import { ArrowDown, Sparkles } from "lucide-react";
 import { Magnetic, StaggerWords, useMounted } from "./motion";
 import { TornPaper, SunSticker, PalmSticker, SparkleSticker, FlowerSticker } from "./torn";
-import { STATS } from "@/lib/classes-data";
+import { useSite } from "./locale-provider";
 
 /**
  * Hero — cinematic entrance. Layered parallax over the brand artwork,
  * staggered editorial headline, floating sticker constellations.
+ * Headline, badge, CTAs and stats are fully trilingual; changing the
+ * language replays the stagger reveal (keyed by locale).
  */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
   const mounted = useMounted();
+  const { locale, d, stats } = useSite();
+  const t = d.hero;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -30,7 +34,7 @@ export function Hero() {
     <section
       ref={ref}
       id="home"
-      aria-label="Welcome to Elchí Studio Bali"
+      aria-label={t.aria}
       className="relative flex min-h-[100svh] flex-col overflow-hidden bg-cream"
     >
       {/* Parallax artwork layer */}
@@ -100,17 +104,18 @@ export function Hero() {
           transition={{ delay: 2.3, duration: 0.7 }}
         >
           <Sparkles className="h-3.5 w-3.5 text-rose" aria-hidden />
-          Creative workshops · Bali, Indonesia
+          {t.badge}
         </motion.p>
 
         <h1 className="max-w-5xl font-display text-[13vw] font-black leading-[0.98] tracking-tight text-ink sm:text-7xl md:text-8xl lg:text-[7.5rem]">
-          <StaggerWords text="Let's make something" delay={2.35} />
+          <StaggerWords key={`a-${locale}`} text={t.h1.a} delay={2.35} />
           <br />
           <span className="relative inline-block">
             <span className="font-script text-[1.18em] font-normal text-rose">
-              <StaggerWords text="memorable" delay={2.75} />
+              <StaggerWords key={`s-${locale}`} text={t.h1.script} delay={2.75} />
             </span>
             <motion.svg
+              key={`svg-${locale}`}
               viewBox="0 0 300 22"
               preserveAspectRatio="none"
               aria-hidden
@@ -128,7 +133,7 @@ export function Hero() {
               />
             </motion.svg>
           </span>{" "}
-          <StaggerWords text="together." delay={2.95} />
+          <StaggerWords key={`b-${locale}`} text={t.h1.b} delay={2.95} />
         </h1>
 
         <motion.p
@@ -137,10 +142,9 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 3.2, duration: 0.8 }}
         >
-          Watercolour postcards, travel sketching, needle felting &amp; custom
-          crafts — art, fun, and skills with{" "}
-          <strong className="font-semibold text-ink">Elin&apos;s 19 years of teaching magic</strong>,
-          in the heart of Bali.
+          {t.sub.pre}
+          <strong className="font-semibold text-ink">{t.sub.strong}</strong>
+          {t.sub.post}
         </motion.p>
 
         <motion.div
@@ -158,7 +162,7 @@ export function Hero() {
               }}
               className="inline-flex items-center gap-2 rounded-full bg-rosedeep px-8 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(201,58,108,0.4)] transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_18px_44px_rgba(201,58,108,0.5)]"
             >
-              Book a Class
+              {t.ctaPrimary}
             </a>
           </Magnetic>
           <Magnetic>
@@ -170,7 +174,7 @@ export function Hero() {
               }}
               className="inline-flex items-center gap-2 rounded-full border-2 border-ink bg-cream/60 px-8 py-[14px] text-base font-semibold text-ink backdrop-blur-sm transition-all duration-300 hover:bg-ink hover:text-cream"
             >
-              Explore Classes
+              {t.ctaSecondary}
             </a>
           </Magnetic>
         </motion.div>
@@ -182,7 +186,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 3.6, duration: 0.9 }}
         >
-          {STATS.map((s) => (
+          {stats.map((s) => (
             <div key={s.label} className="flex flex-col items-center gap-1">
               <dt className="order-2 font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
                 {s.label}
@@ -203,7 +207,7 @@ export function Hero() {
           document.querySelector("#about")?.scrollIntoView({ behavior: "smooth" });
         }}
         className="absolute bottom-20 left-1/2 z-10 -translate-x-1/2 text-inksoft transition-colors hover:text-rosedeep"
-        aria-label="Scroll to about section"
+        aria-label={t.scrollCue}
         animate={reduce ? undefined : { y: [0, 10, 0] }}
         transition={reduce ? undefined : { duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >

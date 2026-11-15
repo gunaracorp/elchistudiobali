@@ -2,15 +2,19 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { useSite } from "./locale-provider";
 
 /**
  * Loader — premium branded entrance.
- * Watercolour blob grows, script wordmark reveals, curtain lifts.
- * Skipped quickly for reduced-motion users (accessibility lens D6).
+ * Watercolour blob grows, script wordmark reveals, trilingual
+ * greeting line, curtain lifts. Skipped quickly for reduced-motion
+ * users (accessibility lens D6). Also masks the locale auto-detect
+ * that LocaleProvider performs right after mount.
  */
 export function Loader({ onDone }: { onDone: () => void }) {
   const reduce = useReducedMotion();
   const [show, setShow] = useState(true);
+  const { d } = useSite();
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -70,6 +74,16 @@ export function Loader({ onDone }: { onDone: () => void }) {
               transition={{ delay: 0.9, duration: 0.6 }}
             >
               STUDIO BALI
+            </motion.span>
+
+            {/* Trilingual welcome — one studio, three languages */}
+            <motion.span
+              className="relative z-10 mt-4 font-monobrand text-[9px] tracking-[0.3em] text-inksoft/80"
+              initial={reduce ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.15, duration: 0.6 }}
+            >
+              {d.loader.hello}
             </motion.span>
 
             <motion.div

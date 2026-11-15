@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope, Pacifico, Space_Mono, Noto_Sans_KR } from "next/font/google";
+import { Fraunces, Manrope, Pacifico, Space_Mono, Noto_Sans_KR, Nanum_Pen_Script } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -31,9 +31,16 @@ const spaceMono = Space_Mono({
 
 const notoKr = Noto_Sans_KR({
   variable: "--font-noto-kr",
-  subsets: ["korean"],
-  weight: ["400", "700"],
+  weight: ["400", "700", "900"],
   display: "swap",
+  preload: false,
+});
+
+const nanumPen = Nanum_Pen_Script({
+  variable: "--font-nanum-pen",
+  weight: "400",
+  display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -44,6 +51,7 @@ export const metadata: Metadata = {
     "Elchi Studio Bali", "creative workshop Bali", "art class Bali",
     "watercolour workshop", "needle felting class", "travel drawing",
     "craft workshop Ubud", "Elin Kim artist", "Bali art studio",
+    "kelas seni Bali", "lokakarya kreatif Bali", "워크숍 발리", "발리 미술 클래스",
   ],
   authors: [{ name: "Elchí Studio Bali" }],
   openGraph: {
@@ -53,6 +61,7 @@ export const metadata: Metadata = {
     siteName: "Elchí Studio Bali",
     type: "website",
     locale: "en_US",
+    alternateLocale: ["id_ID", "ko_KR"],
   },
   twitter: {
     card: "summary_large_image",
@@ -69,7 +78,8 @@ const jsonLd = {
   description:
     "Creative education studio in Bali offering watercolour, sketching, needle felting and craft workshops for travellers, groups and curious creatives.",
   areaServed: "Bali, Indonesia",
-  knowsLanguage: ["en", "fr", "ko"],
+  knowsLanguage: ["en", "fr", "ko", "id"],
+  availableLanguage: ["en", "id", "ko"],
   slogan: "Let's make something memorable together.",
   founder: {
     "@type": "Person",
@@ -87,7 +97,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fraunces.variable} ${manrope.variable} ${pacifico.variable} ${spaceMono.variable} ${notoKr.variable} antialiased bg-cream text-ink font-sans`}
+        className={`${fraunces.variable} ${manrope.variable} ${pacifico.variable} ${spaceMono.variable} ${notoKr.variable} ${nanumPen.variable} antialiased bg-cream text-ink font-sans`}
       >
         {children}
         <Toaster />

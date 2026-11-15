@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { LocaleProvider, useSite } from "./locale-provider";
 import { Loader } from "./loader";
 import { Cursor } from "./cursor";
 import { Navbar } from "./navbar";
@@ -20,9 +21,19 @@ import { Concierge } from "./concierge";
  * SiteExperience — the living one-page journey of Elchí Studio Bali.
  * Single scroll narrative: Hero → Marquee → About → Classes →
  * Experiences → Instructor → Gallery → Booking → FAQ → Contact.
+ * Wrapped in LocaleProvider (Bahasa Indonesia · English · 한국어).
  */
 export function SiteExperience() {
+  return (
+    <LocaleProvider>
+      <SiteShell />
+    </LocaleProvider>
+  );
+}
+
+function SiteShell() {
   const [, setReady] = useState(false);
+  const { d } = useSite();
   const onDone = useCallback(() => setReady(true), []);
 
   return (
@@ -31,7 +42,7 @@ export function SiteExperience() {
         href="#classes"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-sm focus:text-cream"
       >
-        Skip to classes
+        {d.meta.skip}
       </a>
       <Loader onDone={onDone} />
       <Cursor />

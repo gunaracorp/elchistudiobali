@@ -257,3 +257,20 @@ textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   Korean typography system (html[lang="ko"])
+   Pacifico & Fraunces carry no Hangul glyphs, so for the KO
+   locale: script accents switch to Nanum Pen Script and display
+   headings to Noto Sans KR (both loaded via next/font).
+   keep-all prevents awkward mid-word line breaks in Korean.
+   ============================================================ */
+html[lang="ko"] body {
+  word-break: keep-all;
+}
+html[lang="ko"] .font-script {
+  font-family: var(--font-nanum-pen), var(--font-noto-kr), cursive;
+}
+html[lang="ko"] .font-display {
+  font-family: var(--font-noto-kr), Georgia, serif;
+}

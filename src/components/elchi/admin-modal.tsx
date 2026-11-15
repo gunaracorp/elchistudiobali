@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { KeyRound, Loader2, Inbox, RefreshCcw } from "lucide-react";
+import { useSite } from "./locale-provider";
+import { fill } from "@/lib/i18n";
 
 type BookingRow = {
   id: string;
@@ -21,6 +23,7 @@ type BookingRow = {
  * AdminModal — lightweight studio dashboard for incoming bookings.
  * Auth is a shared studio key checked server-side (MVP; documented
  * in the handover notes — upgrade to NextAuth before production).
+ * Surface copy is localized (ID / EN / KO) for studio staff comfort.
  */
 export function AdminModal({
   open,
@@ -33,6 +36,8 @@ export function AdminModal({
   const [rows, setRows] = useState<BookingRow[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const { d } = useSite();
+  const t = d.admin;
 
   async function load(k: string) {
     setLoading(true);
@@ -55,10 +60,10 @@ export function AdminModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-display text-2xl font-bold text-ink">
             <Inbox className="h-6 w-6 text-rosedeep" aria-hidden />
-            Studio Dashboard
+            {t.title}
           </DialogTitle>
           <DialogDescription className="text-inksoft">
-            Incoming class bookings and private enquiries.
+            {t.desc}
           </DialogDescription>
         </DialogHeader>
 
@@ -72,7 +77,7 @@ export function AdminModal({
           >
             <div>
               <label htmlFor="admin-key" className="mb-1.5 block font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
-                Studio access key
+                {t.keyLabel}
               </label>
               <div className="flex gap-2">
                 <div className="relative flex-1">
@@ -83,7 +88,7 @@ export function AdminModal({
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
                     className="w-full rounded-xl border border-ink/15 bg-white px-10 py-3 text-sm focus:border-rosedeep focus:outline-none"
-                    placeholder="Enter the studio key"
+                    placeholder={t.keyPh}
                     autoComplete="off"
                   />
                 </div>
@@ -93,15 +98,14 @@ export function AdminModal({
                   className="inline-flex items-center gap-2 rounded-xl bg-rosedeep px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
                 >
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
-                  Unlock
+                  {t.unlock}
                 </button>
               </div>
               {error && (
                 <p role="alert" className="mt-2 text-sm font-medium text-rosedeep">{error}</p>
               )}
               <p className="mt-3 text-xs leading-relaxed text-inksoft/70">
-                MVP note: the access key is configured server-side (ADMIN_KEY).
-                Swap in NextAuth + roles before going live.
+                {t.mvp}
               </p>
             </div>
           </form>
@@ -109,7 +113,7 @@ export function AdminModal({
           <div className="pt-2">
             <div className="mb-4 flex items-center justify-between">
               <p className="font-monobrand text-[11px] uppercase tracking-[0.2em] text-inksoft">
-                {rows.length} booking{rows.length === 1 ? "" : "s"} received
+                {fill(t.received, { n: String(rows.length) })}
               </p>
               <div className="flex gap-2">
                 <button
@@ -117,21 +121,21 @@ export function AdminModal({
                   onClick={() => load(key)}
                   className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-4 py-1.5 text-xs font-semibold text-ink hover:bg-paper"
                 >
-                  <RefreshCcw className="h-3.5 w-3.5" aria-hidden /> Refresh
+                  <RefreshCcw className="h-3.5 w-3.5" aria-hidden /> {t.refresh}
                 </button>
                 <button
                   type="button"
                   onClick={() => { setRows(null); setKey(""); }}
                   className="rounded-full border border-ink/15 px-4 py-1.5 text-xs font-semibold text-ink hover:bg-paper"
                 >
-                  Lock
+                  {t.lock}
                 </button>
               </div>
             </div>
 
             {rows.length === 0 ? (
               <p className="rounded-xl bg-paper px-5 py-8 text-center text-sm text-inksoft">
-                No bookings yet — the first enquiry will appear here.
+                {t.empty}
               </p>
             ) : (
               <ul className="space-y-3">
@@ -149,8 +153,8 @@ export function AdminModal({
                       </p>
                     </div>
                     <p className="mt-1 text-sm text-inksoft">
-                      <strong className="text-ink">{r.classType}</strong> · {r.participants} pax
-                      {r.preferredDate ? ` · pref. ${r.preferredDate}` : ""}
+                      <strong className="text-ink">{r.classType}</strong> · {r.participants} {t.pax}
+                      {r.preferredDate ? ` · ${t.pref} ${r.preferredDate}` : ""}
                     </p>
                     <p className="mt-1 text-sm text-inksoft">
                       {r.email}

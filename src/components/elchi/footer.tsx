@@ -2,17 +2,22 @@
 
 import { useState } from "react";
 import { MapPin, Mail, MessageCircle, ShieldCheck } from "lucide-react";
-import { NAV_LINKS, CLASSES } from "@/lib/classes-data";
 import { Reveal, Magnetic } from "./motion";
 import { AdminModal } from "./admin-modal";
+import { LanguageSwitcher } from "./language-switcher";
+import { useSite, useContent } from "./locale-provider";
 
 /**
  * Footer + Contact — dark editorial close.
  * Company name (PT. Elchi Studio Bali) is public record from the
  * registration documents; no private identifiers are exposed.
+ * The trilingual switcher gets a second home here too.
  */
 export function Footer() {
   const [adminOpen, setAdminOpen] = useState(false);
+  const { d } = useSite();
+  const { classes } = useContent();
+  const t = d.footer;
 
   const go = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -20,20 +25,21 @@ export function Footer() {
   };
 
   return (
-    <footer id="contact" aria-label="Contact and footer" className="relative bg-ink text-cream">
+    <footer id="contact" aria-label={t.aria} className="relative bg-ink text-cream">
       <div className="mx-auto max-w-7xl px-5 pb-10 pt-20 sm:px-8 sm:pt-24">
         <div className="mb-16 text-center">
           <Reveal>
             <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-blush">
-              Contact &amp; booking
+              {t.kicker}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mx-auto mt-4 max-w-3xl font-display text-4xl font-black leading-[1.05] sm:text-6xl">
-              Let&apos;s create something{" "}
+              {t.h2.a}{" "}
               <span className="font-script text-[1.1em] font-normal text-blush">
-                just for you
-              </span>
+                {t.h2.script}
+              </span>{" "}
+              {t.h2.b}
             </h2>
           </Reveal>
           <Reveal delay={0.16}>
@@ -45,7 +51,7 @@ export function Footer() {
                   className="inline-flex items-center gap-2 rounded-full bg-rose px-8 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(231,90,135,0.4)] transition-transform duration-300 hover:scale-105"
                 >
                   <MessageCircle className="h-5 w-5" aria-hidden />
-                  Start a booking
+                  {t.start}
                 </a>
               </Magnetic>
               <Magnetic>
@@ -54,7 +60,7 @@ export function Footer() {
                   onClick={go("#classes")}
                   className="inline-flex items-center gap-2 rounded-full border-2 border-cream/30 px-8 py-4 text-base font-semibold text-cream transition-colors duration-300 hover:border-blush hover:text-blush"
                 >
-                  Browse classes again
+                  {t.browse}
                 </a>
               </Magnetic>
             </div>
@@ -64,31 +70,26 @@ export function Footer() {
             <dl className="mx-auto mt-12 grid max-w-3xl gap-4 text-left sm:grid-cols-3">
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
-                  <MapPin className="h-4 w-4" aria-hidden /> Studio
+                  <MapPin className="h-4 w-4" aria-hidden /> {t.studioT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  Bali, Indonesia.
-                  <br />
-                  Exact studio address &amp; WhatsApp number are shared
-                  personally with every booking confirmation.
+                  {t.studioB}
                 </dd>
               </div>
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
-                  <Mail className="h-4 w-4" aria-hidden /> Enquiries
+                  <Mail className="h-4 w-4" aria-hidden /> {t.enqT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  The booking form above is the fastest way to reach the
-                  studio — every request lands directly with the team.
+                  {t.enqB}
                 </dd>
               </div>
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
-                  <ShieldCheck className="h-4 w-4" aria-hidden /> Company
+                  <ShieldCheck className="h-4 w-4" aria-hidden /> {t.compT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  PT. Elchi Studio Bali — a registered Indonesian company.
-                  Legal &amp; identity documents are never published here.
+                  {t.compB}
                 </dd>
               </div>
             </dl>
@@ -102,16 +103,15 @@ export function Footer() {
               Studio Bali
             </p>
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-cream/60">
-              A creative learning experience beyond boundaries — art, fun, and
-              skills in the heart of the tropics.
+              {t.blurb}
             </p>
           </div>
-          <nav aria-label="Footer navigation">
+          <nav aria-label={t.explore}>
             <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-blush">
-              Explore
+              {t.explore}
             </p>
             <ul className="mt-4 space-y-2.5">
-              {NAV_LINKS.map((l) => (
+              {d.navLinks.map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}
@@ -124,12 +124,12 @@ export function Footer() {
               ))}
             </ul>
           </nav>
-          <nav aria-label="All workshops">
+          <nav aria-label={t.workshops}>
             <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-blush">
-              Workshops
+              {t.workshops}
             </p>
             <ul className="mt-4 space-y-2.5">
-              {CLASSES.map((c) => (
+              {classes.map((c) => (
                 <li key={c.slug}>
                   <a
                     href="#classes"
@@ -147,18 +147,19 @@ export function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 sm:flex-row">
           <p className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/45">
-            © {new Date().getFullYear()} PT. Elchi Studio Bali · All rights reserved
+            © {new Date().getFullYear()} PT. Elchi Studio Bali · {t.rights}
           </p>
-          <p className="font-script text-sm text-cream/45">
-            made with love &amp; a little glitter
-          </p>
-          <button
-            type="button"
-            onClick={() => setAdminOpen(true)}
-            className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/35 transition-colors hover:text-blush"
-          >
-            Studio Admin
-          </button>
+          <LanguageSwitcher variant="dark" />
+          <div className="flex items-center gap-5">
+            <p className="font-script text-sm text-cream/45">{t.made}</p>
+            <button
+              type="button"
+              onClick={() => setAdminOpen(true)}
+              className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/35 transition-colors hover:text-blush"
+            >
+              {t.admin}
+            </button>
+          </div>
         </div>
       </div>
 

@@ -3,18 +3,21 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Menu, X, CalendarHeart } from "lucide-react";
-import { NAV_LINKS } from "@/lib/classes-data";
+import { useSite } from "./locale-provider";
+import { LanguageSwitcher } from "./language-switcher";
 import { Magnetic } from "./motion";
 import { cn } from "@/lib/utils";
 
 /**
  * Navbar — floating brand bar. Transparent over the hero, blush glass
  * after scroll, full-screen editorial overlay on mobile.
+ * Carries the trilingual switcher (ID · EN · 한국어).
  */
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { scrollY } = useScroll();
+  const { d } = useSite();
 
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
 
@@ -47,7 +50,7 @@ export function Navbar() {
         )}
       >
         <nav
-          aria-label="Main navigation"
+          aria-label={d.meta.mainNav}
           className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-[72px] sm:px-8"
         >
           <a
@@ -68,7 +71,7 @@ export function Navbar() {
           </a>
 
           <ul className="hidden items-center gap-7 lg:flex">
-            {NAV_LINKS.map((l) => (
+            {d.navLinks.map((l) => (
               <li key={l.href}>
                 <a
                   href={l.href}
@@ -85,6 +88,9 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-3">
+            <div className="hidden md:inline-block">
+              <LanguageSwitcher variant="light" />
+            </div>
             <Magnetic className="hidden sm:inline-block">
               <a
                 href="#booking"
@@ -95,7 +101,7 @@ export function Navbar() {
                 className="inline-flex items-center gap-2 rounded-full bg-rosedeep px-5 py-2.5 text-sm font-semibold text-white shadow-[0_6px_20px_rgba(201,58,108,0.35)] transition-transform duration-300 hover:scale-[1.04]"
               >
                 <CalendarHeart className="h-4 w-4" aria-hidden />
-                Book a Class
+                {d.meta.bookCta}
               </a>
             </Magnetic>
 
@@ -103,7 +109,7 @@ export function Navbar() {
               type="button"
               onClick={() => setOpen(true)}
               className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 bg-cream/70 text-ink lg:hidden"
-              aria-label="Open menu"
+              aria-label={d.meta.openMenu}
               aria-expanded={open}
             >
               <Menu className="h-5 w-5" aria-hidden />
@@ -122,7 +128,7 @@ export function Navbar() {
             transition={{ duration: 0.6, ease: [0.76, 0, 0.24, 1] }}
             role="dialog"
             aria-modal="true"
-            aria-label="Menu"
+            aria-label={d.meta.menuDialog}
           >
             <div className="flex h-16 items-center justify-between px-5 sm:h-[72px] sm:px-8">
               <span className="font-script text-2xl text-blush">Elchí</span>
@@ -130,13 +136,13 @@ export function Navbar() {
                 type="button"
                 onClick={() => setOpen(false)}
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-cream/25 text-cream"
-                aria-label="Close menu"
+                aria-label={d.meta.closeMenu}
               >
                 <X className="h-5 w-5" aria-hidden />
               </button>
             </div>
             <ul className="flex flex-1 flex-col justify-center gap-2 px-8">
-              {NAV_LINKS.map((l, i) => (
+              {d.navLinks.map((l, i) => (
                 <motion.li
                   key={l.href}
                   initial={{ opacity: 0, x: 40 }}
@@ -163,7 +169,7 @@ export function Navbar() {
               <motion.li
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.15 + NAV_LINKS.length * 0.07, duration: 0.5 }}
+                transition={{ delay: 0.15 + d.navLinks.length * 0.07, duration: 0.5 }}
                 className="mt-6"
               >
                 <a
@@ -175,13 +181,18 @@ export function Navbar() {
                   className="inline-flex items-center gap-2 rounded-full bg-rose px-7 py-3.5 text-base font-semibold text-white"
                 >
                   <CalendarHeart className="h-5 w-5" aria-hidden />
-                  Book a Class
+                  {d.meta.bookCta}
                 </a>
               </motion.li>
             </ul>
-            <p className="px-8 pb-8 font-monobrand text-[10px] uppercase tracking-[0.3em] text-cream/50">
-              Creative workshops · Bali, Indonesia
-            </p>
+            <div className="flex flex-col gap-4 px-8 pb-8 sm:flex-row sm:items-center sm:justify-between">
+              <div className="shrink-0">
+                <LanguageSwitcher variant="dark" />
+              </div>
+              <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-cream/50 sm:text-right">
+                {d.meta.menuTag}
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

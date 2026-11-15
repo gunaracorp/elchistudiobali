@@ -1,20 +1,22 @@
 "use client";
 
-import { CLASSES } from "@/lib/classes-data";
+import { useContent, useSite } from "./locale-provider";
 
 /**
  * Marquee — infinite ticker of the official workshop names.
  * Rose ribbon, duplicated track for a seamless loop; decorative only.
+ * Class names are brand names; the private formats are localized.
  */
 export function Marquee() {
-  const items = CLASSES.map((c) => c.name).concat([
-    "Private 1:1",
-    "Private Groups",
-  ]);
+  const { classes } = useContent();
+  const { data } = useSite();
+  const items = classes.map((c) => c.name).concat(
+    data.privates.map((p) => p.short)
+  );
   const row = [...items, ...items];
 
   return (
-    <section aria-label="Our workshops" className="relative z-10 -mt-1 overflow-hidden bg-rose py-4 sm:py-5">
+    <section aria-label={data.chrome.marquee.aria} className="relative z-10 -mt-1 overflow-hidden bg-rose py-4 sm:py-5">
       <div className="flex w-max animate-marquee items-center gap-8 pr-8">
         {row.map((name, i) => (
           <span key={i} className="flex items-center gap-8 whitespace-nowrap" aria-hidden={i >= items.length}>

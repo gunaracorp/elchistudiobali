@@ -201,6 +201,21 @@ export const NAV_LINKS = [
   { href: "#faq", label: "FAQ" },
 ];
 
+/** Canonical stat values — labels are localized in i18n. */
+export const STAT_VALUES = ["19", "250+", "2–80", "50"] as const;
+
+/** Gallery structure — src/layout only; alt & caption are localized in i18n. */
+export const GALLERY_SHOTS = [
+  { src: "/images/class-travel-drawing.jpg", span: "sm:col-span-2 sm:row-span-2", h: "aspect-[4/3] sm:aspect-auto sm:h-full" },
+  { src: "/images/class-dog-keychain.jpg", span: "", h: "aspect-square" },
+  { src: "/images/gallery-painting.png", span: "", h: "aspect-square" },
+  { src: "/images/class-flipflop.jpg", span: "", h: "aspect-square" },
+  { src: "/images/class-creative-flow.png", span: "", h: "aspect-square" },
+  { src: "/images/group-workshop.jpg", span: "sm:col-span-2", h: "aspect-[16/9]" },
+  { src: "/images/gallery-studio.png", span: "", h: "aspect-square" },
+  { src: "/images/class-tshirt.jpg", span: "", h: "aspect-square" },
+] as const;
+
 export const BOOKING_CLASS_OPTIONS = [
   ...CLASSES.map((c) => ({ value: c.slug, label: `${c.name} · ${c.duration}` })),
   { value: "private-group", label: "Private Group Class (custom occasion)" },

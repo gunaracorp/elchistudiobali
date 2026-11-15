@@ -35,6 +35,13 @@ RULES:
 - Keep answers short and warm (2–5 sentences). Match the visitor's language (English, Indonesian, French or Korean).
 - Never invent prices, addresses, phone numbers or dates.`;
 
+/** Site locale → hard language directive for the reply. */
+const LOCALE_RULES: Record<string, string> = {
+  id: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in Indonesian (Bahasa Indonesia). ALWAYS reply in warm, natural Bahasa Indonesia — unless the visitor writes to you in another language, then follow the visitor.",
+  ko: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in Korean (한국어). ALWAYS reply in warm, natural polite Korean (해요체/합니다체) — unless the visitor writes to you in another language, then follow the visitor.",
+  en: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in English. Reply in warm, natural English — unless the visitor writes to you in another language, then follow the visitor.",
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -42,11 +49,12 @@ export async function POST(req: NextRequest) {
     if (!messages.length) {
       return NextResponse.json({ error: "No messages provided." }, { status: 400 });
     }
+    const localeRule = LOCALE_RULES[String(body.locale ?? "en")] ?? LOCALE_RULES.en;
 
     const zai = await ZAI.create();
     const completion = await zai.chat.completions.create({
       messages: [
-        { role: "system", content: SYSTEM_PROMPT },
+        { role: "system", content: `${SYSTEM_PROMPT}\n\n${localeRule}` },
         ...messages.map((m: { role: string; content: string }) => ({
           role: m.role === "user" ? "user" : "assistant",
           content: String(m.content ?? "").slice(0, 1000),

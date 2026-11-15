@@ -22,13 +22,22 @@ export async function POST(req: NextRequest) {
     const message = body.message ? String(body.message).trim().slice(0, 1000) : null;
 
     if (name.length < 2 || name.length > 80) {
-      return NextResponse.json({ error: "Please give us your name (2–80 characters)." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Please give us your name (2–80 characters).", code: "invalid_name" },
+        { status: 400 }
+      );
     }
     if (!EMAIL_RE.test(email)) {
-      return NextResponse.json({ error: "That email doesn't look right — mind checking it?" }, { status: 400 });
+      return NextResponse.json(
+        { error: "That email doesn't look right — mind checking it?", code: "invalid_email" },
+        { status: 400 }
+      );
     }
     if (!VALID_CLASSES.has(classType)) {
-      return NextResponse.json({ error: "Please choose one of our classes." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Please choose one of our classes.", code: "invalid_class" },
+        { status: 400 }
+      );
     }
 
     const booking = await db.booking.create({

@@ -3,38 +3,42 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus } from "lucide-react";
-import { FAQS } from "@/lib/classes-data";
 import { Reveal } from "./motion";
 import { TornPaper, SparkleSticker } from "./torn";
+import { useSite } from "./locale-provider";
 import { cn } from "@/lib/utils";
 
 /**
  * FAQ — accordion answering with official studio policies only.
+ * All questions and answers localized in ID / EN / KO.
  */
 export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
+  const { d, data } = useSite();
+  const t = d.faq;
 
   return (
-    <section id="faq" aria-label="Frequently asked questions" className="relative bg-cream">
+    <section id="faq" aria-label={t.aria} className="relative bg-cream">
       <div className="mx-auto max-w-4xl px-5 pb-28 pt-20 sm:px-8 sm:pt-24">
         <div className="mb-12 text-center">
           <Reveal>
             <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-rose">
-              Good to know
+              {t.kicker}
             </p>
           </Reveal>
           <Reveal delay={0.08}>
             <h2 className="mt-4 font-display text-4xl font-black leading-[1.05] text-ink sm:text-5xl">
-              Questions,{" "}
+              {t.h2.a}{" "}
               <span className="font-script text-[1.1em] font-normal text-rosedeep">
-                answered
-              </span>
+                {t.h2.script}
+              </span>{" "}
+              {t.h2.b}
             </h2>
           </Reveal>
         </div>
 
         <div className="space-y-3.5">
-          {FAQS.map((f, i) => {
+          {data.faqs.map((f, i) => {
             const isOpen = open === i;
             return (
               <Reveal key={f.q} delay={Math.min(i * 0.05, 0.3)}>
@@ -91,7 +95,7 @@ export function Faq() {
 
         <Reveal delay={0.1} className="mt-12">
           <p className="text-center text-inksoft">
-            Still curious?{" "}
+            {t.still}{" "}
             <a
               href="#booking"
               onClick={(e) => {
@@ -100,9 +104,9 @@ export function Faq() {
               }}
               className="link-sweep font-semibold text-rosedeep"
             >
-              Send us your question with a booking enquiry
-            </a>
-            {" "}— we answer personally.
+              {t.stillLink}
+            </a>{" "}
+            {t.stillTail}
           </p>
         </Reveal>
       </div>

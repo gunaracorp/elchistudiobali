@@ -3,32 +3,30 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircleHeart, X, Send, Sparkles } from "lucide-react";
+import { useSite } from "./locale-provider";
 
 type Msg = { role: "user" | "assistant"; content: string };
-
-const QUICK = [
-  "Which class suits a first-timer?",
-  "How long is the Dog Keychain class?",
-  "Can we book a hen's party?",
-];
 
 /**
  * Concierge — AI Studio Concierge.
  * Answers strictly from official studio information via
- * /api/concierge (z-ai-web-dev-sdk, backend only).
+ * /api/concierge (z-ai-web-dev-sdk, backend only), replying in the
+ * visitor's active site language (ID / EN / KO).
  */
 export function Concierge() {
   const [open, setOpen] = useState(false);
-  const [msgs, setMsgs] = useState<Msg[]>([
-    {
-      role: "assistant",
-      content:
-        "Hello, Bonjour, 안녕! I'm the Elchí concierge ✦ Ask me anything about our classes, durations, private groups or what to bring.",
-    },
-  ]);
+  const { locale, d } = useSite();
+  const t = d.concierge;
+
+  const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Reset the conversation (and its greeting) when the language changes.
+  useEffect(() => {
+    setMsgs([{ role: "assistant", content: t.greeting }]);
+  }, [t.greeting]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
@@ -45,26 +43,20 @@ export function Concierge() {
       const res = await fetch("/api/concierge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next.slice(-8) }),
+        body: JSON.stringify({ messages: next.slice(-8), locale }),
       });
       const data = await res.json();
       setMsgs((m) => [
         ...m,
         {
           role: "assistant",
-          content:
-            data.reply ||
-            "Sorry, I couldn't answer right now — please send your question through the booking form and we'll reply personally.",
+          content: data.reply || t.failReply,
         },
       ]);
     } catch {
       setMsgs((m) => [
         ...m,
-        {
-          role: "assistant",
-          content:
-            "I'm having a little trouble connecting. The booking form always reaches us, though!",
-        },
+        { role: "assistant", content: t.failCatch },
       ]);
     } finally {
       setBusy(false);
@@ -77,7 +69,7 @@ export function Concierge() {
         type="button"
         onClick={() => setOpen((o) => !o)}
         className="fixed bottom-5 right-5 z-[75] flex h-14 w-14 items-center justify-center rounded-full bg-rosedeep text-white shadow-[0_14px_34px_rgba(201,58,108,0.45)] transition-transform hover:scale-105"
-        aria-label={open ? "Close Elchí concierge" : "Open Elchí concierge chat"}
+        aria-label={open ? t.close : t.open}
         initial={{ scale: 0, rotate: -30 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ delay: 3.8, type: "spring", stiffness: 260, damping: 18 }}
@@ -107,16 +99,16 @@ export function Concierge() {
             exit={{ opacity: 0, y: 24, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             role="dialog"
-            aria-label="Elchí Studio concierge chat"
+            aria-label={t.dialogAria}
           >
             <div className="flex items-center gap-3 bg-ink px-5 py-4 text-cream">
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-rose">
                 <Sparkles className="h-4.5 w-4.5" aria-hidden />
               </span>
               <div>
-                <p className="font-script text-lg leading-none text-blush">Elchí Concierge</p>
+                <p className="font-script text-lg leading-none text-blush">{t.title}</p>
                 <p className="mt-1 font-monobrand text-[9px] uppercase tracking-[0.25em] text-cream/60">
-                  Official studio info only
+                  {t.badge}
                 </p>
               </div>
             </div>
@@ -135,13 +127,13 @@ export function Concierge() {
                 </div>
               ))}
               {busy && (
-                <div className="flex w-16 items-center justify-center gap-1.5 rounded-2xl bg-white px-4 py-3 shadow-[0_2px_10px_rgba(52,35,28,0.06)]" aria-label="Concierge is typing">
-                  {[0, 1, 2].map((d) => (
+                <div className="flex w-16 items-center justify-center gap-1.5 rounded-2xl bg-white px-4 py-3 shadow-[0_2px_10px_rgba(52,35,28,0.06)]" aria-label={t.typing}>
+                  {[0, 1, 2].map((dd) => (
                     <motion.span
-                      key={d}
+                      key={dd}
                       className="h-1.5 w-1.5 rounded-full bg-rose"
                       animate={{ y: [0, -4, 0] }}
-                      transition={{ duration: 0.7, repeat: Infinity, delay: d * 0.12 }}
+                      transition={{ duration: 0.7, repeat: Infinity, delay: dd * 0.12 }}
                     />
                   ))}
                 </div>
@@ -150,7 +142,7 @@ export function Concierge() {
 
             {msgs.length <= 1 && (
               <div className="flex flex-wrap gap-2 px-4 pb-2">
-                {QUICK.map((q) => (
+                {t.quick.map((q) => (
                   <button
                     key={q}
                     type="button"
@@ -173,15 +165,15 @@ export function Concierge() {
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask about classes…"
-                aria-label="Message the Elchí concierge"
+                placeholder={t.ph}
+                aria-label={t.ph}
                 className="flex-1 rounded-full border border-ink/15 bg-white px-4 py-2.5 text-sm focus:border-rosedeep focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={busy || !input.trim()}
                 className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-rosedeep text-white disabled:opacity-50"
-                aria-label="Send message"
+                aria-label={t.sendAria}
               >
                 <Send className="h-4 w-4" aria-hidden />
               </button>

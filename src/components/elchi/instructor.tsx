@@ -5,16 +5,21 @@ import { GraduationCap, BadgeCheck, Briefcase, Globe2, Star } from "lucide-react
 import { ELIN } from "@/lib/classes-data";
 import { Reveal, ParallaxEl } from "./motion";
 import { TornPaper, SmileSticker, SparkleSticker } from "./torn";
+import { useSite } from "./locale-provider";
 
 /**
  * Instructor — Elin Kim's verified profile.
  * Education, certifications and experience are reproduced from her
- * official brochure. Client list = organisations she has actually
- * held workshops for (shown as text, no third-party logo assets).
+ * official brochure and localized; institution names keep their
+ * original spellings (proper nouns).
  */
 export function Instructor() {
+  const { d, data } = useSite();
+  const t = d.instructor;
+  const e = data.elin;
+
   return (
-    <section id="instructor" aria-label="Meet Elin Kim, founder and instructor" className="relative bg-cream">
+    <section id="instructor" aria-label={t.aria} className="relative bg-cream">
       <div className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-28">
         <div className="grid items-start gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
           {/* Portrait column */}
@@ -28,7 +33,7 @@ export function Instructor() {
                 <div className="absolute -inset-8 rounded-full bg-blushlight/70 blur-2xl" aria-hidden />
                 <Image
                   src="/images/elin-portrait.png"
-                  alt="Elin Kim, founder and lead instructor of Elchí Studio Bali, with felted dogs she made"
+                  alt={t.portraitAlt}
                   fill
                   sizes="(max-width: 1024px) 80vw, 400px"
                   className="rounded-full object-cover shadow-[0_24px_60px_rgba(52,35,28,0.25)]"
@@ -47,15 +52,15 @@ export function Instructor() {
               <div className="mt-10 text-center">
                 <p className="font-script text-3xl text-rosedeep">{ELIN.name}</p>
                 <p className="mt-1 font-monobrand text-[11px] uppercase tracking-[0.3em] text-inksoft">
-                  {ELIN.role}
+                  {e.role}
                 </p>
                 <p className="mx-auto mt-5 inline-flex items-center gap-2 rounded-full bg-sun/25 px-5 py-2 text-sm font-semibold text-[#7a5205]">
                   <Star className="h-4 w-4 fill-current" aria-hidden />
-                  {ELIN.reviews} at Elin&apos;s Classes
+                  {e.reviewsLine}
                 </p>
                 <p className="mt-4 flex items-center justify-center gap-2 text-sm text-inksoft">
                   <Globe2 className="h-4 w-4 text-palm" aria-hidden />
-                  Teaches in {ELIN.languages.join(" · ")}
+                  {e.languagesLine}
                 </p>
               </div>
             </Reveal>
@@ -65,20 +70,21 @@ export function Instructor() {
           <div>
             <Reveal>
               <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-rose">
-                Meet your instructor
+                {t.kicker}
               </p>
             </Reveal>
             <Reveal delay={0.08}>
               <h2 className="mt-4 font-display text-4xl font-black leading-[1.05] text-ink sm:text-5xl lg:text-6xl">
-                {ELIN.years} years of{" "}
+                {t.h2.a}{" "}
                 <span className="font-script text-[1.1em] font-normal text-rosedeep">
-                  teaching magic
-                </span>
+                  {t.h2.script}
+                </span>{" "}
+                {t.h2.b}
               </h2>
             </Reveal>
 
             <div className="mt-7 space-y-5">
-              {ELIN.bio.map((p, i) => (
+              {e.bio.map((p, i) => (
                 <Reveal key={i} delay={0.12 + i * 0.06}>
                   <p className="text-lg leading-relaxed text-inksoft">{p}</p>
                 </Reveal>
@@ -91,15 +97,15 @@ export function Instructor() {
                 <div className="h-full rounded-2xl border border-ink/8 bg-white/70 p-6">
                   <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
                     <GraduationCap className="h-5 w-5 text-rosedeep" aria-hidden />
-                    Education
+                    {t.education}
                   </h3>
                   <ul className="mt-4 space-y-3">
-                    {ELIN.education.map((e) => (
-                      <li key={e.year} className="text-sm leading-snug text-inksoft">
+                    {ELIN.education.map((ed) => (
+                      <li key={ed.year} className="text-sm leading-snug text-inksoft">
                         <span className="mr-2 font-monobrand text-xs font-bold text-terra">
-                          {e.year}
+                          {ed.year}
                         </span>
-                        {e.text}
+                        {ed.text}
                       </li>
                     ))}
                   </ul>
@@ -109,10 +115,10 @@ export function Instructor() {
                 <div className="h-full rounded-2xl border border-ink/8 bg-white/70 p-6">
                   <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
                     <BadgeCheck className="h-5 w-5 text-palm" aria-hidden />
-                    Certifications
+                    {t.certifications}
                   </h3>
                   <ul className="mt-4 space-y-3">
-                    {ELIN.certifications.map((c) => (
+                    {e.certifications.map((c) => (
                       <li key={c.year} className="text-sm leading-snug text-inksoft">
                         <span className="mr-2 font-monobrand text-xs font-bold text-palm">
                           {c.year}
@@ -129,15 +135,15 @@ export function Instructor() {
               <div className="rounded-2xl border border-ink/8 bg-white/70 p-6">
                 <h3 className="flex items-center gap-2 font-display text-lg font-bold text-ink">
                   <Briefcase className="h-5 w-5 text-sky" aria-hidden />
-                  Teaching journey
+                  {t.journey}
                 </h3>
                 <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                  {ELIN.experience.map((e) => (
-                    <li key={e.text} className="text-sm leading-snug text-inksoft">
+                  {e.experience.map((ex) => (
+                    <li key={ex.text} className="text-sm leading-snug text-inksoft">
                       <span className="mr-2 font-monobrand text-xs font-bold text-[#2e7d9e]">
-                        {e.year}
+                        {ex.year}
                       </span>
-                      {e.text}
+                      {ex.text}
                     </li>
                   ))}
                 </ul>
@@ -148,9 +154,9 @@ export function Instructor() {
             <Reveal delay={0.24} className="mt-10">
               <div className="rounded-2xl bg-ink p-7 text-cream sm:p-8">
                 <p className="font-monobrand text-[10px] uppercase tracking-[0.3em] text-blush">
-                  Workshops proudly held for
+                  {t.clientsKicker}
                 </p>
-                <ul className="mt-4 flex flex-wrap gap-2.5" aria-label="Organisations Elin has held workshops for">
+                <ul className="mt-4 flex flex-wrap gap-2.5" aria-label={t.clientsAria}>
                   {ELIN.clients.map((c) => (
                     <li
                       key={c}
