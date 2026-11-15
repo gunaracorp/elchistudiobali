@@ -15,6 +15,8 @@
 
 - **`Elchi-Website-Paket.zip`** — berisi showcase PDF di atas + `HANDOVER-TRILINGUAL.md`
   (dokumentasi teknis dwibahasa: dasbor admin, galeri, pengaturan, animasi) +
+  `README-Website.md` (dokumentasi utama situs, Bahasa Indonesia) + `README-FULL.md`
+  (dokumentasi lengkap dwibahasa ID+EN: arsitektur, API, worklog detail, changelog) +
   folder `screenshots/` (10 bukti visual: login admin, dasbor, galeri admin, footer CMS, lightbox, hero 3 bahasa, menu ponsel).
   **Tanpa kredensial** — password admin dikirim terpisah demi keamanan.
 
@@ -30,6 +32,8 @@ presentation: branded cover, 10 desktop sections (incl. footer partner credits),
 views, 2 admin-dashboard pages, feature summary & contact page.
 
 **One-click full package:** `Elchi-Website-Paket.zip` — showcase PDF + bilingual handover doc
++ `README-Website.md` (main site documentation, Bahasa Indonesia) + `README-FULL.md`
+(full bilingual ID+EN documentation: architecture, API, detailed worklog, changelog)
 + visual proof screenshots. No credentials inside (delivered separately for security).
 
 **Extras:** `screenshots/showcase/` — 12 full-resolution source screenshots.
