@@ -17,14 +17,14 @@ Kini studio bisa mengelola situsnya sendiri, seperti WordPress:
 3. Tiga tab dasbor (Bahasa Indonesia):
    - **Booking Masuk** — semua reservasi dari situs, waktu WITA, tombol "Hubungi via WhatsApp" per pemesan.
    - **Galeri** — tambah foto (unggah dari perangkat ≤ 6 MB, atau URL gambar), edit keterangan, urutkan naik/turun, hapus. Foto di sini **langsung tampil di galeri situs**; jika daftar dikosongkan, situs memakai 8 foto bawaan.
-   - **Pengaturan** — Alamat Studio, Nomor WhatsApp, Email, Jam Operasional, URL Instagram + Ganti Password. Perubahan langsung tampil di footer & tombol WhatsApp situs.
+   - **Pengaturan** — Alamat Studio, Nomor WhatsApp, Email (bisa beberapa, pisahkan dengan koma), Jam Operasional, URL Instagram + Ganti Password. Tombol **Publish** menyimpan perubahan langsung ke situs; tombol **Download Excel** di sebelahnya mengekspor semua booking ke CSV siap-Excel.
 
 **Keamanan (MVP, tanpa dependensi baru):** password disimpan sebagai hash scrypt ber-salt; sesi = cookie `httpOnly` bertanda tangan HMAC (masa berlaku 7 hari); semua API admin menolak request tanpa sesi. Sebelum dipakai produksi skala besar, tinggal naik kelas ke NextAuth + peran (catatan MVP ada di kode).
 
 **Data yang diisi dari dokumen resmi Anda (seed):**
-- Alamat kantor dari NIB: *BTS Business Park, Jalan Dewi Sartika No. 2B Building, Banjar Segara Kuta, Tuban, Kuta, Kabupaten Badung, Bali 80361* — tampil di kartu Studio footer (bisa diubah kapan saja di Pengaturan).
+- Alamat studio confirmed (dari Anda): *Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361, Indonesia* — tampil di kartu Studio footer (bisa diubah kapan saja di Pengaturan).
 - WhatsApp (dari Anda): **+62 823-3957-0355** → tombol chat hijau melayang + kartu WhatsApp footer + link per booking di dasbor.
-- Email perusahaan dari NIB: `ptelchistudiobali@gmail.com`.
+- Tiga email studio — semuanya aktif (dari Anda): `ptelchistudiobali@gmail.com`, `elchistudio@gmail.com`, `info@elchistudio.com` — tampil berjajar di kartu Email footer (dipisahkan koma di Pengaturan).
 - 8 foto galeri bawaan dari brosur resmi.
 
 Dokumen privat (KTP, NPWP, akta, susunan direksi) **tidak pernah** dipublikasikan di situs — hanya data perusahaan publik (nama, alamat kantor, email, telepon) yang dipakai.

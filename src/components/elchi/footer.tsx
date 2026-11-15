@@ -64,6 +64,10 @@ export function Footer() {
   const address = settings?.studio_address?.trim() || "";
   const wa = settings?.studio_whatsapp?.trim() || "";
   const email = settings?.studio_email?.trim() || "";
+  /** Multiple emails supported — comma-separated in /admin (all active). */
+  const emails = email
+    ? email.split(",").map((e) => e.trim()).filter(Boolean)
+    : [];
   const hours = settings?.studio_hours?.trim() || "";
   const instagram = settings?.instagram_url?.trim() || "";
   const hasSocials = Boolean(instagram || wa || email);
@@ -169,15 +173,17 @@ export function Footer() {
                   <Mail className="h-4 w-4" aria-hidden /> {t.mailT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  {email ? (
+                  {emails.length > 0 ? (
                     <>
-                      <a
-                        href={`mailto:${email}`}
-                        className="break-all font-semibold text-cream transition-colors hover:text-blush"
-                      >
-                        {email}
-                      </a>
-                      <br />
+                      {emails.map((e, i) => (
+                        <a
+                          key={e}
+                          href={`mailto:${e}`}
+                          className={`block break-all font-semibold text-cream transition-colors hover:text-blush${i > 0 ? " mt-1" : ""}`}
+                        >
+                          {e}
+                        </a>
+                      ))}
                       <span className="mt-1.5 block text-xs text-cream/60">{t.mailB}</span>
                     </>
                   ) : (
@@ -240,7 +246,7 @@ export function Footer() {
                 )}
                 {email && (
                   <a
-                    href={`mailto:${email}`}
+                    href={`mailto:${emails[0] ?? email}`}
                     aria-label="Email Elchí Studio Bali"
                     className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/25 text-cream/80 transition-colors hover:border-blush hover:text-blush"
                   >

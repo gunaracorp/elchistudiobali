@@ -21,9 +21,11 @@ const ADMIN_PASSWORD =
 
 const DEFAULT_SETTINGS = {
   studio_address:
-    "BTS Business Park, Jalan Dewi Sartika No. 2B Building, Banjar Segara Kuta, Tuban, Kuta, Kabupaten Badung, Bali 80361",
+    "Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361, Indonesia",
   studio_whatsapp: "+62 823-3957-0355",
-  studio_email: "ptelchistudiobali@gmail.com",
+  // Tiga email studio — semuanya aktif (dipisahkan koma, footer menampilkan semuanya)
+  studio_email:
+    "ptelchistudiobali@gmail.com, elchistudio@gmail.com, info@elchistudio.com",
   studio_hours: "",
   instagram_url: "",
 };

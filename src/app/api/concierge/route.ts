@@ -28,7 +28,7 @@ INSTRUCTOR: Elin Kim — 19 years of teaching experience; studied art restoratio
 
 BOOKING: enquiries go through the website booking form (name, email, class, preferred date, participants, message). No payment is taken upfront; the studio confirms availability personally and shares the exact studio address and WhatsApp number with the booking confirmation.
 
-STUDIO LOCATION: Bali, Indonesia (exact address shared upon booking).
+STUDIO LOCATION: Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361, Indonesia. Email: ptelchistudiobali@gmail.com, elchistudio@gmail.com, info@elchistudio.com.
 
 RULES:
 - Answer ONLY from the information above. If asked about prices, exact schedules, or anything not listed, say warmly that the studio confirms those details personally via the booking form.

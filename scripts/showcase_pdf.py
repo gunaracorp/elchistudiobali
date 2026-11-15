@@ -43,7 +43,7 @@ DESKTOP = [
     ("06-gallery",      "06 · Galeri Interaktif + Lightbox", "Interactive gallery with lightbox"),
     ("07-booking",      "07 · Formulir Booking", "Booking form — direct to studio"),
     ("08-faq",          "08 · FAQ", "Frequently asked questions"),
-    ("09-footer",       "09 · Kontak, WhatsApp & Alamat", "Footer — WhatsApp, email & NIB address"),
+    ("09-footer",       "09 · Kontak, WhatsApp & Alamat", "Footer — WhatsApp, email & studio address"),
     ("09b-credits",     "10 · Kredit Partner di Footer", "Footer partner credits — design, hosting, legal"),
 ]
 MOBILE = [
@@ -237,7 +237,7 @@ def closing(c: canvas.Canvas):
     items = [
         ("Booking Masuk", "Setiap reservasi dari situs langsung tampil di dasbor — lengkap dengan tombol WhatsApp per pemesan."),
         ("Galeri", "Unggah foto dari perangkat atau URL, atur keterangan dan urutan — foto langsung tampil di galeri situs."),
-        ("Pengaturan", "Alamat studio (dari NIB), nomor WhatsApp, email, jam operasional, dan Instagram — perubahan langsung tayang."),
+        ("Pengaturan", "Alamat studio confirmed, nomor WhatsApp, email, jam operasional, dan Instagram — tombol Publish menyimpan, Download Excel mengekspor booking."),
         ("Keamanan", "Password terenkripsi scrypt, sesi cookie aman 7 hari, semua API admin terproteksi."),
     ]
     y = PAGE_H - 260
@@ -251,12 +251,15 @@ def closing(c: canvas.Canvas):
         y -= 58
 
     c.setFillColor(BLUSH)
-    c.roundRect(64, 96, PAGE_W - 128, 58, 12, stroke=0, fill=1)
+    c.roundRect(64, 88, PAGE_W - 128, 70, 12, stroke=0, fill=1)
     c.setFillColor(ROSEDEEP)
     c.setFont("SansSC-Bold", 12.5)
-    c.drawString(84, 132, "Kontak studio:  WhatsApp +62 823-3957-0355   ·   ptelchistudiobali@gmail.com")
+    c.drawString(84, 136, "Kontak studio:  WhatsApp +62 823-3957-0355   ·   ptelchistudiobali@gmail.com")
     c.setFont("SansSC", 10.5)
-    c.drawString(84, 114, "BTS Business Park, Jalan Dewi Sartika No. 2B, Tuban, Kuta, Kabupaten Badung, Bali 80361")
+    c.drawString(84, 117, "Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361, Indonesia")
+    c.setFillColor(ROSEDEEP)
+    c.setFont("SansSC", 9.5)
+    c.drawString(84, 100, "Email aktif:  elchistudio@gmail.com   ·   info@elchistudio.com")
     c.setFillColor(HexColor("#8A6F62"))
     c.setFont("SansSC", 9)
     c.drawRightString(PAGE_W - 64, 30, "Kredensial admin dikirim terpisah demi keamanan. © 2026 PT. Elchi Studio Bali")

@@ -222,21 +222,21 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
   },
   contact: {
     en: {
-      title: "Contact & Studio Address — BTS Business Park, Kuta, Bali",
+      title: "Contact & Studio Address — Tibubeneng, Kuta Utara, Bali",
       description:
-        "Find Elchí Studio Bali: BTS Business Park, Jalan Dewi Sartika No. 2B, Tuban, Kuta, Badung, Bali 80361. WhatsApp +62 823-3957-0355 · ptelchistudiobali@gmail.com.",
+        "Find Elchí Studio Bali: Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia. Email ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355.",
       crumb: "Contact",
     },
     id: {
-      title: "Kontak & Alamat Studio — Kuta, Badung, Bali",
+      title: "Kontak & Alamat Studio — Tibubeneng, Kuta Utara, Bali",
       description:
-        "Temukan Elchí Studio Bali: BTS Business Park, Jalan Dewi Sartika No. 2B, Tuban, Kuta, Badung, Bali 80361. WhatsApp +62 823-3957-0355 · ptelchistudiobali@gmail.com.",
+        "Temukan Elchí Studio Bali: Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia. Email ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355.",
       crumb: "Kontak",
     },
     ko: {
-      title: "연락처 & 스튜디오 주소 — 발리 쿠타",
+      title: "연락처 & 스튜디오 주소 — 발리 쿠타 우타라",
       description:
-        "Elchí Studio Bali 위치: BTS Business Park, Jalan Dewi Sartika No. 2B, Tuban, Kuta, Badung, Bali 80361. WhatsApp +62 823-3957-0355.",
+        "Elchí Studio Bali 위치: Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia. 이메일 ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355.",
       crumb: "연락처",
     },
   },
@@ -324,12 +324,19 @@ export const CONSULTANT_KEYWORDS = [
 
 const STUDIO_ADDRESS = {
   "@type": "PostalAddress",
-  streetAddress: "BTS Business Park, Jalan Dewi Sartika No. 2B Building, Banjar Segara Kuta, Tuban",
-  addressLocality: "Kuta",
+  streetAddress: "Gg. Puji No. 9B, Tibubeneng",
+  addressLocality: "Kuta Utara",
   addressRegion: "Bali",
   postalCode: "80361",
   addressCountry: "ID",
 };
+
+/** All three studio emails — confirmed active by the studio owner. */
+export const STUDIO_EMAILS = [
+  "ptelchistudiobali@gmail.com",
+  "elchistudio@gmail.com",
+  "info@elchistudio.com",
+];
 
 const STUDIO_ORG = {
   "@type": "EducationalOrganization",
@@ -345,7 +352,13 @@ const STUDIO_ORG = {
   availableLanguage: ["en", "id", "ko"],
   slogan: "Let's make something memorable together.",
   telephone: "+62 823-3957-0355",
-  email: "ptelchistudiobali@gmail.com",
+  email: STUDIO_EMAILS[0],
+  contactPoint: STUDIO_EMAILS.map((email) => ({
+    "@type": "ContactPoint",
+    contactType: "customer service",
+    email,
+    availableLanguage: ["en", "id", "ko"],
+  })),
   founder: {
     "@type": "Person",
     name: "Elin Kim",

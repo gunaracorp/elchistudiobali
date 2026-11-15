@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import {
-  Building2, CalendarHeart, CheckCircle2, ImagePlus, Images, Inbox,
+  Building2, CalendarHeart, CheckCircle2, Download, ImagePlus, Images, Inbox,
   KeyRound, Link2, Loader2, LogOut, Mail, MapPin, MessageCircle, RefreshCcw,
   Settings, Trash2, ArrowUpCircle, ArrowDownCircle, ExternalLink, Eye, EyeOff,
 } from "lucide-react";
@@ -533,7 +533,7 @@ function GalleryCard({
 const SETTING_FIELDS: { key: string; label: string; hint?: string; textarea?: boolean; icon: typeof MapPin }[] = [
   { key: "studio_address", label: "Alamat Studio", hint: "Tampil di kartu Studio pada footer situs.", textarea: true, icon: MapPin },
   { key: "studio_whatsapp", label: "Nomor WhatsApp", hint: "Format bebas; tombol chat otomatis memakai nomor ini.", icon: MessageCircle },
-  { key: "studio_email", label: "Email Studio", hint: "Tampil di kartu Email pada footer situs.", icon: Mail },
+  { key: "studio_email", label: "Email Studio", hint: "Boleh lebih dari satu — pisahkan dengan koma; semuanya tampil di kartu Email pada footer situs.", icon: Mail },
   { key: "studio_hours", label: "Jam Operasional (opsional)", hint: "Kosongkan bila tidak ingin ditampilkan.", icon: CalendarHeart },
   { key: "instagram_url", label: "URL Instagram (opsional)", hint: "Kosongkan bila belum ada akun resmi.", icon: Link2 },
 ];
@@ -543,6 +543,8 @@ function SettingsTab() {
   const [busy, setBusy] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const [dlBusy, setDlBusy] = useState(false);
+  const [dlMsg, setDlMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   // Ganti password
   const [cur, setCur] = useState("");
@@ -575,6 +577,39 @@ function SettingsTab() {
       setError(e instanceof Error ? e.message : "Gagal menyimpan.");
     } finally {
       setBusy(false);
+    }
+  }
+
+  /** Download Excel: export semua booking ke CSV (dibuka rapi di Excel/Sheets). */
+  async function downloadBookings() {
+    setDlBusy(true);
+    setDlMsg(null);
+    try {
+      const res = await fetch("/api/admin/bookings");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Gagal memuat booking.");
+      const rows: BookingRow[] = Array.isArray(data.bookings) ? data.bookings : [];
+      const cols: (keyof BookingRow)[] = [
+        "createdAt", "name", "email", "phone", "classType",
+        "participants", "preferredDate", "status", "message",
+      ];
+      const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
+      // BOM + pemisah ";" agar langsung rapi saat dibuka di Excel regional Indonesia
+      const csv =
+        "\uFEFF" +
+        [cols.join(";"), ...rows.map((r) => cols.map((c) => esc(r[c])).join(";"))].join("\r\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `elchi-bookings-${new Date().toISOString().slice(0, 10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      setDlMsg({ ok: true, text: `Excel diunduh ✓ (${rows.length} booking)` });
+    } catch (e) {
+      setDlMsg({ ok: false, text: e instanceof Error ? e.message : "Gagal mengunduh." });
+    } finally {
+      setDlBusy(false);
     }
   }
 
@@ -640,15 +675,27 @@ function SettingsTab() {
             );
           })}
         </div>
-        <div className="mt-6 flex items-center gap-4">
+        <div className="mt-6 flex flex-wrap items-center gap-4">
           <button
             type="button" onClick={save} disabled={busy}
             className="inline-flex items-center gap-2 rounded-full bg-rosedeep px-7 py-3 text-sm font-semibold text-white shadow-[0_8px_22px_rgba(201,58,108,0.35)] transition-transform hover:scale-[1.03] disabled:opacity-70"
           >
             {busy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <CheckCircle2 className="h-4 w-4" aria-hidden />}
-            Simpan Pengaturan
+            Publish
+          </button>
+          <button
+            type="button" onClick={downloadBookings} disabled={dlBusy}
+            className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-paper disabled:opacity-70"
+          >
+            {dlBusy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : <Download className="h-4 w-4" aria-hidden />}
+            Download Excel
           </button>
           {saved && <p className="text-sm font-medium text-palm">Tersimpan — situs sudah diperbarui ✓</p>}
+          {dlMsg && (
+            <p role="status" className={`text-sm font-medium ${dlMsg.ok ? "text-palm" : "text-rosedeep"}`}>
+              {dlMsg.text}
+            </p>
+          )}
           {error && <p role="alert" className="text-sm font-medium text-rosedeep">{error}</p>}
         </div>
       </div>
