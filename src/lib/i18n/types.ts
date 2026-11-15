@@ -95,6 +95,10 @@ export type Dict = {
     sub: string;
     cardTitle: Text3;
     cardBody: string;
+    lightboxAria: string;
+    closeAria: string;
+    prevAria: string;
+    nextAria: string;
   };
   booking: {
     aria: string;
@@ -139,9 +143,13 @@ export type Dict = {
     start: string;
     browse: string;
     studioT: string;
-    studioB: string;
-    enqT: string;
-    enqB: string;
+    studioEmpty: string;
+    waT: string;
+    waB: string;
+    waCta: string;
+    waFloatAria: string;
+    mailT: string;
+    mailB: string;
     compT: string;
     compB: string;
     blurb: string;

@@ -16,6 +16,8 @@ import { Booking } from "./booking";
 import { Faq } from "./faq";
 import { Footer } from "./footer";
 import { Concierge } from "./concierge";
+import { WhatsAppFloat } from "./whatsapp";
+import { ScrollProgress } from "./motion";
 
 /**
  * SiteExperience — the living one-page journey of Elchí Studio Bali.
@@ -45,6 +47,7 @@ function SiteShell() {
         {d.meta.skip}
       </a>
       <Loader onDone={onDone} />
+      <ScrollProgress />
       <Cursor />
       <Navbar />
       <main>
@@ -60,6 +63,7 @@ function SiteShell() {
       </main>
       <Footer />
       <Concierge />
+      <WhatsAppFloat />
     </div>
   );
 }

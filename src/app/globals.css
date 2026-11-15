@@ -208,6 +208,13 @@ body {
 }
 .animate-softpulse { animation: softpulse 2s ease-in-out infinite; }
 
+/* Expanding ring for the WhatsApp float button */
+@keyframes waping {
+  0% { transform: scale(1); opacity: 0.45; }
+  100% { transform: scale(1.85); opacity: 0; }
+}
+.animate-waping { animation: waping 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+
 /* Outlined display text (hero layering) */
 .text-stroke-ink {
   -webkit-text-stroke: 1.5px var(--color-ink);
@@ -250,7 +257,7 @@ textarea:focus-visible, select:focus-visible, [tabindex]:focus-visible {
 /* Respect reduced motion globally */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .animate-marquee, .animate-floaty, .animate-spin-slow, .animate-softpulse {
+  .animate-marquee, .animate-floaty, .animate-spin-slow, .animate-softpulse, .animate-waping {
     animation: none !important;
   }
   *, *::before, *::after {

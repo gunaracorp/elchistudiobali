@@ -1,28 +1,34 @@
 "use client";
 
-import { useState } from "react";
-import { MapPin, Mail, MessageCircle, ShieldCheck } from "lucide-react";
+import { MapPin, Mail, ShieldCheck, Clock } from "lucide-react";
 import { Reveal, Magnetic } from "./motion";
-import { AdminModal } from "./admin-modal";
 import { LanguageSwitcher } from "./language-switcher";
+import { WhatsAppIcon } from "./whatsapp";
 import { useSite, useContent } from "./locale-provider";
+import { useSettings, waHref } from "@/lib/site-settings";
 
 /**
- * Footer + Contact — dark editorial close.
- * Company name (PT. Elchi Studio Bali) is public record from the
- * registration documents; no private identifiers are exposed.
- * The trilingual switcher gets a second home here too.
+ * Footer + Contact — dark editorial close, now CMS-driven.
+ * Address / WhatsApp / Email come from studio settings (editable in
+ * /admin → Pengaturan, seeded from the official NIB documents).
+ * Company name (PT. Elchi Studio Bali) is public record; no private
+ * identifiers are exposed. The trilingual switcher lives here too.
  */
 export function Footer() {
-  const [adminOpen, setAdminOpen] = useState(false);
   const { d } = useSite();
   const { classes } = useContent();
+  const settings = useSettings();
   const t = d.footer;
 
   const go = (href: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const address = settings?.studio_address?.trim() || "";
+  const wa = settings?.studio_whatsapp?.trim() || "";
+  const email = settings?.studio_email?.trim() || "";
+  const hours = settings?.studio_hours?.trim() || "";
 
   return (
     <footer id="contact" aria-label={t.aria} className="relative bg-ink text-cream">
@@ -50,7 +56,6 @@ export function Footer() {
                   onClick={go("#booking")}
                   className="inline-flex items-center gap-2 rounded-full bg-rose px-8 py-4 text-base font-semibold text-white shadow-[0_14px_34px_rgba(231,90,135,0.4)] transition-transform duration-300 hover:scale-105"
                 >
-                  <MessageCircle className="h-5 w-5" aria-hidden />
                   {t.start}
                 </a>
               </Magnetic>
@@ -67,23 +72,82 @@ export function Footer() {
           </Reveal>
 
           <Reveal delay={0.2}>
-            <dl className="mx-auto mt-12 grid max-w-3xl gap-4 text-left sm:grid-cols-3">
+            <dl className="mx-auto mt-12 grid max-w-4xl gap-4 text-left sm:grid-cols-2 lg:grid-cols-4">
+              {/* Studio address (from settings; falls back to invitation text) */}
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
                   <MapPin className="h-4 w-4" aria-hidden /> {t.studioT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  {t.studioB}
+                  {address || t.studioEmpty}
+                  {address && (
+                    <>
+                      <br />Bali, Indonesia.
+                    </>
+                  )}
+                  {hours && (
+                    <span className="mt-2 flex items-center gap-1.5 text-xs text-cream/60">
+                      <Clock className="h-3.5 w-3.5" aria-hidden /> {hours}
+                    </span>
+                  )}
                 </dd>
               </div>
+              {/* WhatsApp (from settings) */}
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
-                  <Mail className="h-4 w-4" aria-hidden /> {t.enqT}
+                  <WhatsAppIcon className="h-4 w-4" /> {t.waT}
                 </dt>
                 <dd className="mt-2 text-sm leading-relaxed text-cream/85">
-                  {t.enqB}
+                  {wa ? (
+                    <>
+                      <a
+                        href={waHref(wa)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-semibold text-cream transition-colors hover:text-blush"
+                      >
+                        {wa}
+                      </a>
+                      <br />
+                      <a
+                        href={waHref(wa)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-[#25D366] px-4 py-1.5 text-xs font-semibold text-white transition-transform hover:scale-105"
+                      >
+                        <WhatsAppIcon className="h-3.5 w-3.5" /> {t.waCta}
+                      </a>
+                      <br />
+                      <span className="mt-1.5 block text-xs text-cream/60">{t.waB}</span>
+                    </>
+                  ) : (
+                    t.waB
+                  )}
                 </dd>
               </div>
+              {/* Email (from settings) */}
+              <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
+                <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
+                  <Mail className="h-4 w-4" aria-hidden /> {t.mailT}
+                </dt>
+                <dd className="mt-2 text-sm leading-relaxed text-cream/85">
+                  {email ? (
+                    <>
+                      <a
+                        href={`mailto:${email}`}
+                        className="break-all font-semibold text-cream transition-colors hover:text-blush"
+                      >
+                        {email}
+                      </a>
+                      <br />
+                      <span className="mt-1.5 block text-xs text-cream/60">{t.mailB}</span>
+                    </>
+                  ) : (
+                    t.mailB
+                  )}
+                </dd>
+              </div>
+              {/* Company */}
               <div className="rounded-2xl border border-cream/10 bg-cream/5 p-5">
                 <dt className="flex items-center gap-2 font-monobrand text-[10px] uppercase tracking-[0.25em] text-blush">
                   <ShieldCheck className="h-4 w-4" aria-hidden /> {t.compT}
@@ -152,18 +216,15 @@ export function Footer() {
           <LanguageSwitcher variant="dark" />
           <div className="flex items-center gap-5">
             <p className="font-script text-sm text-cream/45">{t.made}</p>
-            <button
-              type="button"
-              onClick={() => setAdminOpen(true)}
+            <a
+              href="/admin"
               className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/35 transition-colors hover:text-blush"
             >
               {t.admin}
-            </button>
+            </a>
           </div>
         </div>
       </div>
-
-      <AdminModal open={adminOpen} onOpenChange={setAdminOpen} />
     </footer>
   );
 }

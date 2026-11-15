@@ -1,10 +1,54 @@
-# Elchí Studio Bali — Dokumentasi Trilingual (ID · EN · 한국어) / Trilingual Documentation
+# Elchí Studio Bali — Dokumentasi Trilingual + Dasbor Admin (ID · EN · 한국어) / Trilingual Documentation + Admin CMS
 
-> **ID / English** — Diperbarui 15 November 2026 · Updated 15 November 2026
+> **ID / English** — Diperbarui 15 November 2026 (rev. 2: dasbor admin CMS, WhatsApp, animasi baru) · Updated 15 November 2026
 
 ---
 
 ## Bahasa Indonesia
+
+### 🆕 Dasbor Admin ala WordPress (`/admin`)
+
+Kini studio bisa mengelola situsnya sendiri, seperti WordPress:
+
+1. Buka **`/admin`** (atau klik "Studio Admin" di footer situs).
+2. Masuk dengan:
+   - **Email:** `ptelchistudiobali@gmail.com` (email resmi perusahaan dari NIB)
+   - **Password:** dibuat acak saat seed — lihat laporan penyerahan; **segera ganti** di dasbor → Pengaturan → Ganti Password Admin.
+3. Tiga tab dasbor (Bahasa Indonesia):
+   - **Booking Masuk** — semua reservasi dari situs, waktu WITA, tombol "Hubungi via WhatsApp" per pemesan.
+   - **Galeri** — tambah foto (unggah dari perangkat ≤ 6 MB, atau URL gambar), edit keterangan, urutkan naik/turun, hapus. Foto di sini **langsung tampil di galeri situs**; jika daftar dikosongkan, situs memakai 8 foto bawaan.
+   - **Pengaturan** — Alamat Studio, Nomor WhatsApp, Email, Jam Operasional, URL Instagram + Ganti Password. Perubahan langsung tampil di footer & tombol WhatsApp situs.
+
+**Keamanan (MVP, tanpa dependensi baru):** password disimpan sebagai hash scrypt ber-salt; sesi = cookie `httpOnly` bertanda tangan HMAC (masa berlaku 7 hari); semua API admin menolak request tanpa sesi. Sebelum dipakai produksi skala besar, tinggal naik kelas ke NextAuth + peran (catatan MVP ada di kode).
+
+**Data yang diisi dari dokumen resmi Anda (seed):**
+- Alamat kantor dari NIB: *BTS Business Park, Jalan Dewi Sartika No. 2B Building, Banjar Segara Kuta, Tuban, Kuta, Kabupaten Badung, Bali 80361* — tampil di kartu Studio footer (bisa diubah kapan saja di Pengaturan).
+- WhatsApp (dari Anda): **+62 823-3957-0355** → tombol chat hijau melayang + kartu WhatsApp footer + link per booking di dasbor.
+- Email perusahaan dari NIB: `ptelchistudiobali@gmail.com`.
+- 8 foto galeri bawaan dari brosur resmi.
+
+Dokumen privat (KTP, NPWP, akta, susunan direksi) **tidak pernah** dipublikasikan di situs — hanya data perusahaan publik (nama, alamat kantor, email, telepon) yang dipakai.
+
+### 🆕 WhatsApp & kontak langsung
+
+- Tombol **WhatsApp hijau melayang** (dengan animasi denyut cincin) di kanan bawah, di atas tombol concierge — membuka `wa.me` ke nomor studio.
+- Kartu WhatsApp di footer dengan tombol "Chat WhatsApp".
+- Nomor & email semuanya diatur dari dasbor (Pengaturan).
+
+### 🆕 Animasi baru
+
+1. **Scroll progress bar** — pita gradien rose→sun di atas layar, mengikuti posisi gulir.
+2. **Tilt 3D kartu kelas** — kartu sedikit berputar mengikuti kursor (dinonaktifkan otomatis untuk sentuh & `prefers-reduced-motion`).
+3. **Lightbox galeri** — klik foto mana pun: zoom sinematik dengan spring, backdrop blur, navigasi panah ←/→ + tombol Escape, keterangan tulisan tangan.
+4. **Pulse WhatsApp** — cincin denyut lembut pada tombol chat.
+
+### 🆕 Pengayaan konten dari dokumen
+
+Data klien (14 organisasi, termasuk City of Parramatta, fetch tv, lyka, University of Sydney Union, Ku-ring-gai Council, Inner West, Sylvania Waters) dan riwayat pendidikan lengkap Elin (AAA Paris 2006, IFALPES Chambéry 2005) — semuanya sudah terverifikasi dari brosur resmi dan tampil di profil instruktur.
+
+---
+
+## Bahasa Indonesia (bagian sebelumnya)
 
 ### Ringkasan
 
@@ -69,6 +113,36 @@ Situs Elchí Studio Bali kini sepenuhnya **trilingual**: Bahasa Indonesia, Bahas
 ---
 
 ## English
+
+### 🆕 WordPress-style admin dashboard (`/admin`)
+
+The studio can now manage its own site:
+
+1. Open **`/admin`** (or the "Studio Admin" link in the footer).
+2. Sign in with the seeded account: **`ptelchistudiobali@gmail.com`** (official company email from the NIB) + the password delivered in the handover notes — **change it immediately** in Dashboard → Pengaturan → Ganti Password Admin.
+3. Three tabs (Indonesian UI):
+   - **Booking Masuk** — every site reservation, WITA timestamps, one-tap WhatsApp contact per guest.
+   - **Galeri** — add photos (device upload ≤ 6 MB or image URL), edit captions, reorder, delete. Dashboard photos **appear on the site instantly**; an empty list falls back to the 8 built-in editorial shots.
+   - **Pengaturan** — studio address, WhatsApp number, email, opening hours, Instagram URL, plus password change. Saves go live on the site immediately.
+
+**Security (MVP, zero new dependencies):** scrypt-salted password hashes; HMAC-signed httpOnly session cookie (7 days); every admin API rejects unauthenticated calls. Upgrade path documented in code (NextAuth + roles).
+
+**Seeded from your official documents:** NIB office address, WhatsApp +62 823-3957-0355, company email, and the 8 brochure photos. Private identity documents are never published.
+
+### 🆕 WhatsApp & direct contact
+
+Green floating WhatsApp button (pulsing ring animation) above the concierge bubble, WhatsApp card in the footer with a "Chat on WhatsApp" pill — all driven by the dashboard settings.
+
+### 🆕 New animations
+
+1. **Scroll progress ribbon** (rose→sun gradient) tracking scroll position.
+2. **3D card tilt** on the class cards (fine pointers only, reduced-motion aware).
+3. **Gallery lightbox** — spring zoom, blurred backdrop, arrow/Esc keyboard navigation.
+4. **WhatsApp pulse ring**.
+
+---
+
+## English (previous sections)
 
 ### Summary
 

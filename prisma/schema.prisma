@@ -19,3 +19,28 @@ model Booking {
   status        String   @default("new")
   createdAt     DateTime @default(now())
 }
+
+/// Admin CMS account (WordPress-style login).
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Editable site settings (address, WhatsApp, email, hours, social).
+model SiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+/// Gallery entries managed from the admin dashboard.
+model GalleryImage {
+  id        String   @id @default(cuid())
+  src       String
+  caption   String
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+}

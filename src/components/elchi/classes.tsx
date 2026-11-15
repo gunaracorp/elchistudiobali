@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Clock, Backpack, Info } from "lucide-react";
-import { Reveal, Magnetic } from "./motion";
+import { Reveal, Magnetic, Tilt } from "./motion";
 import { TornPaper, FlowerSticker } from "./torn";
 import { useContent, useSite } from "./locale-provider";
 import { fill } from "@/lib/i18n";
@@ -75,6 +75,7 @@ export function Classes() {
             const a = ACCENT[c.accent] ?? ACCENT.blush;
             return (
               <Reveal as="li" key={c.slug} delay={(i % 3) * 0.1} className="h-full">
+                <Tilt className="h-full">
                 <article
                   data-cursor
                   className={`group relative flex h-full flex-col overflow-hidden rounded-[1.6rem] bg-white shadow-[0_6px_24px_rgba(52,35,28,0.07)] transition-all duration-500 hover:-translate-y-2 ${a.glow}`}
@@ -134,6 +135,7 @@ export function Classes() {
                     </div>
                   </div>
                 </article>
+                </Tilt>
               </Reveal>
             );
           })}

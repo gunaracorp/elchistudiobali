@@ -200,3 +200,72 @@ export function useSectionY(
   });
   return useTransform(scrollYProgress, [0, 1], [from, to]);
 }
+
+/* ----------------------------- ScrollProgress ------------------------------ */
+
+/**
+ * ScrollProgress — thin watercolour ribbon at the very top of the
+ * viewport, filling left → right as the visitor scrolls.
+ */
+export function ScrollProgress() {
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 26, mass: 0.4 });
+  if (reduce) return null;
+  return (
+    <motion.div
+      aria-hidden
+      className="fixed inset-x-0 top-0 z-[95] h-[3px] origin-left"
+      style={{
+        scaleX,
+        background: "linear-gradient(90deg, #e75a87 0%, #ff8a5e 55%, #ffc24d 100%)",
+      }}
+    />
+  );
+}
+
+/* ----------------------------------- Tilt ---------------------------------- */
+
+/**
+ * Tilt — gentle 3D pointer tilt for cards (fine pointers only,
+ * skipped under reduced motion; touch devices untouched).
+ */
+export function Tilt({
+  children,
+  className,
+  max = 5,
+}: {
+  children: ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  const reduce = useReducedMotion();
+  const ref = useRef<ElementRef<"div">>(null);
+  const rx = useSpring(0, { stiffness: 240, damping: 22, mass: 0.5 });
+  const ry = useSpring(0, { stiffness: 240, damping: 22, mass: 0.5 });
+
+  if (reduce) return <div className={className}>{children}</div>;
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      style={{ rotateX: rx, rotateY: ry, transformPerspective: 1000 }}
+      onPointerMove={(e) => {
+        const el = ref.current;
+        if (!el || e.pointerType !== "mouse") return;
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        ry.set(px * max);
+        rx.set(-py * max);
+      }}
+      onPointerLeave={() => {
+        rx.set(0);
+        ry.set(0);
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
