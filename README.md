@@ -95,6 +95,8 @@ Lalu **Settings → Pages → Branch: `main` → Root → Save**.
 
 > 💡 **Strategi dua sayap:** situs Next.js (CMS, booking database, admin) tetap di-deploy ke **Vercel** seperti panduan README-FULL.md Anda; halaman statis ini jadi landing cepat + backup di GitHub Pages. Keduanya memakai nomor WhatsApp yang sama.
 
+> 🛠️ **Kenapa deploy Vercel branch `gh-pages` pernah gagal `NEXT_NO_VERSION`?** Karena preset framework Next.js di dashboard Vercel (terdeteksi dari branch `main`) dipaksakan ke branch statis ini yang tidak punya `package.json`. **Sudah diperbaiki permanen** lewat file `vercel.json` di branch ini (`framework: null`, tanpa install & build, `outputDirectory: "."`) — Vercel kini menyajikannya sebagai situs statis murni, dan build apa pun (produksi maupun preview) akan hijau otomatis. Tidak perlu mengubah apa pun di dashboard.
+
 ---
 
 ## 💬 Mengubah Nomor / Pesan WhatsApp
