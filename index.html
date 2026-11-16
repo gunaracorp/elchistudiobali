@@ -430,6 +430,14 @@ footer ul a:hover{color:#fff;padding-left:6px}
 .wa-bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:11px 13px;box-shadow:0 2px 8px rgba(52,35,28,.1);max-width:92%;align-self:flex-start}
 .wa-bubble p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink)}
 .wa-time{display:block;font-size:10px;color:var(--inksoft);text-align:right;margin-top:5px}
+.wa-bubble.user{background:var(--wa);border-radius:14px 4px 14px 14px;align-self:flex-end}
+.wa-bubble.user p{color:#fff}
+.wa-bubble.user .wa-time{color:rgba(255,255,255,.8)}
+.wa-bubble.typing p{display:flex;gap:4px;align-items:center;padding:3px 0}
+.wa-bubble.typing i{width:7px;height:7px;border-radius:50%;background:#c9b8a6;animation:waTyping 1.2s infinite}
+.wa-bubble.typing i:nth-child(2){animation-delay:.15s}
+.wa-bubble.typing i:nth-child(3){animation-delay:.3s}
+@keyframes waTyping{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-4px);opacity:1}}
 .wa-chips{display:flex;flex-wrap:wrap;gap:7px}
 .wa-chip{border:1.5px solid var(--wa);background:#fff;color:#0b6e4f;font-weight:700;font-size:12px;font-family:inherit;padding:7px 11px;border-radius:999px;cursor:pointer;transition:.22s;line-height:1.2}
 .wa-chip:hover{background:var(--wa);color:#fff;transform:translateY(-1px)}
@@ -801,7 +809,7 @@ footer ul a:hover{color:#fff;padding-left:6px}
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
       </button>
     </form>
-    <div class="wa-foot"><span data-i18n="wa.powered">Powered by WhatsApp</span> · +62 823-3957-0355</div>
+    <div class="wa-foot"><span data-i18n="wa.aiHint">AI replies instantly · continue in WhatsApp anytime</span> · +62 823-3957-0355</div>
   </section>
 
   <button class="wa-btn" id="wa-toggle" type="button" aria-expanded="false" aria-controls="wa-panel" data-i18n-attr="aria-label:footer.waFloatAria">
@@ -857,7 +865,7 @@ const WA_STR = {
       chipMsg2:"Hello! Could you share the price list for the workshops?",
       chipMsg3:"Hello! I'd like to organise a private or group workshop in Bali — could you help with the options?",
       chipMsg4:"Hello Elin! ✨ Just saying hi from your website.",
-      inputPh:"Type your message…", msgAria:"Message", sendAria:"Send via WhatsApp", emptyWarn:"Please type a message first 🙏", powered:"Powered by WhatsApp",
+      inputPh:"Type your message…", msgAria:"Message", sendAria:"Send via WhatsApp", emptyWarn:"Please type a message first 🙏", powered:"Powered by WhatsApp", aiHint:"AI instant replies · continue in WhatsApp anytime",
       labels:{name:"Name", email:"Email", phone:"Phone / WhatsApp", date:"Preferred date", cls:"Class", people:"Participants", msg:"Message"}},
   id:{tipTitle:"Chat langsung dengan Ms Elin 🌸", heroWa:"Booking via WhatsApp", generic:"Halo Elchí Studio Bali! Saya ingin booking kelas — boleh tanya ketersediaan dan detailnya?",
       cls:"Halo Elchí Studio Bali! Saya ingin booking kelas \"{name}\". Boleh tanya ketersediaan dan detailnya?",
@@ -868,7 +876,7 @@ const WA_STR = {
       chipMsg2:"Halo! Boleh minta daftar harga lokakaryanya?",
       chipMsg3:"Halo! Saya ingin mengadakan lokakarya privat/grup di Bali — boleh bantu info pilihannya?",
       chipMsg4:"Halo Elin! ✨ Mampir sapa dari website-nya.",
-      inputPh:"Tulis pesan Anda…", msgAria:"Pesan", sendAria:"Kirim via WhatsApp", emptyWarn:"Tulis dulu pesannya ya 🙏", powered:"Ditenagai WhatsApp",
+      inputPh:"Tulis pesan Anda…", msgAria:"Pesan", sendAria:"Kirim via WhatsApp", emptyWarn:"Tulis dulu pesannya ya 🙏", powered:"Ditenagai WhatsApp", aiHint:"Balasan instan dari AI · lanjut ke WhatsApp kapan saja",
       labels:{name:"Nama", email:"Email", phone:"Telepon / WhatsApp", date:"Tanggal pilihan", cls:"Kelas", people:"Jumlah peserta", msg:"Pesan"}},
   ko:{tipTitle:"엘린님과 바로 채팅하기 🌸", heroWa:"WhatsApp으로 예약하기", generic:"안녕하세요 엘치 스튜디오 발리! 클래스 예약이 가능한지 문의드려요.",
       cls:"안녕하세요 엘치 스튜디오 발리! \"{name}\" 워크숍 예약을 원해요. 가능한 일정과 세부 사항을 알려주실 수 있나요?",
@@ -879,7 +887,7 @@ const WA_STR = {
       chipMsg2:"안녕하세요! 워크숍 가격표를 알려주실 수 있나요?",
       chipMsg3:"안녕하세요! 발리에서 단체 또는 개인 워크숍을 진행하고 싶어요. 옵션을 안내해주실 수 있나요?",
       chipMsg4:"엘린님 안녕하세요! ✨ 웹사이트에서 인사드려요.",
-      inputPh:"메시지를 입력하세요…", msgAria:"메시지", sendAria:"WhatsApp으로 보내기", emptyWarn:"먼저 메시지를 입력해주세요 🙏", powered:"Powered by WhatsApp",
+      inputPh:"메시지를 입력하세요…", msgAria:"메시지", sendAria:"WhatsApp으로 보내기", emptyWarn:"먼저 메시지를 입력해주세요 🙏", powered:"Powered by WhatsApp", aiHint:"AI 즉시 답장 · 언제든 WhatsApp으로 계속",
       labels:{name:"이름", email:"이메일", phone:"전화 / WhatsApp", date:"희망 날짜", cls:"클래스", people:"참가 인원", msg:"메시지"}}
 };
 const SEO_STR = {
@@ -1071,13 +1079,42 @@ $$("[data-wa-chip]").forEach(b=> b.addEventListener("click", ()=>{
   const msg = b.dataset.waChip === "1" ? w.generic : w["chipMsg" + b.dataset.waChip];
   window.open(waUrl(msg), "_blank", "noopener");
 }));
-$("#wa-form").addEventListener("submit", e=>{
+/* ===== AI concierge (v6) — pesan dijawab AI otomatis; bila gagal -> lanjut ke WhatsApp ===== */
+const WA_AI_URL = "https://elchistudio.vercel.app/api/concierge"; /* ← domain Vercel Anda. Kalau berbeda, ganti hanya baris ini. */
+let aiHistory = [];
+function waNow(){ let txt=""; try{ txt = new Intl.DateTimeFormat(LOCALE[LANG], {hour:"2-digit", minute:"2-digit"}).format(new Date()); }catch(_){} return txt; }
+function waBubble(cls, html){
+  const b = document.createElement("div");
+  b.className = "wa-bubble" + (cls ? " " + cls : "");
+  b.innerHTML = html;
+  const body = $(".wa-body", waPanel);
+  body.insertBefore(b, $(".wa-chips", waPanel));
+  body.scrollTop = body.scrollHeight;
+  return b;
+}
+$("#wa-form").addEventListener("submit", async e=>{
   e.preventDefault();
   const inp = $("#wa-input"), v = inp.value.trim();
   if(!v){ toast(WA_STR[LANG].emptyWarn); inp.focus(); return; }
-  toast(WA_STR[LANG].toast);
-  window.open(waUrl(v), "_blank", "noopener");
   inp.value = "";
+  const userB = waBubble("user", `<p>${esc(v)}</p><time class="wa-time">${waNow()}</time>`);
+  const typB = waBubble("typing", `<p><i></i><i></i><i></i></p>`);
+  try{
+    const ctl = new AbortController(), tm = setTimeout(()=>ctl.abort(), 20000);
+    const res = await fetch(WA_AI_URL, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({messages: [...aiHistory, {role:"user", content:v}], locale: LANG}), signal: ctl.signal});
+    clearTimeout(tm);
+    const data = await res.json();
+    const reply = String((data && data.reply) || "").trim();
+    if(!reply) throw new Error("empty reply");
+    aiHistory.push({role:"user", content:v}, {role:"assistant", content:reply});
+    if(aiHistory.length > 12) aiHistory = aiHistory.slice(-12);
+    typB.remove();
+    waBubble("", `<p>${esc(reply)}</p><time class="wa-time">${waNow()}</time>`);
+  }catch(_){
+    typB.remove();
+    toast(WA_STR[LANG].toast);
+    window.open(waUrl(v), "_blank", "noopener");
+  }
 });
 function buildFormMessage(d){
   const w = WA_STR[LANG], L = w.labels;
