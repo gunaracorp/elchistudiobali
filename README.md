@@ -97,7 +97,17 @@ Lalu **Settings → Pages → Branch: `main` → Root → Save**.
 
 > 🛠️ **Kenapa deploy Vercel branch `gh-pages` pernah gagal `NEXT_NO_VERSION`?** Karena preset framework Next.js di dashboard Vercel (terdeteksi dari branch `main`) dipaksakan ke branch statis ini yang tidak punya `package.json`. **Sudah diperbaiki permanen** lewat file `vercel.json` di branch ini (`framework: null`, tanpa install & build, `outputDirectory: "."`) — Vercel kini menyajikannya sebagai situs statis murni, dan build apa pun (produksi maupun preview) akan hijau otomatis. Tidak perlu mengubah apa pun di dashboard.
 
-> 🤖 **v6 — Chat widget kini dijawab AI (Elin virtual).** Pesan yang Anda ketik di panel chat diteruskan ke AI concierge di `elchistudio.vercel.app/api/concierge`; bila AI tidak tersedia, pesan otomatis dilanjutkan ke WhatsApp Ms Elin. Untuk mengaktifkan jawaban AI, isi env var `AI_API_KEY` (+ `AI_BASE_URL`, `AI_MODEL`) di Vercel — panduan lengkap ada di PDF tutorial pemula.
+> 🤖 **v6/v7 — Chat widget kini dijawab AI (Elin virtual) + credit konsultan desain di footer.** Pesan yang Anda ketik di panel chat diteruskan ke AI concierge di `elchistudio.vercel.app/api/concierge`; bila AI tidak tersedia, pesan otomatis dilanjutkan ke WhatsApp Ms Elin. Footer kini memuat credit "Konsultan desain website — Gunara Corp" dengan tautan ke `elchistudio.vercel.app`.
+>
+> **Mengaktifkan jawaban AI** (isi 3 Environment Variables di Vercel → Settings → Environment Variables, lalu Redeploy):
+>
+> | Name | Value |
+> |---|---|
+> | `AI_API_KEY` | kunci Z.ai Anda (dari chat.z.ai, awalan `6d9cd0…`) |
+> | `AI_BASE_URL` | `https://api.z.ai/api/paas/v4` |
+> | `AI_MODEL` | `glm-4.5-flash` (gratis — sudah diuji aktif tanpa isi saldo) |
+>
+> Alternatif: kunci Google AI Studio (`AI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai`, `AI_MODEL=gemini-3.8-flash`). Jangan pernah menaruh kunci API di file repo ini — hanya di Environment Variables Vercel. Panduan lengkap: PDF tutorial pemula.
 
 ---
 
