@@ -1,10 +1,10 @@
 <div align="center">
 
-# 🌺 Elchí Studio Bali — Website Standar Internasional (Edisi Statis v4)
+# 🌺 Elchí Studio Bali — Website Standar Internasional (Edisi Statis v5)
 
 **Satu file `index.html` — siap di-push ke GitHub & langsung live di GitHub Pages.**
 
-Trilingual 🇮🇩 Indonesia · 🇬🇧 English · 🇰🇷 한국어 — WhatsApp Ms Elin terintegrasi penuh — animasi ringan tanpa membebani.
+Trilingual 🇮🇩 Indonesia · 🇬🇧 English · 🇰🇷 한국어 — **widget chat WhatsApp plugin-style** langsung ke Ms Elin Kim — animasi ringan tanpa membebani.
 
 ![WhatsApp](https://img.shields.io/badge/WhatsApp-%2B62_823_3957_0355-25D366?style=for-the-badge&logo=whatsapp&logoColor=white)
 ![Languages](https://img.shields.io/badge/3_Bahasa-ID_%C2%B7_EN_%C2%B7_KO-e75a87?style=for-the-badge)
@@ -18,7 +18,7 @@ Trilingual 🇮🇩 Indonesia · 🇬🇧 English · 🇰🇷 한국어 — What
 
 | # | Fitur | Detail |
 |---|-------|--------|
-| 1 | 💬 **WhatsApp Ms Elin penuh** | Tombol hijau melayang (dengan tooltip "Chat langsung dengan Ms Elin"), tombol **Book via WhatsApp** di hero, **tombol booking per kelas** dengan pesan otomatis, kartu WhatsApp di footer, dan **form booking yang menyusun pesan rapi lalu membuka WhatsApp** langsung ke **+62 823-3957-0355** |
+| 1 | 💬 **Widget chat WhatsApp + integrasi penuh** | **Widget chat popup ala plugin** (tombol hijau melayang → panel chat: foto profil Elin Kim, status *Online*, sapaan otomatis, **4 tombol balasan cepat** — booking · harga · acara grup · sapaan, dan **kotak pesan bebas** yang langsung membuka WhatsApp) — plus tombol **Book via WhatsApp** di hero, **tombol booking per kelas** dengan pesan otomatis, kartu WhatsApp di footer, dan **form booking yang menyusun pesan rapi** — semuanya langsung ke **+62 823-3957-0355 (Ms Elin Kim)** |
 | 2 | 🌍 **Trilingual instan** | ID / EN / KO di navbar — auto-detect bahasa browser pengunjung, pilihan tersimpan, mendukung `?lang=ko` di URL |
 | 3 | 🎨 **Brand asli dipertahankan** | Palet resmi studio (rose `#e75a87`, coral, sunshine, sky, palm), Fraunces + Pacifico + Manrope, foto-foto asli dari brosur studio |
 | 4 | 🎬 **Animasi ringan (GPU-friendly)** | Preloader, reveal-on-scroll bertahap, parallax hero, marquee kelas, blob watercolour mengapung, counter statistik (19 tahun · 250+ ulasan · usia 2–80 · 50 peserta), kartu hover-lift, galeri lightbox, kursor kustom — semua hanya `transform`/`opacity` (60 fps, hemat baterai) |
@@ -39,6 +39,8 @@ elchi-studio-website/
 └── preview/        ← tangkapan layar hasil verifikasi browser
     ├── desktop-classes.png
     ├── desktop-footer.png
+    ├── desktop-wa-widget.png   ← widget chat WhatsApp (desktop)
+    ├── mobile-wa-widget.png    ← widget chat WhatsApp (ponsel)
     └── mobile-hero.png
 ```
 

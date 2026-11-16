@@ -55,7 +55,8 @@
   --maxw:1180px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+@supports not (overflow-x:clip){html{overflow-x:hidden}}
 body{font-family:var(--f-sans);background:var(--cream);color:var(--ink);line-height:1.65;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
@@ -412,6 +413,40 @@ footer ul a:hover{color:#fff;padding-left:6px}
 .wa-btn .pulse{position:absolute;inset:0;border-radius:50%;background:var(--wa);animation:wapulse 2.2s ease-out infinite;z-index:1}
 @keyframes wapulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.55);opacity:0}100%{transform:scale(1.55);opacity:0}}
 
+/* ---------- whatsapp chat widget ---------- */
+#wa-panel{position:absolute;right:0;bottom:86px;width:min(344px,calc(100vw - 44px));max-height:min(76vh,560px);background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 24px 64px rgba(52,35,28,.32);display:flex;flex-direction:column;opacity:0;visibility:hidden;transform:translateY(14px) scale(.96);transform-origin:100% 100%;transition:.32s cubic-bezier(.34,1.56,.64,1);pointer-events:none}
+#wa-float.open #wa-panel{opacity:1;visibility:visible;transform:none;pointer-events:auto}
+.wa-head{display:flex;align-items:center;gap:11px;padding:13px 14px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;flex:none}
+.wa-ava{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.75);flex:none}
+.wa-id{flex:1;min-width:0;line-height:1.3}
+.wa-id b{font-size:14.5px;display:block}
+.wa-status{font-size:11.5px;opacity:.94;display:flex;align-items:center;gap:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wa-dot{width:7px;height:7px;border-radius:50%;background:#a4f9be;flex:none;box-shadow:0 0 0 0 rgba(164,249,190,.7);animation:wadot 2s infinite}
+@keyframes wadot{70%{box-shadow:0 0 0 6px rgba(164,249,190,0)}100%{box-shadow:0 0 0 0 rgba(164,249,190,0)}}
+.wa-x{flex:none;width:30px;height:30px;border:none;background:rgba(255,255,255,.18);color:#fff;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.25s;padding:0}
+.wa-x:hover{background:rgba(255,255,255,.34);transform:rotate(90deg)}
+.wa-x svg{width:14px;height:14px}
+.wa-body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:14px;background:#efe6d8}
+.wa-bubble{background:#fff;border-radius:4px 14px 14px 14px;padding:11px 13px;box-shadow:0 2px 8px rgba(52,35,28,.1);max-width:92%;align-self:flex-start}
+.wa-bubble p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink)}
+.wa-time{display:block;font-size:10px;color:var(--inksoft);text-align:right;margin-top:5px}
+.wa-chips{display:flex;flex-wrap:wrap;gap:7px}
+.wa-chip{border:1.5px solid var(--wa);background:#fff;color:#0b6e4f;font-weight:700;font-size:12px;font-family:inherit;padding:7px 11px;border-radius:999px;cursor:pointer;transition:.22s;line-height:1.2}
+.wa-chip:hover{background:var(--wa);color:#fff;transform:translateY(-1px)}
+.wa-form{display:flex;gap:8px;align-items:center;padding:10px;background:#fff;border-top:1px solid #eee1d0;flex:none}
+#wa-input{flex:1;min-width:0;border:1.5px solid #e7dccd;background:#faf6f0;border-radius:999px;padding:10px 15px;font:inherit;font-size:13px;color:var(--ink);outline:none;transition:.2s}
+#wa-input:focus{border-color:var(--wa);background:#fff}
+.wa-send{flex:none;width:40px;height:40px;border:none;border-radius:50%;background:var(--wa);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.25s;padding:0;box-shadow:0 6px 16px rgba(37,211,102,.45)}
+.wa-send:hover{transform:scale(1.07)}
+.wa-send svg{width:18px;height:18px}
+.wa-foot{flex:none;font-size:10.5px;font-weight:600;text-align:center;color:var(--inksoft);padding:7px;background:#fff}
+.wa-btn .ic-x{display:none}
+#wa-float.open .wa-btn .ic-wa{display:none}
+#wa-float.open .wa-btn .ic-x{display:block}
+#wa-float.open .wa-btn .pulse{animation:none;opacity:0}
+#wa-float.open .wa-tip{opacity:0}
+
+
 /* ---------- toast ---------- */
 #toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,80px);background:var(--ink);color:var(--cream);padding:14px 24px;border-radius:99px;font-weight:700;font-size:14px;box-shadow:var(--shadow-lift);z-index:1600;opacity:0;transition:.4s;pointer-events:none}
 #toast.show{transform:translate(-50%,0);opacity:1}
@@ -448,6 +483,8 @@ footer ul a:hover{color:#fff;padding-left:6px}
   .book-form{padding:24px 20px}
   #wa-float{right:16px;bottom:16px}
   .wa-tip{display:none}
+  #wa-panel{right:-4px;bottom:74px;width:calc(100vw - 34px);max-height:64vh}
+  .wa-body{padding:12px}
 }
 </style>
 </head>
@@ -733,13 +770,45 @@ footer ul a:hover{color:#fff;padding-left:6px}
   </div>
 </footer>
 
-<!-- ============ WHATSAPP FLOAT ============ -->
+<!-- ============ WHATSAPP CHAT WIDGET ============ -->
 <div id="wa-float">
   <div class="wa-tip"><span data-i18n="wa.tipTitle">Chat directly with Ms Elin</span><small data-i18n="footer.waB">The fastest way to reach us — chat directly with the studio.</small></div>
-  <a class="wa-btn" data-wa="generic" href="#" target="_blank" rel="noopener" data-i18n-attr="aria-label:footer.waFloatAria">
+
+  <section id="wa-panel" role="dialog" aria-label="WhatsApp chat — Elin Kim" aria-hidden="true" data-i18n-attr="aria-label:wa.panelAria">
+    <div class="wa-head">
+      <img class="wa-ava" data-img="elin" alt="Elin Kim" width="44" height="44">
+      <div class="wa-id">
+        <b>Elin Kim</b>
+        <span class="wa-status"><i class="wa-dot" aria-hidden="true"></i><span data-i18n="wa.online">Online</span> · Elchí Studio Bali</span>
+      </div>
+      <button class="wa-x" type="button" aria-label="Close chat" data-i18n-attr="aria-label:wa.closeAria"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
+    </div>
+    <div class="wa-body">
+      <div class="wa-bubble">
+        <p data-i18n="wa.greet">Hi! 👋 I'm Elin — welcome to Elchí Studio Bali! Ask me anything about our workshops, or tap a quick reply below 🌸</p>
+        <time class="wa-time"></time>
+      </div>
+      <div class="wa-chips">
+        <button type="button" class="wa-chip" data-wa-chip="1" data-i18n="wa.chip1">Book a class 🎨</button>
+        <button type="button" class="wa-chip" data-wa-chip="2" data-i18n="wa.chip2">Ask prices 💰</button>
+        <button type="button" class="wa-chip" data-wa-chip="3" data-i18n="wa.chip3">Group &amp; private events 👥</button>
+        <button type="button" class="wa-chip" data-wa-chip="4" data-i18n="wa.chip4">Just saying hi 👋</button>
+      </div>
+    </div>
+    <form class="wa-form" id="wa-form">
+      <input id="wa-input" type="text" maxlength="500" autocomplete="off" placeholder="Type your message…" aria-label="Message" data-i18n-attr="placeholder:wa.inputPh;aria-label:wa.msgAria">
+      <button class="wa-send" type="submit" aria-label="Send via WhatsApp" data-i18n-attr="aria-label:wa.sendAria">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      </button>
+    </form>
+    <div class="wa-foot"><span data-i18n="wa.powered">Powered by WhatsApp</span> · +62 823-3957-0355</div>
+  </section>
+
+  <button class="wa-btn" id="wa-toggle" type="button" aria-expanded="false" aria-controls="wa-panel" data-i18n-attr="aria-label:footer.waFloatAria">
     <span class="pulse" aria-hidden="true"></span>
-    <svg aria-hidden="true"><use href="#i-wa"/></svg>
-  </a>
+    <svg class="ic-wa" aria-hidden="true"><use href="#i-wa"/></svg>
+    <svg class="ic-x" aria-hidden="true"><use href="#i-x"/></svg>
+  </button>
 </div>
 
 <!-- lightbox -->
@@ -781,15 +850,36 @@ const LOCALE = {en:"en-GB", id:"id-ID", ko:"ko-KR"};
 const WA_STR = {
   en:{tipTitle:"Chat directly with Ms Elin 🌸", heroWa:"Book via WhatsApp", generic:"Hello Elchí Studio Bali! I'd like to book a class — could you share availability and details?",
       cls:"Hello Elchí Studio Bali! I'd like to book the \"{name}\" workshop. Could you share availability and details?",
-      custom:"Lainnya / custom request", formHead:"🌺 New booking request — Elchí Studio Bali", toast:"Opening WhatsApp…", none:"—",
+      custom:"Lainnya / custom request", formHead:"✿ New booking request — Elchí Studio Bali", toast:"Opening WhatsApp…", none:"—",
+      panelAria:"WhatsApp chat — Elin Kim", online:"Online", closeAria:"Close chat",
+      greet:"Hi! 👋 I'm Elin — welcome to Elchí Studio Bali! Ask me anything about our workshops, or tap a quick reply below 🌸",
+      chip1:"Book a class 🎨", chip2:"Ask prices 💰", chip3:"Group & private events 👥", chip4:"Just saying hi 👋",
+      chipMsg2:"Hello! Could you share the price list for the workshops?",
+      chipMsg3:"Hello! I'd like to organise a private or group workshop in Bali — could you help with the options?",
+      chipMsg4:"Hello Elin! ✨ Just saying hi from your website.",
+      inputPh:"Type your message…", msgAria:"Message", sendAria:"Send via WhatsApp", emptyWarn:"Please type a message first 🙏", powered:"Powered by WhatsApp",
       labels:{name:"Name", email:"Email", phone:"Phone / WhatsApp", date:"Preferred date", cls:"Class", people:"Participants", msg:"Message"}},
   id:{tipTitle:"Chat langsung dengan Ms Elin 🌸", heroWa:"Booking via WhatsApp", generic:"Halo Elchí Studio Bali! Saya ingin booking kelas — boleh tanya ketersediaan dan detailnya?",
       cls:"Halo Elchí Studio Bali! Saya ingin booking kelas \"{name}\". Boleh tanya ketersediaan dan detailnya?",
-      custom:"Lainnya / permintaan khusus", formHead:"🌺 Permintaan booking baru — Elchí Studio Bali", toast:"Membuka WhatsApp…", none:"—",
+      custom:"Lainnya / permintaan khusus", formHead:"✿ Permintaan booking baru — Elchí Studio Bali", toast:"Membuka WhatsApp…", none:"—",
+      panelAria:"Obrolan WhatsApp — Elin Kim", online:"Online", closeAria:"Tutup obrolan",
+      greet:"Hai! 👋 Saya Elin — selamat datang di Elchí Studio Bali! Tanya apa saja seputar lokakarya kami, atau pilih balasan cepat di bawah 🌸",
+      chip1:"Booking kelas 🎨", chip2:"Tanya harga 💰", chip3:"Acara grup & privat 👥", chip4:"Sapa dulu 👋",
+      chipMsg2:"Halo! Boleh minta daftar harga lokakaryanya?",
+      chipMsg3:"Halo! Saya ingin mengadakan lokakarya privat/grup di Bali — boleh bantu info pilihannya?",
+      chipMsg4:"Halo Elin! ✨ Mampir sapa dari website-nya.",
+      inputPh:"Tulis pesan Anda…", msgAria:"Pesan", sendAria:"Kirim via WhatsApp", emptyWarn:"Tulis dulu pesannya ya 🙏", powered:"Ditenagai WhatsApp",
       labels:{name:"Nama", email:"Email", phone:"Telepon / WhatsApp", date:"Tanggal pilihan", cls:"Kelas", people:"Jumlah peserta", msg:"Pesan"}},
   ko:{tipTitle:"엘린님과 바로 채팅하기 🌸", heroWa:"WhatsApp으로 예약하기", generic:"안녕하세요 엘치 스튜디오 발리! 클래스 예약이 가능한지 문의드려요.",
       cls:"안녕하세요 엘치 스튜디오 발리! \"{name}\" 워크숍 예약을 원해요. 가능한 일정과 세부 사항을 알려주실 수 있나요?",
-      custom:"기타 / 맞춤 요청", formHead:"🌺 새 예약 요청 — 엘치 스튜디오 발리", toast:"WhatsApp 열기…", none:"—",
+      custom:"기타 / 맞춤 요청", formHead:"✿ 새 예약 요청 — 엘치 스튜디오 발리", toast:"WhatsApp 열기…", none:"—",
+      panelAria:"WhatsApp 채팅 — Elin Kim", online:"온라인", closeAria:"채팅 닫기",
+      greet:"안녕하세요! 👋 저는 엘린이에요 — 엘치 스튜디오 발리에 오신 것을 환영해요! 워크숍에 대해 궁금한 점을 물어보시거나 아래에서 빠른 답장을 골라보세요 🌸",
+      chip1:"클래스 예약 🎨", chip2:"가격 문의 💰", chip3:"단체·개인 이벤트 👥", chip4:"인사만 할래요 👋",
+      chipMsg2:"안녕하세요! 워크숍 가격표를 알려주실 수 있나요?",
+      chipMsg3:"안녕하세요! 발리에서 단체 또는 개인 워크숍을 진행하고 싶어요. 옵션을 안내해주실 수 있나요?",
+      chipMsg4:"엘린님 안녕하세요! ✨ 웹사이트에서 인사드려요.",
+      inputPh:"메시지를 입력하세요…", msgAria:"메시지", sendAria:"WhatsApp으로 보내기", emptyWarn:"먼저 메시지를 입력해주세요 🙏", powered:"Powered by WhatsApp",
       labels:{name:"이름", email:"이메일", phone:"전화 / WhatsApp", date:"희망 날짜", cls:"클래스", people:"참가 인원", msg:"메시지"}}
 };
 const SEO_STR = {
@@ -945,7 +1035,7 @@ function renderAll(){
   renderMarquee(); renderNav(); renderStats(); renderValues(); renderClasses();
   renderExperiences(); renderElin(); renderGallery(); renderFaq(); renderSteps(); renderSelect();
   applyI18n();
-  observeReveals(); refreshWaLinks();
+  observeReveals(); refreshWaLinks(); waUpdateTime();
 }
 
 /* ============ WhatsApp ============ */
@@ -954,6 +1044,41 @@ function waClassUrl(name){ return waUrl(WA_STR[LANG].cls.replace("{name}", name)
 function refreshWaLinks(){
   $$("[data-wa='generic']").forEach(a=>{ a.href = waUrl(WA_STR[LANG].generic); });
 }
+
+/* ============ WhatsApp chat widget ============ */
+const waFloat = $("#wa-float"), waPanel = $("#wa-panel"), waToggle = $("#wa-toggle");
+let waPanelOpen = false;
+function waUpdateTime(){
+  if(!waPanelOpen) return;
+  let txt = "";
+  try{ txt = new Intl.DateTimeFormat(LOCALE[LANG], {hour:"2-digit", minute:"2-digit"}).format(new Date()); }catch(_){}
+  $(".wa-time", waPanel).textContent = txt;
+}
+function waSetPanel(open){
+  waPanelOpen = open;
+  waFloat.classList.toggle("open", open);
+  waToggle.setAttribute("aria-expanded", String(open));
+  waPanel.setAttribute("aria-hidden", String(!open));
+  if(open) waUpdateTime();
+}
+waToggle.addEventListener("click", ()=> waSetPanel(!waPanelOpen));
+$(".wa-x", waPanel).addEventListener("click", ()=> waSetPanel(false));
+document.addEventListener("keydown", e=>{ if(e.key === "Escape" && waPanelOpen) waSetPanel(false); });
+document.addEventListener("click", e=>{ if(waPanelOpen && !waFloat.contains(e.target)) waSetPanel(false); });
+$$("[data-wa-chip]").forEach(b=> b.addEventListener("click", ()=>{
+  const w = WA_STR[LANG];
+  toast(w.toast);
+  const msg = b.dataset.waChip === "1" ? w.generic : w["chipMsg" + b.dataset.waChip];
+  window.open(waUrl(msg), "_blank", "noopener");
+}));
+$("#wa-form").addEventListener("submit", e=>{
+  e.preventDefault();
+  const inp = $("#wa-input"), v = inp.value.trim();
+  if(!v){ toast(WA_STR[LANG].emptyWarn); inp.focus(); return; }
+  toast(WA_STR[LANG].toast);
+  window.open(waUrl(v), "_blank", "noopener");
+  inp.value = "";
+});
 function buildFormMessage(d){
   const w = WA_STR[LANG], L = w.labels;
   const lines = [w.formHead, ""];
