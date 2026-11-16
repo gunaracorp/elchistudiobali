@@ -64,15 +64,15 @@ type Msg = { role: string; content: string };
 /**
  * Provider 1 — any OpenAI-compatible API via env vars:
  *   AI_API_KEY   (required to activate this provider)
- *   AI_BASE_URL  (optional; default https://api.openai.com/v1)
+ *   AI_BASE_URL  (optional; default https://api.z.ai/api/paas/v4)
  *                Google Gemini: https://generativelanguage.googleapis.com/v1beta/openai
- *                Z.ai:          https://api.z.ai/api/paas/v4
- *   AI_MODEL     (optional; default gpt-4o-mini — e.g. gemini-2.5-flash / glm-4.6)
+ *                OpenAI:        https://api.openai.com/v1
+ *   AI_MODEL     (optional; default glm-4.5-flash — e.g. gemini-3.8-flash / gpt-4o-mini)
  */
 async function callOpenAICompatible(messages: Msg[]): Promise<string> {
   const key = process.env.AI_API_KEY as string;
-  const base = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
-  const model = process.env.AI_MODEL || "gpt-4o-mini";
+  const base = (process.env.AI_BASE_URL || "https://api.z.ai/api/paas/v4").replace(/\/+$/, "");
+  const model = process.env.AI_MODEL || "glm-4.5-flash";
   const ctl = new AbortController();
   const tm = setTimeout(() => ctl.abort(), 30000);
   try {
