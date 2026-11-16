@@ -71,12 +71,6 @@ type Msg = { role: string; content: string };
  *
  * NOTE: Production env vars (Z.ai GLM-4.5-flash) configured on Vercel — 17 Nov 2026.
  */
-/**
- * Vercel function budget — reasoning models can exceed the 10 s Hobby default;
- * declaring 60 s keeps long AI calls alive (lower plan caps are respected automatically).
- */
-export const maxDuration = 60;
-
 async function callOpenAICompatible(messages: Msg[]): Promise<string> {
   const key = process.env.AI_API_KEY as string;
   const base = (process.env.AI_BASE_URL || "https://api.z.ai/api/paas/v4").replace(/\/+$/, "");
