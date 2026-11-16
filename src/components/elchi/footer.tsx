@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MapPin, Mail, ShieldCheck, Clock, PenTool, Server, Scale, Instagram } from "lucide-react";
+import { MapPin, Mail, ShieldCheck, Clock, PenTool, Server, Scale, Instagram, Globe, Briefcase } from "lucide-react";
 import { Reveal, Magnetic } from "./motion";
 import { WhatsAppIcon } from "./whatsapp";
 import { useSite, useContent } from "./locale-provider";
@@ -38,9 +38,40 @@ const CREDITS = [
     icon: Scale,
     label: "Support system & legal by",
     name: "PT Top Konsultan Internasional",
-    legal: "topkonsultan.web.id · pusatperizinan.com",
+    legal: "topkonsultan.web.id",
     href: "https://topkonsultan.web.id",
   },
+  {
+    icon: ShieldCheck,
+    label: "Permits by",
+    name: "PusatPerizinan.com",
+    legal: "pusatperizinan.com",
+    href: "https://pusatperizinan.com",
+  },
+  {
+    icon: Briefcase,
+    label: "Consulting by",
+    name: "GConsultant",
+    legal: "gconsultant.web.id",
+    href: "https://gconsultant.web.id",
+  },
+  {
+    icon: Globe,
+    label: "Holding",
+    name: "GunaraCorp",
+    legal: "gunara.web.id",
+    href: "https://gunara.web.id",
+  },
+];
+
+/** Gunara Corp network — interlinked family of brands (SEO + trust). */
+const NETWORK = [
+  { name: "GunaraCorp", href: "https://gunara.web.id" },
+  { name: "Top Konsultan", href: "https://topkonsultan.web.id" },
+  { name: "Digiman.id", href: "https://digiman.id" },
+  { name: "JuraganWebsite", href: "https://juraganwebsite.web.id" },
+  { name: "PusatPerizinan.com", href: "https://pusatperizinan.com" },
+  { name: "GConsultant", href: "https://gconsultant.web.id" },
 ];
 
 export function Footer() {
@@ -293,6 +324,39 @@ export function Footer() {
               ))}
             </ul>
           </nav>
+        </div>
+
+        {/* Gunara Corp network — the family behind the studio's website. */}
+        <div
+          aria-label="Gunara Corp network"
+          className="relative mt-10 overflow-hidden border-t border-cream/10 pt-8"
+        >
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-1 select-none whitespace-nowrap text-center font-monobrand text-[56px] font-bold uppercase leading-none tracking-[0.18em] text-cream/[0.045]"
+          >
+            Gunara Corp
+          </span>
+          <p className="relative font-monobrand text-[10px] uppercase tracking-[0.35em] text-blush">
+            Gunara Corp Network
+          </p>
+          <p className="relative mt-2 font-script text-3xl text-blush">Top Konsultan Kelas Dunia</p>
+          <div className="relative mt-5 flex flex-wrap items-center justify-center gap-x-7 gap-y-2">
+            {NETWORK.map((n) => (
+              <a
+                key={n.name}
+                href={n.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-monobrand text-[10px] uppercase tracking-[0.2em] text-cream/45 transition-colors hover:text-rose"
+              >
+                {n.name}
+              </a>
+            ))}
+          </div>
+          <p className="relative mt-4 font-monobrand text-[9px] uppercase tracking-[0.3em] text-cream/35">
+            Holding · Consulting · Digital Marketing · Web Builder · Permits · Design
+          </p>
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 sm:flex-row">
