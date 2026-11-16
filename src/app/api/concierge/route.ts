@@ -71,25 +71,45 @@ type Msg = { role: string; content: string };
  *
  * NOTE: Production env vars (Z.ai GLM-4.5-flash) configured on Vercel — 17 Nov 2026.
  */
+/**
+ * Vercel function budget — reasoning models can exceed the 10 s Hobby default;
+ * declaring 60 s keeps long AI calls alive (lower plan caps are respected automatically).
+ */
+export const maxDuration = 60;
+
 async function callOpenAICompatible(messages: Msg[]): Promise<string> {
   const key = process.env.AI_API_KEY as string;
   const base = (process.env.AI_BASE_URL || "https://api.z.ai/api/paas/v4").replace(/\/+$/, "");
   const model = process.env.AI_MODEL || "glm-4.5-flash";
-  const ctl = new AbortController();
-  const tm = setTimeout(() => ctl.abort(), 30000);
-  try {
-    const res = await fetch(`${base}/chat/completions`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 500 }),
-      signal: ctl.signal,
-    });
-    if (!res.ok) throw new Error(`AI provider responded ${res.status}`);
-    const data = await res.json();
-    return String(data?.choices?.[0]?.message?.content ?? "").trim();
-  } finally {
-    clearTimeout(tm);
+  let lastErr: unknown = new Error("AI provider unreachable");
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const ctl = new AbortController();
+    const tm = setTimeout(() => ctl.abort(), 25000);
+    try {
+      const payload: Record<string, unknown> = { model, messages, temperature: 0.6, max_tokens: 400 };
+      // GLM flash is a reasoning model — thinking mode added ~8 s latency on Vercel
+      // and pushed calls past the function timeout (the "trouble connecting" bug).
+      // Disabled = ~1-2 s answers, ideal for a chat concierge.
+      if (base.includes("z.ai")) payload.thinking = { type: "disabled" };
+      const res = await fetch(`${base}/chat/completions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+        body: JSON.stringify(payload),
+        signal: ctl.signal,
+      });
+      if (!res.ok) throw new Error(`AI provider responded ${res.status}`);
+      const data = await res.json();
+      const txt = String(data?.choices?.[0]?.message?.content ?? "").trim();
+      if (txt) return txt;
+      throw new Error("AI returned empty content");
+    } catch (e) {
+      lastErr = e;
+    } finally {
+      clearTimeout(tm);
+    }
+    if (attempt === 0) await new Promise((r) => setTimeout(r, 1000));
   }
+  throw lastErr;
 }
 
 export async function POST(req: NextRequest) {
