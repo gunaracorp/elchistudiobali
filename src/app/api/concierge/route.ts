@@ -68,6 +68,8 @@ type Msg = { role: string; content: string };
  *                Google Gemini: https://generativelanguage.googleapis.com/v1beta/openai
  *                OpenAI:        https://api.openai.com/v1
  *   AI_MODEL     (optional; default glm-4.5-flash — e.g. gemini-3.8-flash / gpt-4o-mini)
+ *
+ * NOTE: Production env vars (Z.ai GLM-4.5-flash) configured on Vercel — 17 Nov 2026.
  */
 async function callOpenAICompatible(messages: Msg[]): Promise<string> {
   const key = process.env.AI_API_KEY as string;
