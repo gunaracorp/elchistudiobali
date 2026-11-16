@@ -5,6 +5,20 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 /**
+ * CORS: izinkan landing statis (GitHub Pages) memakai AI ini juga.
+ * OPTIONS dijawab 204 dengan header CORS.
+ */
+const CORS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: CORS });
+}
+
+/**
  * AI Studio Concierge — answers strictly from the official studio
  * information below. No invented prices, schedules or addresses.
  */
@@ -42,33 +56,81 @@ const LOCALE_RULES: Record<string, string> = {
   en: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in English. Reply in warm, natural English — unless the visitor writes to you in another language, then follow the visitor.",
 };
 
+const FALLBACK =
+  "I'm having a little trouble connecting right now. Please use the booking form — it always reaches us!";
+
+type Msg = { role: string; content: string };
+
+/**
+ * Provider 1 — any OpenAI-compatible API via env vars:
+ *   AI_API_KEY   (required to activate this provider)
+ *   AI_BASE_URL  (optional; default https://api.openai.com/v1)
+ *                Google Gemini: https://generativelanguage.googleapis.com/v1beta/openai
+ *                Z.ai:          https://api.z.ai/api/paas/v4
+ *   AI_MODEL     (optional; default gpt-4o-mini — e.g. gemini-2.5-flash / glm-4.6)
+ */
+async function callOpenAICompatible(messages: Msg[]): Promise<string> {
+  const key = process.env.AI_API_KEY as string;
+  const base = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  const model = process.env.AI_MODEL || "gpt-4o-mini";
+  const ctl = new AbortController();
+  const tm = setTimeout(() => ctl.abort(), 30000);
+  try {
+    const res = await fetch(`${base}/chat/completions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({ model, messages, temperature: 0.6, max_tokens: 500 }),
+      signal: ctl.signal,
+    });
+    if (!res.ok) throw new Error(`AI provider responded ${res.status}`);
+    const data = await res.json();
+    return String(data?.choices?.[0]?.message?.content ?? "").trim();
+  } finally {
+    clearTimeout(tm);
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const messages = Array.isArray(body.messages) ? body.messages.slice(-8) : [];
     if (!messages.length) {
-      return NextResponse.json({ error: "No messages provided." }, { status: 400 });
+      return NextResponse.json({ error: "No messages provided." }, { status: 400, headers: CORS });
     }
     const localeRule = LOCALE_RULES[String(body.locale ?? "en")] ?? LOCALE_RULES.en;
+    const convo: Msg[] = [
+      { role: "system", content: `${SYSTEM_PROMPT}\n\n${localeRule}` },
+      ...messages.map((m: Msg) => ({
+        role: m.role === "user" ? "user" : "assistant",
+        content: String(m.content ?? "").slice(0, 1000),
+      })),
+    ];
 
-    const zai = await ZAI.create();
-    const completion = await zai.chat.completions.create({
-      messages: [
-        { role: "system", content: `${SYSTEM_PROMPT}\n\n${localeRule}` },
-        ...messages.map((m: { role: string; content: string }) => ({
-          role: m.role === "user" ? "user" : "assistant",
-          content: String(m.content ?? "").slice(0, 1000),
-        })),
-      ],
-    });
+    let reply = "";
 
-    const reply = completion?.choices?.[0]?.message?.content?.trim();
-    return NextResponse.json({ reply: reply || undefined });
+    // Provider 1: generic OpenAI-compatible (aktif begitu AI_API_KEY diisi di Vercel)
+    if (process.env.AI_API_KEY) {
+      try {
+        reply = await callOpenAICompatible(convo);
+      } catch (e) {
+        console.error("[concierge.openai-compatible]", e);
+      }
+    }
+
+    // Provider 2: z-ai-web-dev-sdk (fallback bawaan platform)
+    if (!reply) {
+      try {
+        const zai = await ZAI.create();
+        const completion = await zai.chat.completions.create({ messages: convo });
+        reply = String(completion?.choices?.[0]?.message?.content ?? "").trim();
+      } catch (e) {
+        console.error("[concierge.zai]", e);
+      }
+    }
+
+    return NextResponse.json({ reply: reply || FALLBACK }, { headers: CORS });
   } catch (err) {
     console.error("[concierge.POST]", err);
-    return NextResponse.json(
-      { reply: "I'm having a little trouble connecting right now. Please use the booking form — it always reaches us!" },
-      { status: 200 }
-    );
+    return NextResponse.json({ reply: FALLBACK }, { status: 200, headers: CORS });
   }
 }
