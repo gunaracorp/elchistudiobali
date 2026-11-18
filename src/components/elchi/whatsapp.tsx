@@ -16,18 +16,40 @@ export function WhatsAppIcon({ className }: { className?: string }) {
 }
 
 /**
+ * Studio default — Ms. Elin's number (mirrors the landing site). The float
+ * must NEVER disappear just because /api/settings is still empty (settings
+ * live in the deployment database, which starts blank). Override anytime
+ * via /admin → Pengaturan.
+ */
+const DEFAULT_WA = "+62 823-3957-0355";
+
+/** Pre-filled first message per locale — visitors land in a warm chat. */
+const WA_CHAT: Record<string, string> = {
+  en: "Hi Elin! I'd love to know more about your classes ✦",
+  id: "Halo Elin! Aku ingin tanya soal kelasnya ✦",
+  ko: "안녕하세요 Elin! 클래스에 대해 문의하고 싶어요 ✦",
+};
+
+/** Hover bubble next to the float. */
+const WA_BUBBLE: Record<string, string> = {
+  en: "Chat with Ms. Elin ✦ fast replies",
+  id: "Chat dengan Ms. Elin ✦ dibalas cepat",
+  ko: "Ms. Elin과 채팅 ✦ 빠른 응답",
+};
+
+/**
  * WhatsAppFloat — sticky chat button (green), stacked above the
- * concierge bubble. Number comes from studio settings (editable in
- * /admin → Pengaturan); hidden until settings load.
+ * concierge bubble. Always visible: falls back to the studio number
+ * when settings are empty, so every visitor can reach the studio.
  */
 export function WhatsAppFloat() {
-  const { d } = useSite();
+  const { d, locale } = useSite();
   const settings = useSettings();
-  if (!settings?.studio_whatsapp) return null;
+  const number = settings?.studio_whatsapp || DEFAULT_WA;
 
   return (
     <motion.a
-      href={waHref(settings.studio_whatsapp)}
+      href={waHref(number, WA_CHAT[locale] ?? WA_CHAT.en)}
       target="_blank"
       rel="noreferrer"
       aria-label={d.footer.waFloatAria}
@@ -39,6 +61,13 @@ export function WhatsAppFloat() {
       {/* soft pulse ring */}
       <span className="absolute inset-0 rounded-full bg-[#25D366] animate-waping" aria-hidden />
       <WhatsAppIcon className="relative h-7 w-7" />
+      {/* greeting bubble — announces itself once, then hover-only */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute right-[4.25rem] top-1/2 hidden -translate-y-1/2 whitespace-nowrap rounded-full border border-cream/15 bg-ink/85 px-4 py-2 font-monobrand text-[10px] uppercase tracking-[0.18em] text-blush opacity-0 shadow-xl backdrop-blur transition-opacity duration-300 group-hover:opacity-100 animate-[wabubble_9s_ease_4.8s] sm:block"
+      >
+        {WA_BUBBLE[locale] ?? WA_BUBBLE.en}
+      </span>
     </motion.a>
   );
 }
