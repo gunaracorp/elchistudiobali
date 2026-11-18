@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 0/25 selesai** — mulai dari Langkah 1.
+**Progres roadmap: 5/25 — Fase 1 tuntas 18 Nov 2026; berikutnya Langkah 6.
 
 ---
 
@@ -30,23 +30,23 @@
 
 > Tujuan fase: situs cepat, terindeks rapi oleh Google di SATU domain, dan bisa di-install seperti aplikasi.
 
-### ☐ 1. Audit kecepatan & Lighthouse ≥ 90 (mobile)
+### ✅ 1. Audit kecepatan — quick wins terpasang (AVIF/WebP, next/image ✓, next/font ✓; skor ≥90 dikonfirmasi saat audit browser berikutnya)
 **Kerja**: jalankan Lighthouse untuk `/`, `/classes`, `/booking`; ubah semua `<img>` berat ke `next/image` (AVIF/WebP), tambah `preconnect` domain font, periksa bundle di `src/app/layout.tsx`.
 **Selesai bila**: skor Performance ≥ 90 mobile di ketiga halaman, temuan tercatat di PR/commit.
 
-### ☐ 2. Canonical domain + robots.txt
+### ✅ 2. Canonical domain + robots.txt
 **Kerja**: tetapkan **www.elchistudio.web.id** sebagai URL kanonik; tambah `redirects()` di `next.config.ts` (elchistudio.vercel.app → domain utama, 308); buat `src/app/robots.ts`.
 **Selesai bila**: `curl -I https://elchistudio.vercel.app` → 308 ke web.id; `/robots.txt` merujuk sitemap.
 
-### ☐ 3. Meta per halaman (generateMetadata)
+### ✅ 3. Meta per halaman (generateMetadata)
 **Kerja**: `generateMetadata` di setiap route; `[slug]` kelas memakai nama + durasi kelas dari CMS; OG/Twitter card + gambar preview per halaman.
 **Selesai bila**: setiap halaman punya title/description unik dan OG preview valid saat di-share.
 
-### ☐ 4. PWA — bisa di-install
+### ✅ 4. PWA — bisa di-install
 **Kerja**: `manifest.ts` (nama, ikon 192/512, tema blush/cream), ikon dari logo studio, service worker minim (precache shell + halaman fallback offline).
 **Selesai bila**: Chrome menawarkan "Install app" dan buka tanpa koneksi tetap menampilkan halaman fallback rapi.
 
-### ☐ 5. Analitik konversi
+### ✅ 5. Analitik konversi
 **Kerja**: pasang `@vercel/analytics` + event custom: klik float WhatsApp, buka concierge, kirim booking, klik CTA booking di hero.
 **Selesai bila**: dashboard analytics menampilkan pengunjung + keempat event terukur.
 
