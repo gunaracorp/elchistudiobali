@@ -23,7 +23,7 @@ export default async function BlogPage({
   const locale = pickLocale(lang);
   const L = BLOG_UI[locale];
   const fmt = (iso: string) =>
-    new Intl.DateTimeFormat(locale === "ko" ? "ko-KR" : locale === "id" ? "id-ID" : "en-GB", {
+    new Intl.DateTimeFormat(locale === "zh" ? "zh-CN" : locale === "ko" ? "ko-KR" : locale === "id" ? "id-ID" : "en-GB", {
       day: "numeric",
       month: "short",
       year: "numeric",

@@ -2,6 +2,7 @@ import { CLASSES, GALLERY_SHOTS, PRIVATE_EXPERIENCES } from "@/lib/classes-data"
 import { en } from "./en";
 import { id } from "./id";
 import { ko } from "./ko";
+import { zh } from "./zh";
 import type {
   ClassContent,
   ClassSlug,
@@ -14,16 +15,17 @@ import type {
 export type { Locale, LocaleData, ClassContent, PrivateContent, GalleryShot } from "./types";
 export { LOCALES_LABELS } from "./labels";
 
-export const DICTS: Record<Locale, LocaleData> = { en, id, ko };
+export const DICTS: Record<Locale, LocaleData> = { en, id, ko, zh };
 
 export const DEFAULT_LOCALE: Locale = "en";
 export const STORAGE_KEY = "elchi-locale";
-export const LOCALE_CODES: Locale[] = ["en", "id", "ko"];
+export const LOCALE_CODES: Locale[] = ["en", "id", "ko", "zh"];
 
 /** Localized duration label from canonical minutes. */
 export function durationFor(minutes: number, locale: Locale): string {
   if (locale === "id") return `${minutes} menit`;
   if (locale === "ko") return `${minutes}분`;
+  if (locale === "zh") return `${minutes} 分钟`;
   return `${minutes} minutes`;
 }
 

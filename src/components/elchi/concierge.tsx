@@ -13,6 +13,7 @@ const VOICE: Record<string, { mic: string; tts: string }> = {
   en: { mic: "Speak your question", tts: "Read replies aloud" },
   id: { mic: "Ucapkan pertanyaanmu", tts: "Bacakan jawabannya" },
   ko: { mic: "음성으로 질문하기", tts: "답변 소리로 듣기" },
+  zh: { mic: "用语音提问", tts: "朗读回答" },
 };
 
 /**
@@ -86,7 +87,7 @@ export function Concierge() {
     if (!ttsRef.current || typeof window === "undefined" || !("speechSynthesis" in window)) return;
     try {
       const u = new SpeechSynthesisUtterance(text);
-      u.lang = { en: "en-US", id: "id-ID", ko: "ko-KR" }[locale] ?? "en-US";
+      u.lang = { en: "en-US", id: "id-ID", ko: "ko-KR", zh: "zh-CN" }[locale] ?? "en-US";
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
     } catch {
@@ -113,7 +114,7 @@ export function Concierge() {
       stop: () => void;
     };
     const rec = new (SRClass as new () => SR)();
-    rec.lang = { en: "en-US", id: "id-ID", ko: "ko-KR" }[locale] ?? "en-US";
+    rec.lang = { en: "en-US", id: "id-ID", ko: "ko-KR", zh: "zh-CN" }[locale] ?? "en-US";
     rec.interimResults = true;
     rec.continuous = false;
     rec.onresult = (e) => {

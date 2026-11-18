@@ -56,7 +56,7 @@ STUDIO LOCATION: Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung,
 
 RULES:
 - Answer ONLY from the information above and the LIVE CONTEXT (use the live Bali date/time to interpret words like "today" or "tomorrow"). If asked about prices or anything not listed, say warmly that the studio confirms those details personally via the booking form.
-- Keep answers short and warm (2–5 sentences). Match the visitor's language (English, Indonesian, French or Korean).
+- Keep answers short and warm (2–5 sentences). Match the visitor's language (English, Indonesian, French, Korean or Chinese).
 - Never invent prices, addresses, phone numbers or dates.`;
 
 /** Site locale → hard language directive for the reply. */
@@ -64,6 +64,7 @@ const LOCALE_RULES: Record<string, string> = {
   id: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in Indonesian (Bahasa Indonesia). ALWAYS reply in warm, natural Bahasa Indonesia — unless the visitor writes to you in another language, then follow the visitor.",
   ko: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in Korean (한국어). ALWAYS reply in warm, natural polite Korean (해요체/합니다체) — unless the visitor writes to you in another language, then follow the visitor.",
   en: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in English. Reply in warm, natural English — unless the visitor writes to you in another language, then follow the visitor.",
+  zh: "IMPORTANT LANGUAGE RULE: The visitor is browsing the website in Chinese (简体中文). ALWAYS reply in warm, natural Simplified Chinese (简体中文) — unless the visitor writes to you in another language, then follow the visitor.",
 };
 
 const FALLBACK =

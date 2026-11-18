@@ -20,10 +20,10 @@ export const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL || "https://www.elchistudio.web.id"
 ).replace(/\/$/, "");
 
-export const LOCALES: Locale[] = ["en", "id", "ko"];
+export const LOCALES: Locale[] = ["en", "id", "ko", "zh"];
 
 export function pickLocale(v?: string | null): Locale {
-  return v === "id" || v === "ko" || v === "en" ? v : DEFAULT_LOCALE;
+  return v === "id" || v === "ko" || v === "en" || v === "zh" ? v : DEFAULT_LOCALE;
 }
 
 /** Locale-pinned URL: English is the clean default, others get ?lang=. */
@@ -80,6 +80,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
         "발리 쿠타의 수채화 엽서, 여행 스케치, 니들펠트 & 공예 워크숍. 19년의 가르침 경험으로 예술과 즐거움을 함께합니다 — 영어, 프랑스어, 한국어 가능.",
       crumb: "홈",
     },
+    zh: {
+      title: "巴厘岛创意工作坊与艺术课程",
+      description:
+        "巴厘岛库塔的水彩明信片、旅行速写、针刺毡与定制手作工作坊。19年教学魔力带来艺术、乐趣与技能——课程以英语、法语与韩语授课。",
+      crumb: "首页",
+    },
   },
   about: {
     en: {
@@ -99,6 +105,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "Elchí Studio Bali를 만나보세요. 쿠타의 따뜻한 수채화 스튜디오에서 여행자, 가족, 팀이 진짜 미술 기술을 배웁니다.",
       crumb: "소개",
+    },
+    zh: {
+      title: "关于工作室——超越边界的创意学习体验",
+      description:
+        "认识Elchí Studio Bali：巴厘岛库塔温暖的水彩风创意工作室，旅行者、家庭与团队在这里学习真正的艺术技能——超越边界，超越语言。",
+      crumb: "关于",
     },
   },
   classes: {
@@ -120,6 +132,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
         "여행 드로잉, 수채화 엽서, 강아지 키링 펠트, 샌들 꾸미기, 티셔츠 페인팅, 크리에이티브 플로우 — 발리에서 누구나 즐기는 아트 클래스.",
       crumb: "클래스",
     },
+    zh: {
+      title: "艺术课程——巴厘岛库塔的创意工作坊",
+      description:
+        "六个对初学者友好的创意工作坊：旅行速写、水彩明信片、羊毛毡小狗挂饰、人字拖与T恤定制、Creative Flow。欢迎所有水平。",
+      crumb: "课程",
+    },
   },
   experiences: {
     en: {
@@ -139,6 +157,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "여자 모임, 생일 파티, 팀 빌딩 또는 혼자만의 창의적 여정 — 날짜와 취향에 맞춘 발리 프라이빗 아트 워크숍.",
       crumb: "체험",
+    },
+    zh: {
+      title: "私人团体与一对一艺术体验——巴厘岛",
+      description:
+        "单身派对、生日庆祝、团队建设或一个人的创意逃离——按你的日期、团体与想法量身定制的巴厘岛私人艺术工作坊。",
+      crumb: "体验",
     },
   },
   elin: {
@@ -160,6 +184,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
         "엘린 김을 만나보세요. 19년 경력의 아티스트이자 교육자, Dior·LG·현대와 함께한 이력 — 영어, 프랑스어, 한국어로 가르칩니다.",
       crumb: "엘린",
     },
+    zh: {
+      title: "Elin Kim——创始人兼主讲老师，19年教学魔力",
+      description:
+        "认识Elin Kim：拥有19年经验的艺术家与教育者，曾与Dior、LG、现代等品牌合作——在巴厘岛以英语、法语与韩语教授艺术。",
+      crumb: "老师",
+    },
   },
   gallery: {
     en: {
@@ -179,6 +209,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "수채화 엽서, 펠트 강아지, 페인팅 티셔츠, 행복한 메이커들 — Elchí Studio Bali 갤러리 미리보기. 사진을 클릭하면 크게 볼 수 있습니다.",
       crumb: "갤러리",
+    },
+    zh: {
+      title: "画廊——学生作品与工作室瞬间",
+      description:
+        "水彩明信片、羊毛毡小狗、手绘T恤与开心的创作者——Elchí Studio Bali 画廊一瞥。点击任意照片查看大图。",
+      crumb: "画廊",
     },
   },
   booking: {
@@ -200,6 +236,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
         "세 단계로 워크숍을 예약하세요: 클래스 선택, 날짜 & 시간 선택, 참여 인원 입력. 예약은 스튜디오에 바로 전달됩니다.",
       crumb: "예약",
     },
+    zh: {
+      title: "预约课程——锁定你在巴厘岛库塔的名额",
+      description:
+        "三步快速预约创意工作坊：选课程、选日期与时间、告诉我们谁会来。预约直达工作室邮箱。",
+      crumb: "预约",
+    },
   },
   faq: {
     en: {
@@ -219,6 +261,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "경험이 필요한가요? 무엇을 가져와야 하나요? 아이도 참여할 수 있나요? 발리 워크숍 예약 전 가장 많이 묻는 질문들의 답변.",
       crumb: "FAQ",
+    },
+    zh: {
+      title: "常见问题——关于艺术课程的一切",
+      description:
+        "需要经验吗？要带什么？孩子可以参加吗？旅行者在预约巴厘岛创意工作坊前最常问问题的答案。",
+      crumb: "常见问题",
     },
   },
   blog: {
@@ -240,6 +288,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
         "발리 아트 스튜디오의 이야기와 팁: 여행 스케치, 수채화 엽서, 니들펠트, 그리고 첫 크리에이티브 클래스 고르기.",
       crumb: "저널",
     },
+    zh: {
+      title: "工作室日志——来自Elchí Studio Bali的故事",
+      description:
+        "巴厘岛艺术工作室的故事、技巧与幕后：旅行速写、水彩明信片、羊毛毡，以及如何选择你的第一堂创意课。",
+      crumb: "日志",
+    },
   },
   contact: {
     en: {
@@ -259,6 +313,12 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "Elchí Studio Bali 위치: Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia. 이메일 ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355.",
       crumb: "연락처",
+    },
+    zh: {
+      title: "联系方式与工作室地址——巴厘岛",
+      description:
+        "找到Elchí Studio Bali：Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia。邮箱 ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355。",
+      crumb: "联系",
     },
   },
 };
@@ -283,7 +343,7 @@ export function buildMetadata(key: RouteKey, langParam?: string | null): Metadat
       siteName: "Elchí Studio Bali",
       type: "website",
       locale: { en: "en_US", id: "id_ID", ko: "ko_KR" }[lang],
-      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => ({ en: "en_US", id: "id_ID", ko: "ko_KR" }[l])),
+      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => ({ en: "en_US", id: "id_ID", ko: "ko_KR", zh: "zh_CN" }[l])),
       images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Elchí Studio Bali — creative art classes in Bali" }],
     },
   };
@@ -371,7 +431,7 @@ const STUDIO_ORG = {
   address: STUDIO_ADDRESS,
   areaServed: "Bali, Indonesia",
   knowsLanguage: ["en", "fr", "ko", "id"],
-  availableLanguage: ["en", "id", "ko"],
+  availableLanguage: ["en", "id", "ko", "zh"],
   slogan: "Let's make something memorable together.",
   telephone: "+62 823-3957-0355",
   email: STUDIO_EMAILS[0],
@@ -379,7 +439,7 @@ const STUDIO_ORG = {
     "@type": "ContactPoint",
     contactType: "customer service",
     email,
-    availableLanguage: ["en", "id", "ko"],
+    availableLanguage: ["en", "id", "ko", "zh"],
   })),
   founder: {
     "@type": "Person",
@@ -423,7 +483,7 @@ export function siteGraph() {
         "@id": `${SITE_URL}/#website`,
         url: SITE_URL,
         name: "Elchí Studio Bali",
-        inLanguage: ["en", "id", "ko"],
+        inLanguage: ["en", "id", "ko", "zh"],
         publisher: { "@id": `${SITE_URL}/#studio` },
         contributor: [
           { "@id": `${CONSULTANT.legal.url}/#organization` },

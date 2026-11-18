@@ -112,6 +112,33 @@ const PAKET: Record<string, {
       },
     ],
   },
+  zh: {
+    kicker: "套餐",
+    heading: "三种轻松的创作方式",
+    note: "价格由 Elin 女士亲自确认——无需预付。每一份咨询都会得到亲自回复。",
+    waCta: "WhatsApp 咨询",
+    waText: "你好 Elin！我想咨询 Elchí Studio Bali 的课程套餐。",
+    cards: [
+      {
+        title: "单人时光",
+        sub: "一位嘉宾 · 任选课程",
+        inc: ["从6个创意课程中任选一课（60–110分钟）", "由拥有19年教学经验的 Elin Kim 亲自指导", "所有水平欢迎，零经验也没问题"],
+        cls: "travel-drawing", pax: "1", cta: "填写表格",
+      },
+      {
+        title: "双人与情侣",
+        sub: "两位嘉宾 · 同一节课堂",
+        inc: ["在同一堂课中并肩创作", "带上手机里的照片，为作品注入个人故事", "Postcards：挑选3款设计——你的信稍后会以惊喜方式寄出"],
+        cls: "postcards", pax: "2", cta: "填写表格",
+      },
+      {
+        title: "团体与团建",
+        sub: "私人团体 · 最多50人",
+        inc: ["单身派对、生日庆祝与企业团建", "私人一对一（90分钟）按你的想法定制", "Elin 曾教授多达50人的团体"],
+        cls: "private-group", pax: "10", cta: "填写表格",
+      },
+    ],
+  },
 };
 
 /** Map server error codes to localized copy. */

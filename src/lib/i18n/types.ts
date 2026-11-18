@@ -1,11 +1,11 @@
 /**
  * ELCHÍ STUDIO BALI — i18n type system.
- * Three locales: Indonesian (id), English (en), Korean (ko).
+ * Four locales: Indonesian (id), English (en), Korean (ko), Mandarin (zh).
  * Every user-facing string lives in a LocaleData record; structural
  * facts (slugs, images, durations, accents) stay in classes-data.ts.
  */
 
-export type Locale = "en" | "id" | "ko";
+export type Locale = "en" | "id" | "ko" | "zh";
 
 export type ClassSlug =
   | "travel-drawing"

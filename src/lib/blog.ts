@@ -182,6 +182,17 @@ export const BLOG_UI = {
     cta: "클래스 예약하기",
     by: "스튜디오 데스크에서 — Elin Kim & 팀",
   },
+  zh: {
+    kicker: "工作室日志",
+    heading: "来自工作室书桌的故事",
+    sub: "速写技巧、课程指南与幕后小故事——由 Elchí Studio Bali 团队从真实的工作室生活写起。",
+    readMore: "阅读全文",
+    back: "所有文章",
+    minRead: "分钟阅读",
+    ready: "准备好创造难忘的回忆了吗？",
+    cta: "预约你的课程",
+    by: "来自工作室书桌——Elin Kim 与团队",
+  },
 } as const;
 
 export type BlogLocale = keyof typeof BLOG_UI;

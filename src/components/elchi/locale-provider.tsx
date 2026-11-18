@@ -37,7 +37,7 @@ type SiteCtx = {
 const LocaleCtx = createContext<SiteCtx | null>(null);
 
 function isLocale(v: unknown): v is Locale {
-  return v === "en" || v === "id" || v === "ko";
+  return v === "en" || v === "id" || v === "ko" || v === "zh";
 }
 
 /**
