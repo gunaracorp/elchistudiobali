@@ -263,6 +263,7 @@ export function buildMetadata(key: RouteKey, langParam?: string | null): Metadat
       type: "website",
       locale: { en: "en_US", id: "id_ID", ko: "ko_KR" }[lang],
       alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => ({ en: "en_US", id: "id_ID", ko: "ko_KR" }[l])),
+      images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Elchí Studio Bali — creative art classes in Bali" }],
     },
   };
 }
