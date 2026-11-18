@@ -15,9 +15,9 @@ import { DICTS, DEFAULT_LOCALE, type Locale } from "@/lib/i18n";
 /* Site constants                                                      */
 /* ------------------------------------------------------------------ */
 
-/** Production origin — override with NEXT_PUBLIC_SITE_URL when deploying. */
+/** Production origin — canonical custom domain (override with NEXT_PUBLIC_SITE_URL when deploying). */
 export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://elchistudiobali.com"
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.elchistudio.web.id"
 ).replace(/\/$/, "");
 
 export const LOCALES: Locale[] = ["en", "id", "ko"];

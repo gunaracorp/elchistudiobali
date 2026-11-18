@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useSite } from "./locale-provider";
 import { useSettings, waHref } from "@/lib/site-settings";
+import { track } from "@vercel/analytics/react";
 
 /**
  * WhatsApp glyph — official brand path (lucide has no brand icons).
@@ -52,6 +53,7 @@ export function WhatsAppFloat() {
       href={waHref(number, WA_CHAT[locale] ?? WA_CHAT.en)}
       target="_blank"
       rel="noreferrer"
+      onClick={() => track("whatsapp_float_click")}
       aria-label={d.footer.waFloatAria}
       className="group fixed bottom-[92px] right-5 z-[75] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_14px_34px_rgba(37,211,102,0.45)] transition-transform hover:scale-105"
       initial={{ scale: 0, y: 30 }}

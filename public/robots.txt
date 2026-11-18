@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
-Sitemap: https://elchistudiobali.com/sitemap.xml
+Sitemap: https://www.elchistudio.web.id/sitemap.xml

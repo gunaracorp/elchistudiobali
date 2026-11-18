@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Offline — Elchí Studio Bali</title>
+<style>
+  :root { color-scheme: dark; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2c2119;
+    color: #fff8f0;
+    font-family: Georgia, 'Times New Roman', serif;
+    text-align: center;
+    padding: 24px;
+  }
+  .card { max-width: 30rem; }
+  .dia { color: #e75a87; font-size: 28px; letter-spacing: .4em; }
+  h1 { font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 400; margin: 18px 0 10px; }
+  p  { color: rgba(255,248,240,.72); font-size: clamp(.95rem, 3.6vw, 1.05rem); line-height: 1.7; }
+  button {
+    margin-top: 26px;
+    background: #c93a6c; color: #fff;
+    border: 0; border-radius: 999px;
+    padding: 13px 34px;
+    font: 600 15px Georgia, serif;
+    cursor: pointer;
+  }
+  button:hover { background: #e75a87; }
+  .url { margin-top: 30px; font-size: 12px; letter-spacing: .25em; text-transform: uppercase; color: rgba(255,248,240,.4); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="dia">✦ ✦ ✦</div>
+    <h1>You're offline</h1>
+    <p>Koneksi internetmu terputus — coba periksa jaringan, studio menantimu.<br>
+       Your connection dropped — check your network, the studio awaits.</p>
+    <button onclick="location.reload()">Coba Lagi · Try Again</button>
+    <div class="url">elchistudio.web.id</div>
+  </div>
+</body>
+</html>

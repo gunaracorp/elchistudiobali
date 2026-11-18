@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircleHeart, X, Send, Sparkles } from "lucide-react";
 import { useSite } from "./locale-provider";
+import { track } from "@vercel/analytics/react";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
@@ -67,7 +68,7 @@ export function Concierge() {
     <>
       <motion.button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => { if (!open) track("concierge_open"); setOpen(!open); }}
         className="fixed bottom-5 right-5 z-[75] flex h-14 w-14 items-center justify-center rounded-full bg-rosedeep text-white shadow-[0_14px_34px_rgba(201,58,108,0.45)] transition-transform hover:scale-105"
         aria-label={open ? t.close : t.open}
         initial={{ scale: 0, rotate: -30 }}

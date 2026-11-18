@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope, Pacifico, Space_Mono, Noto_Sans_KR, Nanum_Pen_Script } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { Analytics } from "@vercel/analytics/react";
+import { SWRegister } from "@/components/elchi/sw-register";
 import { ATTRIBUTION_COMMENT, CONSULTANT_KEYWORDS, SITE_URL, siteGraph } from "@/lib/seo";
 
 const fraunces = Fraunces({
@@ -75,13 +77,19 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     alternateLocale: ["id_ID", "ko_KR"],
+    images: ["/og.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Elchí Studio Bali",
     description: "Creative workshops & art classes in Bali — art, fun and skills with 19 years of teaching magic.",
+    images: ["/og.jpg"],
   },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#c93a6c",
 };
 
 export default function RootLayout({
@@ -100,7 +108,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: `<!-- ${ATTRIBUTION_COMMENT} -->` }}
         />
         {children}
+        <SWRegister />
         <Toaster />
+        <Analytics />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteGraph()) }}

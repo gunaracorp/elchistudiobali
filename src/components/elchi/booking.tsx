@@ -7,6 +7,7 @@ import { Reveal, Magnetic } from "./motion";
 import { TornPaper, SunSticker } from "./torn";
 import { useContent, useSite } from "./locale-provider";
 import { fill } from "@/lib/i18n";
+import { track } from "@vercel/analytics/react";
 
 type Status = "idle" | "sending" | "success" | "error";
 type ErrorKey = "name" | "email" | "cls" | "generic";
@@ -71,6 +72,7 @@ export function Booking() {
         throw new Error(JSON.stringify({ s: res.status, c: data.code }));
       }
       setStatus("success");
+      track("booking_submit");
     } catch (err) {
       setStatus("error");
       let key: ErrorKey = "generic";
