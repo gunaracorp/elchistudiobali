@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import ZAI from "z-ai-web-dev-sdk";
+import { baliNow, BOOKING_URL, STUDIO_WA } from "@/lib/studio-facts";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -22,6 +23,15 @@ export async function OPTIONS() {
  * AI Studio Concierge — answers strictly from the official studio
  * information below. No invented prices, schedules or addresses.
  */
+
+/** Live facts injected fresh on every request (ROADMAP Langkah 17). */
+function liveContext(): string {
+  return `LIVE CONTEXT (fresh right now — trust these over any guess):
+- Current date & time at the studio (Bali): ${baliNow()}
+- Official booking form: ${BOOKING_URL} — fields: name, email, class, preferred date, participants, message.
+- Official studio WhatsApp: ${STUDIO_WA} — share ONLY when the visitor asks for direct contact.
+- Pricing: the studio confirms prices personally after an enquiry; never quote numbers.`;
+}
 const SYSTEM_PROMPT = `You are the friendly concierge of ELCHÍ STUDIO BALI, a creative workshop studio in Bali, Indonesia led by Elin Kim.
 
 OFFICIAL INFORMATION (the only facts you may use):
@@ -45,7 +55,7 @@ BOOKING: enquiries go through the website booking form (name, email, class, pref
 STUDIO LOCATION: Gg. Puji No. 9B, Tibubeneng, Kec. Kuta Utara, Kabupaten Badung, Bali 80361, Indonesia. Email: ptelchistudiobali@gmail.com, elchistudio@gmail.com, info@elchistudio.com.
 
 RULES:
-- Answer ONLY from the information above. If asked about prices, exact schedules, or anything not listed, say warmly that the studio confirms those details personally via the booking form.
+- Answer ONLY from the information above and the LIVE CONTEXT (use the live Bali date/time to interpret words like "today" or "tomorrow"). If asked about prices or anything not listed, say warmly that the studio confirms those details personally via the booking form.
 - Keep answers short and warm (2–5 sentences). Match the visitor's language (English, Indonesian, French or Korean).
 - Never invent prices, addresses, phone numbers or dates.`;
 
@@ -115,7 +125,7 @@ export async function POST(req: NextRequest) {
     }
     const localeRule = LOCALE_RULES[String(body.locale ?? "en")] ?? LOCALE_RULES.en;
     const convo: Msg[] = [
-      { role: "system", content: `${SYSTEM_PROMPT}\n\n${localeRule}` },
+      { role: "system", content: `${SYSTEM_PROMPT}\n\n${liveContext()}\n\n${localeRule}` },
       ...messages.map((m: Msg) => ({
         role: m.role === "user" ? "user" : "assistant",
         content: String(m.content ?? "").slice(0, 1000),

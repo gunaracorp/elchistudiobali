@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CalendarHeart, CheckCircle2, Loader2, Send } from "lucide-react";
 import { Reveal, Magnetic } from "./motion";
@@ -8,12 +8,111 @@ import { TornPaper, SunSticker } from "./torn";
 import { useContent, useSite } from "./locale-provider";
 import { fill } from "@/lib/i18n";
 import { track } from "@vercel/analytics/react";
+import { WhatsAppIcon } from "./whatsapp";
+import { waHref } from "@/lib/site-settings";
 
 type Status = "idle" | "sending" | "success" | "error";
 type ErrorKey = "name" | "email" | "cls" | "generic";
 
 const inputCls =
   "w-full rounded-xl border border-ink/15 bg-white/90 px-4 py-3 text-sm text-ink placeholder:text-inksoft/50 focus:border-rosedeep focus:outline-none transition-colors";
+
+/** Official studio WhatsApp — the float widget uses the same number. */
+const STUDIO_WA_NUMBER = "+62 823-3957-0355";
+
+/** Paket bundles (ROADMAP Langkah 7) — built ONLY from official studio
+ * facts (class names, durations, group limits, no-upfront-payment policy).
+ * Prices are never invented: the studio confirms them personally. */
+const PAKET: Record<string, {
+  kicker: string;
+  heading: string;
+  note: string;
+  waCta: string;
+  waText: string;
+  cards: { title: string; sub: string; inc: string[]; cls: string; pax: string; cta: string }[];
+}> = {
+  en: {
+    kicker: "Packages",
+    heading: "Three easy ways to create with us",
+    note: "Prices are confirmed personally by Ms. Elin — no upfront payment. Every enquiry gets a personal reply.",
+    waCta: "Ask via WhatsApp",
+    waText: "Hi Elin! I'd like to ask about a class package at Elchí Studio Bali.",
+    cards: [
+      {
+        title: "Solo Escape",
+        sub: "One guest · any class",
+        inc: ["Pick 1 of 6 creative classes (60–110 min)", "Guided hands-on by Elin Kim — 19 years of teaching", "All skill levels, zero experience needed"],
+        cls: "travel-drawing", pax: "1", cta: "Fill the form",
+      },
+      {
+        title: "Duo & Couples",
+        sub: "Two guests · one session",
+        inc: ["Create side by side in the same class", "Bring photos on your phone to personalise your artwork", "Postcards: pick 3 designs — the studio mails your letters later as a surprise"],
+        cls: "postcards", pax: "2", cta: "Fill the form",
+      },
+      {
+        title: "Group & Team Building",
+        sub: "Private group · up to 50 guests",
+        inc: ["Hen's parties, birthdays & corporate team building", "Private 1:1 (90 min) tailored to your idea", "Elin has taught groups of up to 50"],
+        cls: "private-group", pax: "10", cta: "Fill the form",
+      },
+    ],
+  },
+  id: {
+    kicker: "Paket",
+    heading: "Tiga cara mudah berkarya bersama kami",
+    note: "Harga dikonfirmasi langsung oleh Ms. Elin — tanpa pembayaran di muka. Setiap pertanyaan dijawab personal.",
+    waCta: "Tanya via WhatsApp",
+    waText: "Halo Elin! Aku ingin tanya soal paket kelas di Elchí Studio Bali.",
+    cards: [
+      {
+        title: "Solo Escape",
+        sub: "Satu tamu · satu kelas",
+        inc: ["Pilih 1 dari 6 kelas kreatif (60–110 menit)", "Dipandu langsung Elin Kim — 19 tahun mengajar", "Semua tingkat, tanpa pengalaman"],
+        cls: "travel-drawing", pax: "1", cta: "Isi form-nya",
+      },
+      {
+        title: "Duo & Pasangan",
+        sub: "Dua tamu · satu sesi",
+        inc: ["Berkarya berdampingan di kelas yang sama", "Bawa foto di ponselmu untuk personalisasi karya", "Postcards: pilih 3 desain — suratmu dikirim surprise nanti"],
+        cls: "postcards", pax: "2", cta: "Isi form-nya",
+      },
+      {
+        title: "Grup & Team Building",
+        sub: "Grup privat · hingga 50 orang",
+        inc: ["Hen's party, ulang tahun & team building kantor", "Private 1:1 (90 menit) sesuai idemu", "Elin pernah mengajar grup hingga 50 orang"],
+        cls: "private-group", pax: "10", cta: "Isi form-nya",
+      },
+    ],
+  },
+  ko: {
+    kicker: "패키지",
+    heading: "함께 만들기, 세 가지 방법",
+    note: "가격은 Ms. Elin이 직접 안내합니다 — 선결제 없음. 모든 문의에 개별 답장드려요.",
+    waCta: "WhatsApp로 문의",
+    waText: "안녕하세요 Elin! Elchí Studio Bali 클래스 패키지에 대해 문의하고 싶어요.",
+    cards: [
+      {
+        title: "Solo Escape",
+        sub: "1인 · 원하는 클래스",
+        inc: ["6가지 크리에이티브 클래스 중 선택 (60–110분)", "19년 경력 Elin Kim의 직접 지도", "모든 수준 환영 — 경험 필요 없음"],
+        cls: "travel-drawing", pax: "1", cta: "신청서 작성",
+      },
+      {
+        title: "Duo & Couples",
+        sub: "2인 · 같은 세션",
+        inc: ["같은 클래스에서 나란히 작품 만들기", "휴대폰 사진을 가져오면 작품에 담아드려요", "Postcards: 3가지 디자인 선택 — 편지는 나중에 서프라이즈로 발송"],
+        cls: "postcards", pax: "2", cta: "신청서 작성",
+      },
+      {
+        title: "Group & Team Building",
+        sub: "프라이빗 그룹 · 최대 50명",
+        inc: ["Hens party, 생일 파티 & 기업 워크숍", "Private 1:1 (90분) 맞춤 클래스", "Elin은 최대 50명 그룹 강의 경험 보유"],
+        cls: "private-group", pax: "10", cta: "신청서 작성",
+      },
+    ],
+  },
+};
 
 /** Map server error codes to localized copy. */
 function errorCode(status: number, code: string | undefined): ErrorKey {
@@ -31,7 +130,7 @@ function errorCode(status: number, code: string | undefined): ErrorKey {
  */
 export function Booking() {
   const { classes, privates } = useContent();
-  const { d } = useSite();
+  const { d, locale } = useSite();
   const t = d.booking;
 
   const options = useMemo(
@@ -91,10 +190,86 @@ export function Booking() {
   const selectedName =
     options.find((o) => o.value === form.classType)?.name.split(" · ")[0] ?? "";
 
+  const P = PAKET[locale] ?? PAKET.en;
+
+  // Pre-fill from URL (?cls=dog-keychain&pax=3) — used by paket CTAs & shared links.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const cls = q.get("cls");
+    const pax = q.get("pax");
+    setForm((f) => ({
+      ...f,
+      classType: cls && options.some((o) => o.value === cls) ? cls : f.classType,
+      participants:
+        pax && Number(pax) >= 1 && Number(pax) <= 50 ? String(Math.floor(Number(pax))) : f.participants,
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /** Paket CTA — fill the form and glide to it (Langkah 7). */
+  function applyPaket(cls: string, pax: string) {
+    setForm((f) => ({ ...f, classType: cls, participants: pax }));
+    track("paket_select");
+    document.getElementById("booking-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
   return (
     <section id="booking" aria-label={t.aria} className="relative bg-rose">
       <div aria-hidden>
         <TornPaper fill="#f9edde" height={44} className="rotate-180" />
+      </div>
+
+      {/* Paket populer (ROADMAP Langkah 7) — real classes, honest pricing note */}
+      <div className="mx-auto max-w-7xl px-5 pt-14 sm:px-8">
+        <Reveal>
+          <p className="font-monobrand text-[11px] uppercase tracking-[0.35em] text-cream/80">
+            {P.kicker}
+          </p>
+          <h3 className="mt-3 font-display text-3xl font-black text-cream sm:text-4xl">
+            {P.heading}
+          </h3>
+        </Reveal>
+        <div className="mt-8 grid gap-5 md:grid-cols-3">
+          {P.cards.map((c) => (
+            <Reveal key={c.title} delay={0.06}>
+              <div className="flex h-full flex-col rounded-3xl bg-cream p-6 shadow-[0_20px_50px_rgba(52,35,28,0.25)]">
+                <p className="font-script text-2xl text-rosedeep">{c.title}</p>
+                <p className="mt-1 font-monobrand text-[10px] uppercase tracking-[0.2em] text-inksoft">
+                  {c.sub}
+                </p>
+                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-ink">
+                  {c.inc.map((line) => (
+                    <li key={line} className="flex items-start gap-2">
+                      <span className="mt-0.5 text-blush" aria-hidden>
+                        ✦
+                      </span>
+                      <span>{line}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-auto flex flex-wrap items-center gap-3 pt-5">
+                  <button
+                    type="button"
+                    onClick={() => applyPaket(c.cls, c.pax)}
+                    className="rounded-full bg-rosedeep px-5 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
+                  >
+                    {c.cta}
+                  </button>
+                  <a
+                    href={waHref(STUDIO_WA_NUMBER, `${P.waText} (${c.title})`)}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-ink/15 px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-blushlight"
+                  >
+                    <WhatsAppIcon className="h-4 w-4 text-[#25D366]" aria-hidden />
+                    {P.waCta}
+                  </a>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <p className="mt-5 text-sm italic text-cream/85">{P.note}</p>
       </div>
 
       <div className="mx-auto max-w-7xl px-5 pb-28 pt-20 sm:px-8 sm:pt-24">
@@ -188,6 +363,7 @@ export function Booking() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
+                    id="booking-form"
                     onSubmit={submit}
                     className="space-y-4"
                     aria-label={t.formAria}

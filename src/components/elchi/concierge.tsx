@@ -2,11 +2,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircleHeart, X, Send, Sparkles } from "lucide-react";
+import { MessageCircleHeart, X, Send, Sparkles, Mic, MicOff, Volume2, VolumeX } from "lucide-react";
 import { useSite } from "./locale-provider";
 import { track } from "@vercel/analytics/react";
 
 type Msg = { role: "user" | "assistant"; content: string };
+
+/** Voice labels (ROADMAP Langkah 19) — self-contained i18n. */
+const VOICE: Record<string, { mic: string; tts: string }> = {
+  en: { mic: "Speak your question", tts: "Read replies aloud" },
+  id: { mic: "Ucapkan pertanyaanmu", tts: "Bacakan jawabannya" },
+  ko: { mic: "음성으로 질문하기", tts: "답변 소리로 듣기" },
+};
 
 /**
  * Concierge — AI Studio Concierge.
@@ -23,6 +30,20 @@ export function Concierge() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Voice (Langkah 19): speech-to-text + spoken replies, where supported.
+  const [listening, setListening] = useState(false);
+  const [ttsOn, setTtsOn] = useState(false);
+  const recRef = useRef<{ stop?: () => void } | null>(null);
+  const ttsRef = useRef(false);
+  const SRClass =
+    typeof window !== "undefined"
+      ? (window as unknown as { SpeechRecognition?: unknown; webkitSpeechRecognition?: unknown })
+          .SpeechRecognition ||
+        (window as unknown as { webkitSpeechRecognition?: unknown }).webkitSpeechRecognition
+      : null;
+  const ttsSupported = typeof window !== "undefined" && "speechSynthesis" in window;
+  const v = VOICE[locale] ?? VOICE.en;
 
   // Reset the conversation (and its greeting) when the language changes.
   useEffect(() => {
@@ -47,13 +68,9 @@ export function Concierge() {
         body: JSON.stringify({ messages: next.slice(-8), locale }),
       });
       const data = await res.json();
-      setMsgs((m) => [
-        ...m,
-        {
-          role: "assistant",
-          content: data.reply || t.failReply,
-        },
-      ]);
+      const reply = data.reply || t.failReply;
+      setMsgs((m) => [...m, { role: "assistant", content: reply }]);
+      speak(reply);
     } catch {
       setMsgs((m) => [
         ...m,
@@ -62,6 +79,53 @@ export function Concierge() {
     } finally {
       setBusy(false);
     }
+  }
+
+  /** Read the latest reply aloud when the visitor enabled voice (Langkah 19). */
+  function speak(text: string) {
+    if (!ttsRef.current || typeof window === "undefined" || !("speechSynthesis" in window)) return;
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = { en: "en-US", id: "id-ID", ko: "ko-KR" }[locale] ?? "en-US";
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    } catch {
+      /* voice is a bonus — never break the chat over it */
+    }
+  }
+
+  /** Mic button — speech-to-text straight into the input (Langkah 19). */
+  function toggleMic() {
+    if (listening) {
+      recRef.current?.stop?.();
+      setListening(false);
+      return;
+    }
+    if (!SRClass) return;
+    type SR = {
+      lang: string;
+      interimResults: boolean;
+      continuous: boolean;
+      onresult: (e: { resultIndex: number; results: { [k: number]: { [k: number]: { transcript: string } } } }) => void;
+      onend: () => void;
+      onerror: () => void;
+      start: () => void;
+      stop: () => void;
+    };
+    const rec = new (SRClass as new () => SR)();
+    rec.lang = { en: "en-US", id: "id-ID", ko: "ko-KR" }[locale] ?? "en-US";
+    rec.interimResults = true;
+    rec.continuous = false;
+    rec.onresult = (e) => {
+      let txt = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) txt += e.results[i][0].transcript;
+      setInput(txt);
+    };
+    rec.onend = () => setListening(false);
+    rec.onerror = () => setListening(false);
+    recRef.current = rec;
+    setListening(true);
+    rec.start();
   }
 
   return (
@@ -163,6 +227,45 @@ export function Concierge() {
                 send(input);
               }}
             >
+              {(SRClass || ttsSupported) && (
+                <div className="flex shrink-0 gap-1.5">
+                  {SRClass && (
+                    <button
+                      type="button"
+                      onClick={toggleMic}
+                      aria-label={v.mic}
+                      title={v.mic}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+                        listening
+                          ? "bg-sun text-ink animate-softpulse"
+                          : "border border-ink/15 bg-cream text-ink hover:bg-blushlight"
+                      }`}
+                    >
+                      {listening ? <MicOff className="h-4 w-4" aria-hidden /> : <Mic className="h-4 w-4" aria-hidden />}
+                    </button>
+                  )}
+                  {ttsSupported && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setTtsOn((prev) => {
+                          const next = !prev;
+                          ttsRef.current = next;
+                          if (!next) window.speechSynthesis.cancel();
+                          return next;
+                        });
+                      }}
+                      aria-label={v.tts}
+                      title={v.tts}
+                      className={`flex h-10 w-10 items-center justify-center rounded-full transition-colors ${
+                        ttsOn ? "bg-rosedeep text-white" : "border border-ink/15 bg-cream text-ink hover:bg-blushlight"
+                      }`}
+                    >
+                      {ttsOn ? <Volume2 className="h-4 w-4" aria-hidden /> : <VolumeX className="h-4 w-4" aria-hidden />}
+                    </button>
+                  )}
+                </div>
+              )}
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
