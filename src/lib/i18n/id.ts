@@ -13,6 +13,7 @@ export const id: LocaleData = {
       { href: "#instructor", label: "Elin" },
       { href: "#gallery", label: "Galeri" },
       { href: "#faq", label: "FAQ" },
+      { href: "#blog", label: "Jurnal" },
     ],
     meta: {
       skip: "Lewati ke kelas",

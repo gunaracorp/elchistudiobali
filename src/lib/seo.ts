@@ -44,6 +44,7 @@ export const ROUTES = [
   { path: "/booking", hash: "#booking", key: "booking" },
   { path: "/faq", hash: "#faq", key: "faq" },
   { path: "/contact", hash: "#contact", key: "contact" },
+  { path: "/blog", hash: "#blog", key: "blog" },
 ] as const;
 
 export type RouteKey = (typeof ROUTES)[number]["key"] | "home";
@@ -218,6 +219,26 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "경험이 필요한가요? 무엇을 가져와야 하나요? 아이도 참여할 수 있나요? 발리 워크숍 예약 전 가장 많이 묻는 질문들의 답변.",
       crumb: "FAQ",
+    },
+  },
+  blog: {
+    en: {
+      title: "The Studio Journal — Stories from Elchí Studio Bali",
+      description:
+        "Stories, tips and behind-the-scenes from our Bali art studio: travel sketching, watercolour postcards, felting and choosing your first creative class.",
+      crumb: "Journal",
+    },
+    id: {
+      title: "Jurnal Studio — Cerita dari Elchí Studio Bali",
+      description:
+        "Cerita, tips, dan kesan di balik layar studio seni kami di Bali: travel sketching, kartu pos cat air, felting, dan memilih kelas kreatif pertamamu.",
+      crumb: "Jurnal",
+    },
+    ko: {
+      title: "스튜디오 저널 — Elchí Studio Bali 이야기",
+      description:
+        "발리 아트 스튜디오의 이야기와 팁: 여행 스케치, 수채화 엽서, 니들펠트, 그리고 첫 크리에이티브 클래스 고르기.",
+      crumb: "저널",
     },
   },
   contact: {

@@ -13,6 +13,7 @@ export const en: LocaleData = {
       { href: "#instructor", label: "Elin" },
       { href: "#gallery", label: "Gallery" },
       { href: "#faq", label: "FAQ" },
+      { href: "#blog", label: "Journal" },
     ],
     meta: {
       skip: "Skip to classes",

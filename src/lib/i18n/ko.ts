@@ -13,6 +13,7 @@ export const ko: LocaleData = {
       { href: "#instructor", label: "엘린" },
       { href: "#gallery", label: "갤러리" },
       { href: "#faq", label: "FAQ" },
+      { href: "#blog", label: "저널" },
     ],
     meta: {
       skip: "클래스로 건너뛰기",

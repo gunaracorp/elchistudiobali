@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { CLASSES } from "@/lib/classes-data";
+import { ARTICLES } from "@/lib/blog";
 import { LOCALES, ROUTES, SITE_URL, langPath } from "@/lib/seo";
 
 /**
@@ -7,7 +8,12 @@ import { LOCALES, ROUTES, SITE_URL, langPath } from "@/lib/seo";
  * hreflang alternates. English URLs are the clean canonical form.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const paths = ["/", ...ROUTES.map((r) => r.path), ...CLASSES.map((c) => `/classes/${c.slug}`)];
+  const paths = [
+    "/",
+    ...ROUTES.map((r) => r.path),
+    ...CLASSES.map((c) => `/classes/${c.slug}`),
+    ...ARTICLES.map((a) => `/blog/${a.slug}`),
+  ];
   return paths.map((path) => ({
     url: `${SITE_URL}${langPath(path, "en")}`,
     lastModified: new Date(),

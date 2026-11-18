@@ -45,6 +45,8 @@ export function Navbar({ instant = false }: { instant?: boolean }) {
   const scrollTo = (hash: string) => {
     const el = document.querySelector(hash);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    // No section here? Land on the dedicated route (e.g. Journal).
+    else window.location.href = `${routeFor(hash)}?lang=${locale}`;
   };
 
   const handleNav = (hash: string) => (e: React.MouseEvent) => {

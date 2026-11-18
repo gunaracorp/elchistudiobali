@@ -85,7 +85,12 @@ export function Footer() {
     // feel). Subpages: let the crawlable route href navigate.
     if (typeof window !== "undefined" && window.location.pathname === "/" && href.startsWith("#")) {
       e.preventDefault();
-      document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+      if (document.querySelector(href)) {
+        document.querySelector(href)!.scrollIntoView({ behavior: "smooth" });
+      } else {
+        // Anchor missing on the homepage? Navigate to its dedicated route.
+        window.location.href = `${routeFor(href)}?lang=${locale}`;
+      }
     }
   };
 
