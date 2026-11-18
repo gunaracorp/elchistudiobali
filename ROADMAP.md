@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 9/25 (1–5, 7, 13, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 14 kelengkapan bahasa / 23 halaman partner (tanpa API).
+**Progres roadmap: 10/25 (1–5, 7, 13, 14, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 23 halaman partner B2B (tanpa API).
 
 ---
 
@@ -94,7 +94,7 @@
 **Kerja**: route `/journal` berbasis MDX; 3 artikel awal: "Travel drawing di Ubud", "Melukis postcard suvenir Bali", "Kelas seni seru untuk anak"; schema Article untuk SEO.
 **Selesai bila**: 3 artikel tampil, masuk sitemap, terbaca rapi di mobile.
 
-### ☐ 14. Kelengkapan bahasa
+### ✅ 14. Kelengkapan bahasa
 **Kerja**: audit konten Korea (id/k) oleh native speaker; tambah **Mandarin (zh)** sebagai locale ke-4 di `locale-provider.tsx` + kamus; pemilih bahasa 4 bendera.
 **Selesai bila**: seluruh situs utuh dalam 4 bahasa tanpa campuran.
 
