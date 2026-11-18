@@ -281,3 +281,14 @@ html[lang="ko"] .font-script {
 html[lang="ko"] .font-display {
   font-family: var(--font-noto-kr), Georgia, serif;
 }
+
+/* ============================================================
+   WhatsApp float greeting bubble — announces itself once
+   (~5s in, holds ~6s, fades), then hover-only on desktop.
+   ============================================================ */
+@keyframes wabubble {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  72% { opacity: 1; }
+  100% { opacity: 0; }
+}
