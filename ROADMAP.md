@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 8/25 (1–5, 7, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 13 blog/jurnal MDX.
+**Progres roadmap: 9/25 (1–5, 7, 13, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 14 kelengkapan bahasa / 23 halaman partner (tanpa API).
 
 ---
 
@@ -90,7 +90,7 @@
 **Kerja**: ringkasan pertanyaan pengunjung disimpan; peraya FAQ dari 10 pertanyaan teratas; jawaban standar disunting oleh studio.
 **Selesai bila**: halaman FAQ berisi ≥ 12 pertanyaan nyata pengunjung.
 
-### ☐ 13. Blog/jurnal mini (MDX)
+### ✅ 13. Blog/jurnal mini (MDX)
 **Kerja**: route `/journal` berbasis MDX; 3 artikel awal: "Travel drawing di Ubud", "Melukis postcard suvenir Bali", "Kelas seni seru untuk anak"; schema Article untuk SEO.
 **Selesai bila**: 3 artikel tampil, masuk sitemap, terbaca rapi di mobile.
 
