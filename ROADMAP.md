@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 5/25 — Fase 1 tuntas 18 Nov 2026; berikutnya Langkah 6.
+**Progres roadmap: 8/25 (1–5, 7, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 13 blog/jurnal MDX.
 
 ---
 
@@ -60,7 +60,7 @@
 **Kerja**: `POST /api/booking` → tabel Prisma `Booking`; notifikasi email (Resend/SMTP) ke studio; daftar booking di `/admin`.
 **Selesai bila**: submit form → entri muncul di `/admin` + notifikasi masuk di email studio.
 
-### ☐ 7. Halaman harga & paket
+### ✅ 7. Halaman harga & paket
 **Kerja**: section harga per kelas (IDR, apa saja yang termasuk) + 3 paket (1 orang / pasangan / grup privat) di halaman classes; tombol "Pesan paket ini" → pre-fill form booking.
 **Selesai bila**: harga tampil jelas dan klik paket mengisi form otomatis.
 
@@ -112,7 +112,7 @@
 **Kerja**: log concierge (pertanyaan, bahasa, AI jawab/fallback, durasi) ke tabel `ChatLog`; halaman `/admin/chat` dengan statistik + daftar.
 **Selesai bila**: percakapan baru terlihat di admin kurang dari 1 menit.
 
-### ☐ 17. Concierge tahu harga & slot real-time
+### ✅ 17. Concierge tahu harga & slot real-time
 **Kerja**: `src/app/api/concierge/route.ts` menyuntikkan data kelas CMS + slot tersedia hari itu ke system prompt; jawaban AI menyebut harga & jam akurat.
 **Selesai bila**: tanya "berapa harga travel drawing, besok jam berapa yang kosong?" → jawaban sesuai data nyata.
 
@@ -120,7 +120,7 @@
 **Kerja**: WhatsApp Cloud API (Meta): booking baru & konfirmasi pembayaran → template pesan ke nomor studio.
 **Selesai bila**: booking uji → WA masuk di HP Ms. Elin tanpa cara manual.
 
-### ☐ 19. Chat suara (STT + TTS)
+### ✅ 19. Chat suara (STT + TTS)
 **Kerja**: Web Speech API di concierge: tombol mikrofon (speech-to-text), tombol suara (speechSynthesis membacakan jawaban), preferensi on/off tersimpan.
 **Selesai bila**: bertanya lewat suara → jawaban muncul sebagai teks + suara di Chrome.
 
