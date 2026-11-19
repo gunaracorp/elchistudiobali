@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 11/25 (1–5, 7, 13, 14, 17, 19, 23 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 24 cross-link Gunara Corp Network (tanpa API).
+**Progres roadmap: 11/25 (1–5, 7, 13, 14, 17, 19, 23 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 25 laporan bulanan otomatis (24 menunggu pemasangan eksternal).
 
 ---
 
@@ -149,6 +149,7 @@
 ### ☐ 24. Cross-link Gunara Corp Network di semua situs
 **Kerja**: bungkus blok network (footer + watermark) menjadi **snippet siap-tempel + dokumentasi** di folder `partners/` repo; bantu pemasangan ke situs jaringan yang bisa diedit (TopKonsultan, Digiman.id, dll).
 **Selesai bila**: snippet + panduan tersedia dan ≥ 2 situs lain sudah memasang tautan balik.
+**Status 18 Nov 2026**: snippet + panduan ✅ tersedia di `partners/` (README.md + network-badge.html). Pemasangan tautan balik: **0/4** — menunggu pemilik situs (TopKonsultan ✓ online, JuraganWebsite ✓ online, GunaraCorp ✓ online, Digiman.id ✗ 404). Tandai ✅ (12/25) saat ≥2 terpasang — verifikasi dengan perintah di partners/README.md §5.
 
 ### ☐ 25. Laporan bulanan otomatis
 **Kerja**: Vercel Cron tanggal 1 tiap bulan: rangkum pengunjung, booking, percakapan AI, revenue → email ringkas 1 halaman ke studio & Gunara Corp.
