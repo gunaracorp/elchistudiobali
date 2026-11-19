@@ -5,6 +5,11 @@ const CANONICAL = "https://www.elchistudio.web.id";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // SQLite db + schema ikut ke serverless bundle — tanpa ini, API
+  // booking 500 karena Prisma tidak menemukan file db (Langkah 23 fix).
+  outputFileTracingIncludes: {
+    "/api/**": ["./db/**", "./prisma/schema.prisma"],
+  },
   images: {
     // next/image serves AVIF first with WebP fallback (ROADMAP Langkah 1)
     formats: ["image/avif", "image/webp"],
