@@ -15,7 +15,10 @@ const TMP_DB = '/tmp/db/custom.db'
 
 function resolveDbUrl(): string {
   const envUrl = process.env.DATABASE_URL
-  if (envUrl) return envUrl
+  // Hanya hormati override yang benar-benar SQLite — Vercel bisa saja
+  // membawa DATABASE_URL non-file (placeholder Postgres) yang akan
+  // merusak validasi datasource.
+  if (envUrl && envUrl.startsWith('file:')) return envUrl
   const bundled = path.join(process.cwd(), 'db', 'custom.db')
   try {
     fs.accessSync(process.cwd(), fs.constants.W_OK)
