@@ -20,6 +20,8 @@ export async function POST(req: NextRequest) {
     const preferredDate = body.preferredDate ? String(body.preferredDate).slice(0, 20) : null;
     const participants = Math.min(Math.max(Number(body.participants) || 1, 1), 50);
     const message = body.message ? String(body.message).trim().slice(0, 1000) : null;
+    // Partner referral source (Langkah 23) — /booking?ref=CODE lands here.
+    const ref = body.ref ? String(body.ref).trim().slice(0, 40) || null : null;
 
     if (name.length < 2 || name.length > 80) {
       return NextResponse.json(
@@ -41,7 +43,7 @@ export async function POST(req: NextRequest) {
     }
 
     const booking = await db.booking.create({
-      data: { name, email, phone, classType, preferredDate, participants, message },
+      data: { name, email, phone, classType, preferredDate, participants, message, ref },
     });
 
     return NextResponse.json({ ok: true, id: booking.id }, { status: 201 });

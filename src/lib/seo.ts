@@ -45,6 +45,7 @@ export const ROUTES = [
   { path: "/faq", hash: "#faq", key: "faq" },
   { path: "/contact", hash: "#contact", key: "contact" },
   { path: "/blog", hash: "#blog", key: "blog" },
+  { path: "/partners", hash: "#partners", key: "partners" },
 ] as const;
 
 export type RouteKey = (typeof ROUTES)[number]["key"] | "home";
@@ -319,6 +320,32 @@ export const PAGE_SEO: Record<RouteKey, Record<Locale, SeoEntry>> = {
       description:
         "找到Elchí Studio Bali：Gg. Puji No.9B, Tibubeneng, Kuta Utara, Badung, Bali 80361, Indonesia。邮箱 ptelchistudiobali@gmail.com · elchistudio@gmail.com · info@elchistudio.com · WhatsApp +62 823-3957-0355。",
       crumb: "联系",
+    },
+  },
+  partners: {
+    en: {
+      title: "Partner with Elchí Studio Bali — Group Workshops for Hotels & Agencies",
+      description:
+        "Corporate-grade creative workshops in Bali for hotels, travel agencies, DMCs and teams — founder-led, 19 years of teaching, groups up to 50. Referral codes record every booking.",
+      crumb: "Partners",
+    },
+    id: {
+      title: "Kemitraan Elchí Studio Bali — Lokakarya Grup untuk Hotel & Agen",
+      description:
+        "Lokakarya kreatif kelas korporat di Bali untuk hotel, agen perjalanan, DMC, dan tim — dipandu langsung pendiri, 19 tahun mengajar, grup hingga 50 orang. Kode referral mencatat setiap booking.",
+      crumb: "Mitra",
+    },
+    ko: {
+      title: "엘치 스튜디오 파트너십 — 호텔 & 여행사 그룹 워크숍",
+      description:
+        "호텔, 여행사, DMC, 기업 팀을 위한 발리 크리에이티브 워크숍 — 설립자 직접 강의, 19년 경력, 최대 50명 그룹. 추천 코드로 모든 예약이 기록됩니다.",
+      crumb: "파트너",
+    },
+    zh: {
+      title: "Elchí Studio 合作伙伴——酒店与旅行社团体工作坊",
+      description:
+        "为巴厘岛酒店、旅行社、DMC 与团队提供的创意工作坊——创始人亲自授课，19年教学经验，团体最多50人。推荐代码自动记录每一笔预约。",
+      crumb: "合作伙伴",
     },
   },
 };

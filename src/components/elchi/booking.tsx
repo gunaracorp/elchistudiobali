@@ -178,6 +178,7 @@ export function Booking() {
     preferredDate: "",
     participants: "2",
     message: "",
+    ref: "",
   });
 
   const set = (k: keyof typeof form) => (e: { target: { value: string } }) =>
@@ -219,16 +220,19 @@ export function Booking() {
 
   const P = PAKET[locale] ?? PAKET.en;
 
-  // Pre-fill from URL (?cls=dog-keychain&pax=3) — used by paket CTAs & shared links.
+  // Pre-fill from URL (?cls=dog-keychain&pax=3&ref=PARTNER) — used by paket
+  // CTAs, partner referral links & shared links.
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const cls = q.get("cls");
     const pax = q.get("pax");
+    const ref = q.get("ref");
     setForm((f) => ({
       ...f,
       classType: cls && options.some((o) => o.value === cls) ? cls : f.classType,
       participants:
         pax && Number(pax) >= 1 && Number(pax) <= 50 ? String(Math.floor(Number(pax))) : f.participants,
+      ref: ref ? ref.trim().slice(0, 40) : f.ref,
     }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -513,6 +517,11 @@ export function Booking() {
                         )}
                       </button>
                     </Magnetic>
+                    {form.ref && (
+                      <p className="text-center font-monobrand text-[11px] uppercase tracking-[0.14em] text-rosedeep">
+                        ref · {form.ref}
+                      </p>
+                    )}
                     <p className="text-center text-xs text-inksoft/70">
                       {t.noPay}
                     </p>

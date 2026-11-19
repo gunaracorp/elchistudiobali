@@ -19,6 +19,7 @@ model Booking {
   preferredDate String?
   participants  Int      @default(1)
   message       String?
+  ref           String?
   status        String   @default("new")
   createdAt     DateTime @default(now())
 }

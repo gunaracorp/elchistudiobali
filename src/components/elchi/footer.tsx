@@ -18,6 +18,14 @@ import { routeFor } from "@/lib/seo";
  * social profiles show up here when configured in the dashboard.
  */
 
+/** Footer label for the B2B partners page (Langkah 23) — self-contained i18n. */
+const PARTNER_PAGE_LABELS: Record<string, string> = {
+  en: "Partners",
+  id: "Mitra",
+  ko: "파트너",
+  zh: "合作伙伴",
+};
+
 /** Partner credits — the trio behind the Elchí website. */
 const CREDITS = [
   {
@@ -308,6 +316,14 @@ export function Footer() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href={`/partners?lang=${locale}`}
+                  className="text-sm text-inksoft transition-colors hover:text-rosedeep"
+                >
+                  {PARTNER_PAGE_LABELS[locale] ?? "Partners"}
+                </a>
+              </li>
             </ul>
           </nav>
           <nav aria-label={t.workshops}>

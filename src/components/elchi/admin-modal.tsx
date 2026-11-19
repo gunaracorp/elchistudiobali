@@ -15,6 +15,7 @@ type BookingRow = {
   preferredDate: string | null;
   participants: number;
   message: string | null;
+  ref: string | null;
   status: string;
   createdAt: string;
 };
@@ -155,6 +156,7 @@ export function AdminModal({
                     <p className="mt-1 text-sm text-inksoft">
                       <strong className="text-ink">{r.classType}</strong> · {r.participants} {t.pax}
                       {r.preferredDate ? ` · ${t.pref} ${r.preferredDate}` : ""}
+                      {r.ref ? ` · ref ${r.ref}` : ""}
                     </p>
                     <p className="mt-1 text-sm text-inksoft">
                       {r.email}
