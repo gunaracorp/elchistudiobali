@@ -22,7 +22,7 @@
 | Landing statis gh-pages v8 (AI chat widget, workshop + durasi, partner credits) | 🟢 live |
 | i18n en / id / ko + SEO sitemap.xml | 🟢 live |
 
-**Progres roadmap: 10/25 (1–5, 7, 13, 14, 17, 19 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 23 halaman partner B2B (tanpa API).
+**Progres roadmap: 11/25 (1–5, 7, 13, 14, 17, 19, 23 ✅ · 18 Nov 2026) — Langkah yang butuh akun layanan ditunda sementara: 9, 18, 20 (+6-notifikasi, 15-video); berikutnya: 24 cross-link Gunara Corp Network (tanpa API).
 
 ---
 
@@ -142,7 +142,7 @@
 **Kerja**: unduhan gratis **"Bali Sketch Guide" (PDF ~10 halaman)** demi email pengunjung; simpan ke DB; email welcome otomatis; template newsletter bulanan.
 **Selesai bila**: alur unduh → email tersimpan → welcome email terkirim.
 
-### ☐ 23. Halaman kemitraan B2B (agen tur & hotel)
+### ✅ 23. Halaman kemitraan B2B (agen tur & hotel)
 **Kerja**: `/partners` (EN/ID): paket grup, skema komisi referensi, kontak langsung; parameter `?ref=` tercatat di tabel Booking untuk pelacakan komisi.
 **Selesai bila**: halaman live dan booking dengan `?ref=` tercatat sumbernya.
 
