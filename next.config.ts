@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
   // booking 500 karena Prisma tidak menemukan file db (Langkah 23 fix).
   outputFileTracingIncludes: {
     "/api/**": ["./db/**", "./prisma/schema.prisma"],
+    "/api/bookings": ["./db/**", "./prisma/schema.prisma"],
+    "/api/db-check": ["./db/**", "./prisma/schema.prisma"],
   },
   images: {
     // next/image serves AVIF first with WebP fallback (ROADMAP Langkah 1)
